@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/18 13:29:17 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/18 20:31:30 by fardeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	ft_destroy_imgs(t_cub *data)
 	{
 		if (data->display.img)
 			mlx_destroy_image(data->mlx, data->display.img);
+		if (data->minimap.cache.img)
+			mlx_destroy_image(data->mlx, data->map.minimap.cache.img);
 		if (data->map.minimap.tiles[0].tile_img.img)
 			mlx_destroy_image(data->mlx, data->map.minimap.tiles[0].tile_img.img);
 		if (data->map.minimap.tiles[1].tile_img.img)

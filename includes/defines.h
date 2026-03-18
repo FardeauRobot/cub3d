@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/18 15:36:03 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/18 20:27:02 by fardeau          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define	TILE_SIZE 16
 # define	CHAR_SIZE TILE_SIZE / 4
 
-# define	CHAR_SPEED 0.005
-# define	ROT_SPEED 0.005
+# define	CHAR_SPEED 0.02
+# define	ROT_SPEED 0.02
 
 // BITFLAGS
 # define UP 0b0001	
@@ -61,15 +61,14 @@ int	ft_map_render(void *cub);
 
 // RENDER_UTILS.C
 void	ft_img_pixel_put(t_img *img, int x, int y, int color);
+int		ft_img_pixel_get(t_img *img, int x, int y);
+void	ft_img_to_img(t_img *dst, t_img *src, int dst_x, int dst_y);
 void	ft_img_fill(t_img *img, int color);
 
 // IMGS_INIT.C
 void	ft_img_init(t_cub *data, t_img *img, int width, int height);
 void	ft_minimap_init(t_map *map);
 void	ft_char_init(t_cub *data);
-
-// RENDER_MAP.C
-void	ft_tile_draw(t_minimap *minimap, t_tile *tile, int map_x, int map_y);
 
 /* ============== UTILS ============================= */
 // OUTPUT.C

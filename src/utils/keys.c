@@ -111,8 +111,6 @@ int	ft_release_keys(int keycode, void *cub)
 			data->map.minimap.display_map = OFF;
 		else if (data->map.minimap.display_map == OFF)
 			data->map.minimap.display_map = ON;
-		ft_map_render(cub);
-
 	}
 	return (SUCCESS);
 }

@@ -26,7 +26,9 @@ void	ft_mlx_init(t_cub *data)
 	data->win = mlx_new_window(data->mlx, data->screen_width, data->screen_height, WIN_NAME);
 	if (!data->win)
 		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_MSG_MLX);
-	data->display.img = mlx_new_image(data->mlx, data->screen_width, data->screen_height);
+	data->display.width = data->screen_width;
+	data->display.height = data->screen_height;
+	data->display.img = mlx_new_image(data->mlx, data->display.width, data->display.height);
 	if (!data->display.img)
 		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
 	data->display.addr = mlx_get_data_addr(data->display.img, &data->display.bpp, &data->display.line_len, &data->display.endian);

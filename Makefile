@@ -133,9 +133,6 @@ leaks_supp: $(NAME)
 sanitize: fclean
 	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -fno-omit-frame-pointer" all
 
-thread: fclean
-	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=thread" all
-
 # ============== NORMINETTE ================================
 
 checknorm:

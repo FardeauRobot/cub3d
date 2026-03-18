@@ -106,6 +106,7 @@ typedef struct s_tile
 typedef struct s_minimap
 {
 	t_p_structs	*p_structs;
+	t_img	cache;
 	int		offset_x;
 	int		offset_y;
 	int		display_map;

@@ -42,14 +42,45 @@ void ft_tiles_init(t_minimap *minimap, t_tile *tile, t_etile content)
 	ft_img_fill(&tile->tile_img, tile->tile_img.color);
 }
 
+// FUNCTION USED TO RENDER ALL TILES INTO THE MINIMAP CACHE IMAGE
+static void	ft_minimap_cache_render(t_minimap *minimap)
+{
+	int		y;
+	int		x;
+	int		len;
+	t_map	*map;
+
+	map = minimap->p_structs->p_map;
+	ft_img_fill(&minimap->cache, 0x000000);
+	y = -1;
+	while (++y < map->height)
+	{
+		x = -1;
+		len = ft_strlen(map->map[y]);
+		while (++x < len)
+		{
+			if (ft_ischarset(map->map[y][x], "0NSEW"))
+				ft_img_to_img(&minimap->cache, &minimap->tiles[EMPTY].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+			else if (map->map[y][x] == '1')
+				ft_img_to_img(&minimap->cache, &minimap->tiles[WALL].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+		}
+	}
+}
+
 // FUNCTION USED TO INITIALIZE ALL IMAGES NEEDED BY THE MINIMAP
 void	ft_minimap_init(t_map *map)
 {
 	map->minimap.display_map = OFF;
-	map->minimap.offset_x = map->p_structs->p_cub->screen_width - map->width * TILE_SIZE;
-	map->minimap.offset_y = map->p_structs->p_cub->screen_height / 4 - map->height * TILE_SIZE;
+	map->minimap.offset_x = map->p_structs->p_cub->screen_width
+		- map->width * TILE_SIZE - 10;
+	map->minimap.offset_y = 10;
 	ft_tiles_init(&map->minimap, &map->minimap.tiles[EMPTY], EMPTY);
 	ft_tiles_init(&map->minimap, &map->minimap.tiles[WALL], WALL);
+	ft_img_init(map->p_structs->p_cub, &map->minimap.cache,
+		map->width * TILE_SIZE, map->height * TILE_SIZE);
+	ft_minimap_cache_render(&map->minimap);
 }
 
 // FUNCTION USED TO INITIALIZE THE PLAYER MARKER IMAGE FOR THE MINIMAP
