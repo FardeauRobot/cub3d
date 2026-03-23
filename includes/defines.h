@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/18 20:27:02 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/23 14:55:46 by salman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define	ROT_SPEED 0.02
 
 // BITFLAGS
-# define UP 0b0001	
+# define UP 0b0001
 # define DOWN 0b0010
 # define LEFT 0b0100
 # define RIGHT 0b1000

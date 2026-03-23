@@ -56,9 +56,14 @@ OBJS	= $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # ============== COMPILATION ===============================
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -Werror -g3 -std=gnu11
 INCS	= -I. -I$(INC_PATH) -I$(LIBFT_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)
+UNAME	= $(shell uname)
 LFLAGS	= -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lm -lmlx -lXext -lX11
+
+ifeq ($(UNAME), Linux)
+	LFLAGS += -lbsd
+endif
 
 # ============================================================
 #                        RULES
