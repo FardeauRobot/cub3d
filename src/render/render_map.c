@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_map.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 22:44:44 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/23 14:55:31 by salman           ###   ########.fr       */
+/*   Updated: 2026/03/24 15:46:15 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,11 @@ void ft_map_raycasting(t_cub *data)
 				map_y += step_y;
 				side = 1;
 			}
+			if ((map_y < 0 || map_y > data->map.height) || (map_x < 0 || map_x > data->map.width) )
+			{
+				hit = 1;
+				break;
+			}
 			if (data->map.map[map_y][map_x] == '1')
 				hit = 1;
 		}
@@ -104,9 +109,9 @@ void ft_map_raycasting(t_cub *data)
 			ft_img_pixel_put(&data->display, x, y, color);
 		old_time = time;
 		time = ft_get_time();
-			double frame_time = time - old_time;
-		printf("FPS: %f\n", 1.0 / frame_time);
-		printf("Player Position: (%f, %f)\n", pos_x, pos_y);
+		// double frame_time = time - old_time;
+		// printf("FPS: %f\n", 1.0 / frame_time);
+		// printf("Player Position: (%f, %f)\n", pos_x, pos_y);
 			x++;
 }
 }
@@ -155,14 +160,15 @@ int	ft_map_render(void *cub)
 	t_cub	*data;
 
 	data = (t_cub *)cub;
-	ft_img_fill(&data->display, 0x000000);
+	ft_img_fill(&data->display,data->display.height, data->display.width, 0xFFB700);
+	ft_img_fill(&data->display, data->display.height / 2, data->display.width, 0x57C4E5);
+	ft_map_raycasting(data);
 	if (data->map.minimap.display_map == ON)
 	{
 		ft_minimap_draw(&data->map.minimap);
 		ft_char_draw(&data->player);
 		ft_orient_draw(&data->player);
 	}
-	ft_map_raycasting(data);
 	mlx_put_image_to_window(data->mlx, data->win,
 		data->display.img, 0, 0);
 	return (SUCCESS);

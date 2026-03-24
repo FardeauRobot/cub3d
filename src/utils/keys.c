@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 18:47:32 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/18 15:38:48 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/24 15:03:48 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	ft_move(t_player *player)
 		move_y += player->dir_x;
 		move_x -= player->dir_y;
 	}
-	if (map->map[(int)(player->pos_y + move_y * CHAR_SPEED)]
-			[(int)(player->pos_x + move_x * CHAR_SPEED)] == '1')
+	if (!ft_ischarset(map->map[(int)(player->pos_y + move_y * CHAR_SPEED)]
+			[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
 		return (ERRN_WALL);
 	player->pos_x += move_x * CHAR_SPEED;
 	player->pos_y += move_y * CHAR_SPEED;

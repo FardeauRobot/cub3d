@@ -6,11 +6,12 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/18 12:12:05 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/24 15:17:22 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+
 // FUNCTION USED TO INITIALIZE MLX, THE MINIMAP AND THE PLAYER MARKER
 void	ft_move_update(void *cub)
 {
@@ -31,7 +32,7 @@ void	ft_camera_update(void *cub)
 
 	data = (t_cub *)cub;
 	player = &data->player;
-	player->camera_plane_x = player->dir_y * 0.66;
+	player->camera_plane_x = -player->dir_y * 0.66;
 	player->camera_plane_y = player->dir_x * 0.66;
 }
 
@@ -63,7 +64,6 @@ int	ft_game_end(void *data)
 void	ft_game(t_cub *data)
 {
 	ft_game_init(data);
-	// mlx_key_hook(data->win, ft_keys_handle, data);
 	mlx_loop_hook(data->mlx, ft_game_loop, data);
 	mlx_hook(data->win, 2, 1L << 0, ft_press_keys, data);
 	mlx_hook(data->win, 3, 1L << 1, ft_release_keys, data);

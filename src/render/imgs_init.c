@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 08:49:47 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/18 15:36:51 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/24 15:30:35 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void ft_tiles_init(t_minimap *minimap, t_tile *tile, t_etile content)
 {
 	ft_img_init(minimap->p_structs->p_cub, &tile->tile_img, TILE_SIZE, TILE_SIZE);
 	tile->tile_img.color = ft_tile_color_get(content);
-	ft_img_fill(&tile->tile_img, tile->tile_img.color);
+	ft_img_fill(&tile->tile_img, tile->tile_img.height, tile->tile_img.width, tile->tile_img.color);
 }
 
 // FUNCTION USED TO RENDER ALL TILES INTO THE MINIMAP CACHE IMAGE
@@ -51,7 +51,6 @@ static void	ft_minimap_cache_render(t_minimap *minimap)
 	t_map	*map;
 
 	map = minimap->p_structs->p_map;
-	ft_img_fill(&minimap->cache, 0x000000);
 	y = -1;
 	while (++y < map->height)
 	{
@@ -94,7 +93,6 @@ void	ft_char_init(t_cub *data)
 	character->char_img.color = CHAR_COL;
 	ft_img_init(data, &character->char_img, CHAR_SIZE, CHAR_SIZE);
 	ft_img_init(data, &character->test_view, CHAR_SIZE / 2, CHAR_SIZE / 2);
-	ft_img_fill(&character->char_img, character->char_img.color);
-	ft_img_fill(&character->test_view, character->char_img.color);
+	ft_img_fill(&character->char_img, character->char_img.height, character->char_img.width, character->char_img.color);
+	ft_img_fill(&character->test_view, character->test_view.height, character->test_view.width, character->char_img.color);
 }
-

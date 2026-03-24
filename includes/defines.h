@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/23 14:55:46 by salman           ###   ########.fr       */
+/*   Updated: 2026/03/24 15:48:58 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 
 /* ============== GAME MACROS ============================= */
 
-# define	DISP_SCALE 0.75
+# define	DISP_SCALE 1
 # define	WIN_NAME 	"cub3d"
 
 # define	TILE_SIZE 16
 # define	CHAR_SIZE TILE_SIZE / 4
 
-# define	CHAR_SPEED 0.02
-# define	ROT_SPEED 0.02
+# define	CHAR_SPEED 0.05
+# define	ROT_SPEED 0.05
 
 // BITFLAGS
 # define UP 0b0001
@@ -38,7 +38,7 @@
 
 /* ============== COLORS ============================= */
 # define	EMPTY_TILE_COL 0xFFFFFF
-# define	WALL_TILE_COL 0xC0C0C0
+# define	WALL_TILE_COL 0xD8A9DF
 # define	CHAR_COL 0xFF0000
 
 /* ============== CORE ============================= */
@@ -63,7 +63,7 @@ int	ft_map_render(void *cub);
 void	ft_img_pixel_put(t_img *img, int x, int y, int color);
 int		ft_img_pixel_get(t_img *img, int x, int y);
 void	ft_img_to_img(t_img *dst, t_img *src, int dst_x, int dst_y);
-void	ft_img_fill(t_img *img, int color);
+void	ft_img_fill(t_img *img, int height, int width, int color);
 
 // IMGS_INIT.C
 void	ft_img_init(t_cub *data, t_img *img, int width, int height);
