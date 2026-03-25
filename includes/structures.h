@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/18 13:24:52 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/25 09:34:29 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,12 @@ typedef enum e_orientation
 	WEST,
 	EAST,
 }	t_orientation;
+
+typedef enum e_textures
+{
+	FLOOR,
+	CEILING
+}	t_texture;
 
 typedef enum e_etile
 {
@@ -91,7 +97,9 @@ typedef struct s_textures
 	char *west;
 	t_img wall_w;
 	char *floor;
+	int		floor_rgb;
 	char *ceiling;
+	int		ceiling_rgb;
 }	t_textures;
 
 // STRUCTURE USED TO PRINT TILES OF THE MINIMAP

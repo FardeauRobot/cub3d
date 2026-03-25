@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_textures.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/10 19:51:57 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/25 09:34:56 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,27 @@
 ** FT_TEXTURE_DISPATCH - ASSIGNS A TEXTURE PATH TO THE MATCHING FIELD
 ** MATCHES ID (NO, SO, WE, EA, F, C) AND STORES PATH IN DATA->TEXTURES
 */
+
+int	ft_rgb(t_cub *data, char *texture)
+{
+	int rgb;
+	
+	(void)data;
+	(void)texture;
+	rgb = 0;
+	return (rgb);
+}
+
+// POUR CONVERTIR EN COULEUR
+
+void	ft_color_affect(t_cub *data, t_texture area)
+{
+	if (area == FLOOR)	
+		data->textures.floor_rgb = ft_rgb(data, data->textures.floor);
+	if (area == FLOOR)	
+		data->textures.ceiling_rgb = ft_rgb(data, data->textures.ceiling);
+}
+
 static int	ft_texture_dispatch(t_cub *data, char *id, char *path)
 {
 	if (ft_strncmp(id, "NO", 3) == 0)
