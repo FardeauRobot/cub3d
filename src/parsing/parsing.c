@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/15 16:41:27 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/26 10:44:14 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	ft_parsing(t_cub *data, char **argv, int argc)
 
 	// CHECK TEXTURES
 	if (ft_textures_parsing(data) != SUCCESS)
-		ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_TEXTURES);
+		ft_exit(data, ERRN_PARSING, NULL, NULL);
 
 	// FILL MAP
 	ft_map_fill(data);

@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/25 09:34:29 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/26 12:35:14 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ typedef enum e_orientation
 	EAST,
 }	t_orientation;
 
-typedef enum e_textures
+typedef enum e_background
 {
 	FLOOR,
 	CEILING
-}	t_texture;
+}	t_background;
 
 typedef enum e_etile
 {

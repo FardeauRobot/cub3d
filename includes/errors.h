@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/17 15:29:25 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/26 13:04:00 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ typedef enum e_err
 # define ERR_MSG_ARGS	    "wrong number of arguments"
 # define ERR_MSG_ARGC	    "takes only : ./cub3d ./path_to_map"
 # define ERR_MSG_FORMAT		"file must end in .cub"
-# define ERR_MSG_INVALID_ID		"file must end in .cub"
+# define ERR_MSG_INVALID_ID		"Identifier not declared right"
 # define ERR_MSG_INVALID_CHAR	"Invalid char found on the map"
 # define ERR_MSG_PLAYER_COUNT	"Too much player located on the map"
 # define ERR_MSG_WALLS		"Map isn't closed by walls"
-# define ERR_MSG_PARSING	"error parsing"
-# define ERR_MSG_TEXTURES	"couldn't load all textures"
-# define ERR_MSG_OPEN		"cannot open file"
-# define ERR_MSG_EMPTY	    "empty file"
+# define ERR_MSG_PARSING	"Error parsing"
+# define ERR_MSG_TEXTURES	"Couldn't load all textures"
+# define ERR_MSG_OPEN		"Cannot open file"
+# define ERR_MSG_EMPTY	    "Empty file"
 # define ERR_MSG_LOADING	"Error while loading game"
 # define ERR_MSG_MLX		"Mlx didn't initiate properly"
 # define ERR_FAIL_MLX		"Something went wrong with MLX"

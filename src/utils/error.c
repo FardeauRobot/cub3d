@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/18 20:31:30 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/26 12:53:02 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@
 */
 int	ft_error(char *context, char *detail, int error)
 {
-	ft_putstr_fd("Error\n", 2);
+	if (context && detail)
+		ft_putstr_fd("Error\n", 2);
 	if (context)
 	{
 		ft_putstr_fd(context, 2);
@@ -32,6 +33,7 @@ int	ft_error(char *context, char *detail, int error)
 	return (error);
 }
 
+// TODO : REMETTRE LA FONCTION DESTROY IMGS A JOUR AVEC LES NOUVELLES IMAGES
 void	ft_destroy_imgs(t_cub *data)
 {
 	if (data->mlx)

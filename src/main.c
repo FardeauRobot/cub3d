@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/15 16:37:16 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/26 12:32:23 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int argc, char **argv)
 	ft_bzero(&data, sizeof(t_cub));
 	ft_p_structs_init(&data);
 	ft_parsing(&data, argv, argc);
-	ft_cub_print(&data);
+	// ft_cub_print(&data);
 	ft_game(&data);
 	return (EXIT_SUCCESS);
 }
