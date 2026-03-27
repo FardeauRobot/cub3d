@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:59:48 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/11 19:29:41 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/27 12:53:18 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,43 @@ int	ft_format_check(char *filepath)
 	len_path = ft_strlen(filepath);
 	if (ft_strncmp(&filepath[len_path - 4], ".cub", 4))
 		return (FAILURE);
+	return (SUCCESS);
+}
+
+
+/*
+** FT_FILE_STORE - READS THE .CUB FILE AND STORES EACH LINE IN DATA->FILE
+** USES GET_NEXT_LINE TO READ, THEN COPIES INTO A GC-MANAGED CHAR **
+*/
+int	ft_file_store(t_cub *data)
+{
+	char	*line;
+	int		i;
+	t_list 	*node;
+	t_list	*lst;
+
+	i = 0;
+	lst = NULL;
+	line = get_next_line(data->fd_map);
+	while (line)
+	{
+		if (ft_gc_add_node(&data->gc_tmp, line))
+			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+		node = ft_lstnew_gc(line, &data->gc_tmp);
+		if (!node)
+			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+		ft_lstadd_back(&lst, node);
+		i++;
+		line = get_next_line(data->fd_map);
+	}
+	data->file = ft_calloc_gc(i + 1, sizeof(char *), &data->gc_global);
+	if (!data->file)
+		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+	i = 0;
+	while (lst)
+	{
+		data->file[i++] = ft_strdup_gc(lst->content, &data->gc_global);
+		lst = lst->next;
+	}
 	return (SUCCESS);
 }

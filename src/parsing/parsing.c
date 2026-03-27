@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/26 10:44:14 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/27 12:47:58 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ void	ft_map_check(t_cub *data)
 					ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_WALLS);
 			}
 			else if (!ft_isspace(map[y][x]))
-				ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_INVALID_CHAR);
+				ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_CHAR, map[y]);
 		}
 	}
 }

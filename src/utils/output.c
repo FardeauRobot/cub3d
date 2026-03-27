@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:55:12 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/26 12:56:22 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/27 18:13:48 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ void	ft_textures_print(t_textures *textures)
 	ft_printf("[SOUTH = %s]\n", textures->south);
 	ft_printf("[WEST = %s]\n", textures->west);
 	ft_printf("[EAST = %s]\n", textures->east);
-	ft_printf("[FLOOR = %s]\n", textures->floor);
-	ft_printf("[CEILING = %s]\n", textures->ceiling);
 }
 
 /*

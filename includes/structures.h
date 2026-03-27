@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/26 12:35:14 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/27 18:13:08 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,7 @@ typedef struct s_textures
 	t_img wall_e;
 	char *west;
 	t_img wall_w;
-	char *floor;
 	int		floor_rgb;
-	char *ceiling;
 	int		ceiling_rgb;
 }	t_textures;
 

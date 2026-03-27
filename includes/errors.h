@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/26 13:04:00 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/27 16:18:14 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 typedef enum e_err
 {
+	ERRN_NEGATIVE_FAIL = -1,
 	ERRN_NONE,
 	ERRN_EMPTY_FILE,
 	ERRN_MALLOC,
@@ -38,7 +39,9 @@ typedef enum e_err
 # define ERR_MSG_FORMAT		"file must end in .cub"
 # define ERR_MSG_INVALID_ID		"Identifier not declared right"
 # define ERR_MSG_INVALID_CHAR	"Invalid char found on the map"
+# define ERR_MSG_INVALID_RGB	"Invalid RGB value"
 # define ERR_MSG_PLAYER_COUNT	"Too much player located on the map"
+# define ERR_MSG_SET_COLOR	"Color is already set"
 # define ERR_MSG_WALLS		"Map isn't closed by walls"
 # define ERR_MSG_PARSING	"Error parsing"
 # define ERR_MSG_TEXTURES	"Couldn't load all textures"
@@ -47,8 +50,6 @@ typedef enum e_err
 # define ERR_MSG_LOADING	"Error while loading game"
 # define ERR_MSG_MLX		"Mlx didn't initiate properly"
 # define ERR_FAIL_MLX		"Something went wrong with MLX"
-
-// ========= ERRORS_PARSING ============ //
 
 /* ============== ERROR FUNCTIONS ========================== */
 /* src/utils/error.c */

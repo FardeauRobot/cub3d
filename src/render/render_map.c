@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 22:44:44 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/25 08:53:03 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/27 15:10:12 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,8 +160,8 @@ int	ft_map_render(void *cub)
 	t_cub	*data;
 
 	data = (t_cub *)cub;
-	ft_img_fill(&data->display,data->display.height, data->display.width, 0xFFB700);
-	ft_img_fill(&data->display, data->display.height / 2, data->display.width, 0x57C4E5);
+	ft_img_fill(&data->display,data->display.height, data->display.width, data->textures.floor_rgb);
+	ft_img_fill(&data->display, data->display.height / 2, data->display.width, data->textures.ceiling_rgb);
 	ft_map_raycasting(data);
 	if (data->map.minimap.display_map == ON)
 	{
