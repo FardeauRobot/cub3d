@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:59:48 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 16:02:38 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/28 17:18:37 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 ** FT_FORMAT_CHECK - VALIDATES THAT THE FILE EXTENSION IS .CUB
 ** RETURNS SUCCESS IF VALID, FAILURE OTHERWISE
 */
-void	ft_player_set(t_player *player, int x, int y, char orient)
+void ft_player_set(t_player *player, int x, int y, char orient)
 {
 	player->pos_y = (double)y + 0.5;
 	player->pos_x = (double)x + 0.5;
@@ -47,9 +47,9 @@ void	ft_player_set(t_player *player, int x, int y, char orient)
 	}
 }
 
-int	ft_format_check(char *filepath)
+int ft_format_check(char *filepath)
 {
-	int	len_path;
+	int len_path;
 
 	len_path = ft_strlen(filepath);
 	if (ft_strncmp(&filepath[len_path - 4], ".cub", 4))
@@ -61,12 +61,12 @@ int	ft_format_check(char *filepath)
 ** FT_FILE_STORE - READS THE .CUB FILE AND STORES EACH LINE IN DATA->FILE
 ** USES GET_NEXT_LINE TO READ, THEN COPIES INTO A GC-MANAGED CHAR **
 */
-int	ft_file_store(t_cub *data)
+int ft_file_store(t_cub *data)
 {
-	char	*line;
-	int		i;
-	t_list 	*node;
-	t_list	*lst;
+	char *line;
+	int i;
+	t_list *node;
+	t_list *lst;
 
 	i = 0;
 	lst = NULL;
