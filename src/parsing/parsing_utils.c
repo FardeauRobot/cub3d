@@ -6,19 +6,17 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:59:48 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 12:49:31 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/28 16:02:38 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // UTILITARY FILE IN CHARGE OF PARSING
-
 /*
 ** FT_FORMAT_CHECK - VALIDATES THAT THE FILE EXTENSION IS .CUB
 ** RETURNS SUCCESS IF VALID, FAILURE OTHERWISE
 */
-
 void	ft_player_set(t_player *player, int x, int y, char orient)
 {
 	player->pos_y = (double)y + 0.5;
@@ -58,7 +56,6 @@ int	ft_format_check(char *filepath)
 		return (FAILURE);
 	return (SUCCESS);
 }
-
 
 /*
 ** FT_FILE_STORE - READS THE .CUB FILE AND STORES EACH LINE IN DATA->FILE
