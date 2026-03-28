@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/27 12:47:58 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/28 15:47:11 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,8 @@ int	ft_parsing(t_cub *data, char **argv, int argc)
 
 	// CHECK MAP
 	ft_map_check(data);
+	if (data->player.pos_x == 0 || data->player.pos_y == 0)
+		ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_NO_PLAYER);
 
 	// RELEASE TMP MALLOCS (SPLITS / GNL / FILE)
 	ft_gc_free_all(&data->gc_tmp);

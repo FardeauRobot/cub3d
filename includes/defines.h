@@ -55,9 +55,9 @@ int	ft_textures_parsing(t_cub *data);
 
 /* ============== RENDER ============================= */
 // RENDER_MAP.C
-void	ft_minimap_draw(t_minimap *minimap);
-void	ft_char_draw(t_player *player);
-int	ft_map_render(void *cub);
+void	ft_minimap_draw(t_cub *data);
+void	ft_char_draw(t_cub *data);
+int		ft_map_render(void *cub);
 
 // RENDER_UTILS.C
 void	ft_img_pixel_put(t_img *img, int x, int y, int color);
@@ -67,7 +67,7 @@ void	ft_img_fill(t_img *img, int height, int width, int color);
 
 // IMGS_INIT.C
 void	ft_img_init(t_cub *data, t_img *img, int width, int height);
-void	ft_minimap_init(t_map *map);
+void	ft_minimap_init(t_cub *data);
 void	ft_char_init(t_cub *data);
 
 /* ============== UTILS ============================= */
@@ -86,7 +86,7 @@ void	ft_data_clean(t_cub *data);
 void	ft_mlx_init(t_cub *data);
 
 // KEYS.C
-int	ft_move(t_player *player);
+int	ft_move(t_player *player, char **map);
 void	ft_rotate(t_player *player);
 int	ft_release_keys(int keycode, void *cub);
 int	ft_press_keys(int keycode, void *cub);

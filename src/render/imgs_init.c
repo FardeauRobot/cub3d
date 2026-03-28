@@ -35,22 +35,21 @@ void	ft_img_init(t_cub *data, t_img *img, int width, int height)
 }
 
 // FUNCTION USED TO INITIALIZE ONE TILE IMAGE WITH THE RIGHT COLOR
-void ft_tiles_init(t_minimap *minimap, t_tile *tile, t_etile content)
+static void	ft_tiles_init(t_cub *data, t_tile *tile, t_etile content)
 {
-	ft_img_init(minimap->p_structs->p_cub, &tile->tile_img, TILE_SIZE, TILE_SIZE);
+	ft_img_init(data, &tile->tile_img, TILE_SIZE, TILE_SIZE);
 	tile->tile_img.color = ft_tile_color_get(content);
-	ft_img_fill(&tile->tile_img, tile->tile_img.height, tile->tile_img.width, tile->tile_img.color);
+	ft_img_fill(&tile->tile_img, tile->tile_img.height,
+		tile->tile_img.width, tile->tile_img.color);
 }
 
 // FUNCTION USED TO RENDER ALL TILES INTO THE MINIMAP CACHE IMAGE
-static void	ft_minimap_cache_render(t_minimap *minimap)
+static void	ft_minimap_cache_render(t_minimap *minimap, t_map *map)
 {
 	int		y;
 	int		x;
 	int		len;
-	t_map	*map;
 
-	map = minimap->p_structs->p_map;
 	y = -1;
 	while (++y < map->height)
 	{
@@ -59,27 +58,32 @@ static void	ft_minimap_cache_render(t_minimap *minimap)
 		while (++x < len)
 		{
 			if (ft_ischarset(map->map[y][x], "0NSEW"))
-				ft_img_to_img(&minimap->cache, &minimap->tiles[EMPTY].tile_img,
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[EMPTY].tile_img,
 					x * TILE_SIZE, y * TILE_SIZE);
 			else if (map->map[y][x] == '1')
-				ft_img_to_img(&minimap->cache, &minimap->tiles[WALL].tile_img,
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[WALL].tile_img,
 					x * TILE_SIZE, y * TILE_SIZE);
 		}
 	}
 }
 
 // FUNCTION USED TO INITIALIZE ALL IMAGES NEEDED BY THE MINIMAP
-void	ft_minimap_init(t_map *map)
+void	ft_minimap_init(t_cub *data)
 {
+	t_map	*map;
+
+	map = &data->map;
 	map->minimap.display_map = OFF;
-	map->minimap.offset_x = map->p_structs->p_cub->screen_width
+	map->minimap.offset_x = data->screen_width
 		- map->width * TILE_SIZE - 10;
 	map->minimap.offset_y = 10;
-	ft_tiles_init(&map->minimap, &map->minimap.tiles[EMPTY], EMPTY);
-	ft_tiles_init(&map->minimap, &map->minimap.tiles[WALL], WALL);
-	ft_img_init(map->p_structs->p_cub, &map->minimap.cache,
+	ft_tiles_init(data, &map->minimap.tiles[EMPTY], EMPTY);
+	ft_tiles_init(data, &map->minimap.tiles[WALL], WALL);
+	ft_img_init(data, &map->minimap.cache,
 		map->width * TILE_SIZE, map->height * TILE_SIZE);
-	ft_minimap_cache_render(&map->minimap);
+	ft_minimap_cache_render(&map->minimap, map);
 }
 
 // FUNCTION USED TO INITIALIZE THE PLAYER MARKER IMAGE FOR THE MINIMAP

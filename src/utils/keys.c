@@ -28,15 +28,13 @@ void	ft_rotate(t_player *player)
 	player->dir_y = old_dir_x * sin(rot) + player->dir_y * cos(rot);
 }
 
-int	ft_move(t_player *player)
+int	ft_move(t_player *player, char **map)
 {
-	t_map *map;
 	double	move_x;
 	double	move_y;
 
 	move_x = 0;
 	move_y = 0;
-	map = player->p_structs->p_map;
 	if (player->moving & UP)
 	{
 		move_y += player->dir_y;
@@ -57,7 +55,7 @@ int	ft_move(t_player *player)
 		move_y += player->dir_x;
 		move_x -= player->dir_y;
 	}
-	if (!ft_ischarset(map->map[(int)(player->pos_y + move_y * CHAR_SPEED)]
+	if (!ft_ischarset(map[(int)(player->pos_y + move_y * CHAR_SPEED)]
 			[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
 		return (ERRN_WALL);
 	player->pos_x += move_x * CHAR_SPEED;

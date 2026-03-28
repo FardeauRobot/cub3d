@@ -58,16 +58,6 @@ typedef struct s_cub t_cub;
 typedef struct s_player t_player;
 typedef struct s_textures t_textures;
 typedef struct s_minimap t_minimap;
-typedef struct s_p_structs t_p_structs;
-
-typedef struct s_p_structs
-{
-	t_cub		*p_cub;
-	t_map 		*p_map;
-	t_minimap 	*p_minimap;
-	t_player 	*p_player;
-	t_textures	*p_textures;
-}	t_p_structs;
 
 // STRUCTURE USED TO STORE THE DIFFERENT INFOS ABOUT AN IMG
 typedef struct s_img
@@ -111,7 +101,6 @@ typedef struct s_tile
 // STRUCTURE USED TO STORE ALL THE MINIMAP INFOS -> NESTED IN MAP
 typedef struct s_minimap
 {
-	t_p_structs	*p_structs;
 	t_img	cache;
 	int		offset_x;
 	int		offset_y;
@@ -122,7 +111,6 @@ typedef struct s_minimap
 // STRUCTURE USED TO STORE ALL THE MAP INFOS
 typedef struct s_map
 {
-	t_p_structs *p_structs;
 	int	    index_map_start;
 	char 	**map;
 	int 	height;
@@ -133,7 +121,6 @@ typedef struct s_map
 // STRUCTURE USED TO STORE ALL THE PLAYER INFOS
 typedef struct s_player
 {
-	t_p_structs *p_structs;
 	t_img			char_img;
 	t_img			test_view;
 	double			pos_x;
@@ -150,7 +137,6 @@ typedef struct s_player
 // STRUCTURE USED AS THE MAIN ACCESS POINT
 typedef struct s_cub
 {
-	t_p_structs p_structs;
 	void		    *mlx;
 	void		    *win;
 	t_img			display;

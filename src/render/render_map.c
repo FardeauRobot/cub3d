@@ -117,41 +117,41 @@ void ft_map_raycasting(t_cub *data)
 }
 
 // FUNCTION USED TO STAMP THE PRE-RENDERED MINIMAP CACHE INTO THE DISPLAY
-void	ft_minimap_draw(t_minimap *minimap)
+void	ft_minimap_draw(t_cub *data)
 {
-	ft_img_to_img(&minimap->p_structs->p_cub->display, &minimap->cache,
-		minimap->offset_x, minimap->offset_y);
+	ft_img_to_img(&data->display, &data->map.minimap.cache,
+		data->map.minimap.offset_x, data->map.minimap.offset_y);
 }
 
 // FUNCTION USED TO DRAW THE PLAYER MARKER INTO THE DISPLAY IMAGE
-void	ft_char_draw(t_player *player)
+void	ft_char_draw(t_cub *data)
 {
 	int	screen_x;
 	int	screen_y;
 
-	screen_x = player->p_structs->p_minimap->offset_x
-		+ (int)(player->pos_x * TILE_SIZE)
-		- (player->char_img.width / 2);
-	screen_y = player->p_structs->p_minimap->offset_y
-		+ (int)(player->pos_y * TILE_SIZE)
-		- (player->char_img.width / 2);
-	ft_img_to_img(&player->p_structs->p_cub->display,
-		&player->char_img, screen_x, screen_y);
+	screen_x = data->map.minimap.offset_x
+		+ (int)(data->player.pos_x * TILE_SIZE)
+		- (data->player.char_img.width / 2);
+	screen_y = data->map.minimap.offset_y
+		+ (int)(data->player.pos_y * TILE_SIZE)
+		- (data->player.char_img.width / 2);
+	ft_img_to_img(&data->display,
+		&data->player.char_img, screen_x, screen_y);
 }
 
-void	ft_orient_draw(t_player *player)
+void	ft_orient_draw(t_cub *data)
 {
 	int	screen_x;
 	int	screen_y;
 
-	screen_x = player->p_structs->p_minimap->offset_x
-		+ (int)((player->pos_x + player->dir_x) * TILE_SIZE)
-		- (player->test_view.width / 2);
-	screen_y = player->p_structs->p_minimap->offset_y
-		+ (int)((player->pos_y + player->dir_y) * TILE_SIZE)
-		- (player->test_view.height / 2);
-	ft_img_to_img(&player->p_structs->p_cub->display,
-		&player->test_view, screen_x, screen_y);
+	screen_x = data->map.minimap.offset_x
+		+ (int)((data->player.pos_x + data->player.dir_x) * TILE_SIZE)
+		- (data->player.test_view.width / 2);
+	screen_y = data->map.minimap.offset_y
+		+ (int)((data->player.pos_y + data->player.dir_y) * TILE_SIZE)
+		- (data->player.test_view.height / 2);
+	ft_img_to_img(&data->display,
+		&data->player.test_view, screen_x, screen_y);
 }
 
 // FUNCTION USED TO RENDER EVERYTHING INTO DISPLAY AND PUSH TO WINDOW ONCE
@@ -165,9 +165,9 @@ int	ft_map_render(void *cub)
 	ft_map_raycasting(data);
 	if (data->map.minimap.display_map == ON)
 	{
-		ft_minimap_draw(&data->map.minimap);
-		ft_char_draw(&data->player);
-		ft_orient_draw(&data->player);
+		ft_minimap_draw(data);
+		ft_char_draw(data);
+		ft_orient_draw(data);
 	}
 	mlx_put_image_to_window(data->mlx, data->win,
 		data->display.img, 0, 0);
