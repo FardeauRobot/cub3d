@@ -6,15 +6,13 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:55:12 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/27 18:13:48 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/28 16:20:37 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // TODO : A DELETE A LA FIN
-//  FOR THE TEST
-
 /*
 ** FT_MATRIX_PRINT - PRINTS ALL STRINGS OF A NULL-TERMINATED CHAR ** TO STDOUT
 */
