@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 11:37:28 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:15:23 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,6 @@
 # include "libft.h"
 
 /* ============== ENUM =============================== */
-
-typedef enum e_orientation
-{
-	NORTH,
-	SOUTH,
-	WEST,
-	EAST,
-}	t_orientation;
 
 typedef enum e_background
 {
@@ -131,7 +123,6 @@ typedef struct s_player
 	double			camera_plane_y;
 	int				rotating;
 	int				moving;
-	t_orientation	orient;
 }	t_player;
 
 // STRUCTURE USED AS THE MAIN ACCESS POINT

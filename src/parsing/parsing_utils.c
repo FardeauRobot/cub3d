@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:59:48 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 17:18:37 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:14:19 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,21 @@ void ft_player_set(t_player *player, int x, int y, char orient)
 	{
 		player->dir_x = 0;
 		player->dir_y = -1;
-		player->orient = NORTH;
 	}
 	if (orient == 'S')
 	{
 		player->dir_x = 0;
 		player->dir_y = 1;
-		player->orient = SOUTH;
 	}
 	if (orient == 'E')
 	{
 		player->dir_x = 1;
 		player->dir_y = 0;
-		player->orient = EAST;
 	}
 	if (orient == 'W')
 	{
 		player->dir_x = -1;
 		player->dir_y = 0;
-		player->orient = WEST;
 	}
 }
 

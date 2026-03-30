@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 11:51:50 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:11:57 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,11 +202,13 @@ int ft_textures_parsing(t_cub *data)
 			return (ret);
 		if (ret == FAILURE && !ft_is_only(data->file[i], ft_isspace))
 		{
-			if (ft_textures_complete(&data->textures))
+			if (ft_textures_complete(&data->textures) != SUCCESS)
 				return (ft_error(ERR_MSG_LOADING, ERR_MSG_TEXTURES, ERRN_LOAD));
 			data->map.index_map_start = i;
 			return (SUCCESS);
 		}
 	}
+	if (ft_textures_complete(&data->textures) != SUCCESS)
+		return (ft_error(ERR_MSG_LOADING, ERR_MSG_TEXTURES, ERRN_LOAD));
 	return (SUCCESS);
 }
