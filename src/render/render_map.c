@@ -29,8 +29,8 @@ void ft_map_raycasting(t_cub *data)
 	double dir_y = data->player.dir_y;
 	double plane_x = data->player.camera_plane_x;
 	double plane_y = data->player.camera_plane_y;
-	double time = 0;
-	double old_time = 0;
+	// double time = 0;
+	// double old_time = 0;
 
 	int x = 0;
 	while (x < data->screen_width)
@@ -107,12 +107,12 @@ void ft_map_raycasting(t_cub *data)
 			color = (ray_dir_y > 0) ? 0x00FF00 : 0x008000;
 		for (int y = draw_start; y < draw_end; y++)
 			ft_img_pixel_put(&data->display, x, y, color);
-		old_time = time;
-		time = ft_get_time();
+		// old_time = time;
+		// time = ft_get_time();
 		// double frame_time = time - old_time;
 		// printf("FPS: %f\n", 1.0 / frame_time);
 		// printf("Player Position: (%f, %f)\n", pos_x, pos_y);
-			x++;
+		x++;
 }
 }
 

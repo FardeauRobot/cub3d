@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/24 15:17:22 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 09:33:30 by salman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
+#include "defines.h"
+#include "mlx.h"
+#include <stdio.h>
 
 // FUNCTION USED TO INITIALIZE MLX, THE MINIMAP AND THE PLAYER MARKER
 void	ft_move_update(void *cub)
@@ -28,7 +31,6 @@ void	ft_camera_update(void *cub)
 {
 	t_cub	*data;
 	t_player *player;
-
 
 	data = (t_cub *)cub;
 	player = &data->player;
@@ -60,11 +62,28 @@ int	ft_game_end(void *data)
 	return (SUCCESS);
 }
 
+int	ft_mouse( int x, int y, void *cub)
+{
+	t_cub *data;
+	int mid;
+
+	data = (t_cub *)cub;
+	mid = data->screen_width / 2;
+	if (x < mid - 150)
+		data->player.rotating = LEFT;
+	else if (x > mid + 150)
+		data->player.rotating = RIGHT;
+	else
+		data->player.rotating = NONE;
+	return (SUCCESS);
+}
+
 // FUNCTION USED TO START THE GAME LOOP AFTER PARSING IS DONE
 void	ft_game(t_cub *data)
 {
 	ft_game_init(data);
 	mlx_loop_hook(data->mlx, ft_game_loop, data);
+	mlx_hook(data->win,6, 1L << 6, ft_mouse, data);
 	mlx_hook(data->win, 2, 1L << 0, ft_press_keys, data);
 	mlx_hook(data->win, 3, 1L << 1, ft_release_keys, data);
 	mlx_hook(data->win, 17, 1L << 17, ft_game_end, data);

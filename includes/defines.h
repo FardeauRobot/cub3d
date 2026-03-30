@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/25 09:37:12 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 09:32:39 by salman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 # define	CHAR_SIZE TILE_SIZE / 4
 
 # define	CHAR_SPEED 0.05
-# define	ROT_SPEED 0.05
+# define	ROT_SPEED 0.01
 
 // BITFLAGS
 # define UP 0b0001
