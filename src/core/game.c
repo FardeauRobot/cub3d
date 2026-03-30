@@ -6,7 +6,7 @@
 /*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 09:33:30 by salman           ###   ########.fr       */
+/*   Updated: 2026/03/30 09:38:33 by salman           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	ft_mouse( int x, int y, void *cub)
 {
 	t_cub *data;
 	int mid;
+	(void)y;
 
 	data = (t_cub *)cub;
 	mid = data->screen_width / 2;
