@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 18:47:32 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 16:23:34 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:20:42 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_rotate(t_player *player)
 	double	rot;
 
 	if (player->rotating == NONE)
-		return;
+		return ;
 	if (player->rotating == LEFT)
 		rot = -ROT_SPEED;
 	if (player->rotating == RIGHT)
@@ -56,7 +56,7 @@ int	ft_move(t_player *player, char **map)
 		move_x -= player->dir_y;
 	}
 	if (!ft_ischarset(map[(int)(player->pos_y + move_y * CHAR_SPEED)]
-			[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
+		[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
 		return (ERRN_WALL);
 	player->pos_x += move_x * CHAR_SPEED;
 	player->pos_y += move_y * CHAR_SPEED;
@@ -65,7 +65,7 @@ int	ft_move(t_player *player, char **map)
 
 int	ft_press_keys(int keycode, void *cub)
 {
-	t_cub *data;
+	t_cub	*data;
 
 	data = (t_cub *)cub;
 	if (keycode == KEY_LEFT)
@@ -85,7 +85,7 @@ int	ft_press_keys(int keycode, void *cub)
 
 int	ft_release_keys(int keycode, void *cub)
 {
-	t_cub *data;
+	t_cub	*data;
 
 	data = (t_cub *)cub;
 	if (keycode == KEY_ESC)

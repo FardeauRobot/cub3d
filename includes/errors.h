@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_ERRORS_H
-# define CUB3D_ERRORS_H
+#ifndef ERRORS_H
+# define ERRORS_H
 
 typedef enum e_err
 {
@@ -32,7 +32,7 @@ typedef enum e_err
 
 # define ERR_MSG_MALLOC	"memory allocation failed"
 
-// ========= ERRORS_PARSING ============ //
+/* ========= ERRORS_PARSING ============ */
 
 # define ERR_MSG_ARGS	    "wrong number of arguments"
 # define ERR_MSG_ARGC	    "takes only : ./cub3d ./path_to_map"

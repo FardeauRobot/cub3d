@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/30 11:37:12 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:21:17 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,11 @@ void	ft_destroy_imgs(t_cub *data)
 		if (data->map.minimap.cache.img)
 			mlx_destroy_image(data->mlx, data->map.minimap.cache.img);
 		if (data->map.minimap.tiles[0].tile_img.img)
-			mlx_destroy_image(data->mlx, data->map.minimap.tiles[0].tile_img.img);
+			mlx_destroy_image(data->mlx,
+				data->map.minimap.tiles[0].tile_img.img);
 		if (data->map.minimap.tiles[1].tile_img.img)
-			mlx_destroy_image(data->mlx, data->map.minimap.tiles[1].tile_img.img);
+			mlx_destroy_image(data->mlx,
+				data->map.minimap.tiles[1].tile_img.img);
 		if (data->player.char_img.img)
 			mlx_destroy_image(data->mlx, data->player.char_img.img);
 		if (data->player.test_view.img)

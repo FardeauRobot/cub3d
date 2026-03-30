@@ -6,16 +6,16 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 22:44:44 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 12:00:30 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:22:45 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 #include <sys/time.h>
 
-double ft_get_time()
+double	ft_get_time(void)
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec + tv.tv_usec / 1000000.0);
@@ -186,8 +186,10 @@ int	ft_map_render(void *cub)
 	t_cub	*data;
 
 	data = (t_cub *)cub;
-	ft_img_fill(&data->display,data->display.height, data->display.width, data->textures.floor_rgb);
-	ft_img_fill(&data->display, data->display.height / 2, data->display.width, data->textures.ceiling_rgb);
+	ft_img_fill(&data->display, data->display.height,
+		data->display.width, data->textures.floor_rgb);
+	ft_img_fill(&data->display, data->display.height / 2,
+		data->display.width, data->textures.ceiling_rgb);
 	ft_map_raycasting(data);
 	if (data->map.minimap.display_map == ON)
 	{

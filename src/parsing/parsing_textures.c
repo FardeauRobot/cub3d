@@ -6,15 +6,15 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 12:11:57 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:31:35 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int ft_rgb_convert(char *str, int *nb)
+int	ft_rgb_convert(char *str, int *nb)
 {
-	int i;
+	int	i;
 
 	*nb = 0;
 	i = -1;
@@ -29,9 +29,9 @@ int ft_rgb_convert(char *str, int *nb)
 }
 
 // AIDE A CREER RGB VALUE
-static void ft_rgb_affect(t_cub *data, int *rgb, t_background part)
+static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 {
-	int ret;
+	int	ret;
 
 	ret = 255 << 24 | rgb[0] << 16 | rgb[1] << 8 | rgb[2];
 	if (part == FLOOR)
@@ -42,13 +42,13 @@ static void ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 
 // TODO : A REFACTORISER POUR LA NORME, TROUVER UN MOYEN PLUN FUN
 // POUR CONVERTIR EN COULEUR
-int ft_rgb(t_cub *data, char **arr, t_background part)
+int	ft_rgb(t_cub *data, char **arr, t_background part)
 {
-	int rgb[3];
-	int ret;
-	int i;
-	int j;
-	char **split;
+	int		rgb[3];
+	int		ret;
+	int		i;
+	int		j;
+	char	**split;
 
 	i = -1;
 	ret = 0;
@@ -90,12 +90,12 @@ int ft_rgb(t_cub *data, char **arr, t_background part)
 ** FT_TEXTURES_DETECT - CHECKS IF ID IS A VALID TEXTURE/COLOR IDENTIFIER
 ** RETURNS SUCCESS IF ID IS NO, SO, EA, WE, F OR C, FAILURE OTHERWISE
 */
-static int ft_textures_detect(char *id)
+static int	ft_textures_detect(char *id)
 {
-	if (ft_strncmp(id, "NO", 2) != 0 && ft_strncmp(id, "SO", 2) != 0 &&
-		ft_strncmp(id, "EA", 2) != 0 && ft_strncmp(id, "WE", 2) != 0 &&
-		ft_strncmp(id, "F", 1) != 0 && ft_strncmp(id, "C", 1) != 0)
-			return (FAILURE);
+	if (ft_strncmp(id, "NO", 2) != 0 && ft_strncmp(id, "SO", 2) != 0
+		&& ft_strncmp(id, "EA", 2) != 0 && ft_strncmp(id, "WE", 2) != 0
+		&& ft_strncmp(id, "F", 1) != 0 && ft_strncmp(id, "C", 1) != 0)
+		return (FAILURE);
 	return (SUCCESS);
 }
 
@@ -104,7 +104,7 @@ static int ft_textures_detect(char *id)
 ** MATCHES ID (NO, SO, WE, EA, F, C) AND STORES PATH IN DATA->TEXTURES
 */
 
-static int ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
+static int	ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 {
 	if (ft_strncmp(id, "NO", 2) == 0)
 	{
@@ -157,24 +157,21 @@ static int ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 ** FT_TEXTURES_FILL - SPLITS A LINE AND FILLS TEXTURE DATA
 ** RETURNS SUCCESS IF LINE IS A VALID TEXTURE, FAILURE IF NOT
 */
-static int ft_textures_fill(t_cub *data, char *line)
+static int	ft_textures_fill(t_cub *data, char *line)
 {
-	char **arr;
+	char	**arr;
 
 	arr = ft_split_charset_gc((const char *)line, " \t\n", &data->gc_tmp);
 	if (!arr)
 		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-
 	if (!arr[0] || ft_textures_detect(arr[0]))
 		return (FAILURE);
-
-	// AFFECTS THE TEXTURES TO THE DESIRED IMAGE
 	if (ft_texture_dispatch(data, arr, arr[0], arr[1]) != SUCCESS)
 		return (ERRN_TEXTURES);
 	return (SUCCESS);
 }
 
-int ft_textures_complete(t_textures *textures)
+int	ft_textures_complete(t_textures *textures)
 {
 	if (textures->ceiling_rgb == -1 || textures->floor_rgb == -1)
 		return (FAILURE);
@@ -189,10 +186,10 @@ int ft_textures_complete(t_textures *textures)
 ** FT_TEXTURES_PARSING - ITERATES FILE LINES TO PARSE TEXTURES AND COLORS
 ** STOPS WHEN IT HITS THE FIRST MAP LINE AND SETS DATA->INDEX_MAP_START
 */
-int ft_textures_parsing(t_cub *data)
+int	ft_textures_parsing(t_cub *data)
 {
-	int i;
-	int ret;
+	int	i;
+	int	ret;
 
 	i = -1;
 	while (data->file[++i])

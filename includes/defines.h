@@ -6,12 +6,12 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 12:01:54 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:45:19 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_DEFINES_H
-# define CUB3D_DEFINES_H
+#ifndef DEFINES_H
+# define DEFINES_H
 
 # include "structures.h"
 
@@ -21,25 +21,25 @@
 
 /* ============== GAME MACROS ============================= */
 
-# define	DISP_SCALE 0.75
-# define	WIN_NAME 	"cub3d"
+# define DISP_SCALE 0.75
+# define WIN_NAME "cub3d"
 
-# define	TILE_SIZE 16
-# define	CHAR_SIZE TILE_SIZE / 4
+# define TILE_SIZE 16
+# define CHAR_SIZE 4
 
-# define	CHAR_SPEED 0.05
-# define	ROT_SPEED 0.05
+# define CHAR_SPEED 0.05
+# define ROT_SPEED 0.05
 
-// BITFLAGS
+// BITFLAGS 
 # define UP 0b0001
 # define DOWN 0b0010
 # define LEFT 0b0100
 # define RIGHT 0b1000
 
 /* ============== COLORS ============================= */
-# define	EMPTY_TILE_COL 0xFFFFFF
-# define	WALL_TILE_COL 0xD8A9DF
-# define	CHAR_COL 0xFF0000
+# define EMPTY_TILE_COL 0xFFFFFF
+# define WALL_TILE_COL 0xD8A9DF
+# define CHAR_COL 0xFF0000
 
 /* ============== CORE ============================= */
 // GAME_INIT.C
@@ -51,11 +51,11 @@ void	ft_game(t_cub *data);
 
 /* ============== PARSING ============================= */
 // PARSING.C
-int	ft_parsing(t_cub *data, char **argv, int argc);
+int		ft_parsing(t_cub *data, char **argv, int argc);
 
-// PARSING_TEXTURES.C
-int	ft_file_store(t_cub *data);
-int	ft_textures_parsing(t_cub *data);
+// PARSING_TESTURES.C
+int		ft_file_store(t_cub *data);
+int		ft_textures_parsing(t_cub *data);
 
 /* ============== RENDER ============================= */
 // RENDER_MAP.C
@@ -82,19 +82,19 @@ void	ft_cub_print(t_cub *data);
 
 // PARSING_UTILS.C
 void	ft_player_set(t_player *player, int x, int y, char orient);
-int	ft_format_check(char *filepath);
+int		ft_format_check(char *filepath);
 
 // ERROR.C
 void	ft_data_clean(t_cub *data);
 
 // LOADING_UTILS.C
-int	ft_xpm_img(t_cub *game, t_img *img, char *path);
+int		ft_xpm_img(t_cub *game, t_img *img, char *path);
 void	ft_mlx_init(t_cub *data);
 
 // KEYS.C
-int	ft_move(t_player *player, char **map);
+int		ft_move(t_player *player, char **map);
 void	ft_rotate(t_player *player);
-int	ft_release_keys(int keycode, void *cub);
-int	ft_press_keys(int keycode, void *cub);
+int		ft_release_keys(int keycode, void *cub);
+int		ft_press_keys(int keycode, void *cub);
 
 #endif

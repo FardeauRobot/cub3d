@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:55:12 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 10:25:06 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:20:05 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 */
 void	ft_matrix_print(char **matrix)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (matrix[++i])
@@ -40,7 +40,6 @@ void	ft_textures_print(t_textures *textures)
 	ft_printf("[EAST = %s]\n", textures->east);
 	ft_printf("[RGB CEIL = %d]", textures->ceiling_rgb);
 	ft_printf("[RGB FLOOR = %d]", textures->floor_rgb);
-
 }
 
 /*
@@ -52,7 +51,8 @@ void	ft_cub_print(t_cub *data)
 	printf("[FD_MAP = %d]\n", data->fd_map);
 	printf("[INDEX START = %d]\n", data->map.index_map_start);
 	printf("[MAP SIZE = %d x %d]\n", data->map.width, data->map.height);
-	printf("[PLAYER START = [%.2f|%.2f]]\n", data->player.pos_y, data->player.pos_x);
+	printf("[PLAYER START = [%.2f|%.2f]]\n", data->player.pos_y,
+		data->player.pos_x);
 	ft_textures_print(&data->textures);
 	if (data->map.map)
 	{
