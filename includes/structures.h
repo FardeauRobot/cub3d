@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/27 18:13:08 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 11:37:28 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,6 @@ typedef struct s_cub
 	char		    **file;
 	int			    fd_map;
 	t_map			map;
-	t_minimap		minimap;
 	t_player		player;
 	t_textures		textures;
 	t_list		    *gc_global;

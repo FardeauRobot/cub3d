@@ -6,14 +6,13 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 15:47:11 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 09:16:19 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // FILE IN CHARGE OF THE PARSING BEFORE EXECUTION OF THE GAME
-
 static int	ft_map_width(char **map)
 {
 	int	i;

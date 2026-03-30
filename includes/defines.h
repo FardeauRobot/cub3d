@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/27 15:15:13 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 11:19:10 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ int	ft_format_check(char *filepath);
 // ERROR.C
 void	ft_data_clean(t_cub *data);
 
-// ERROR.C
+// LOADING_UTILS.C
+int	ft_xpm_img(t_cub *game, t_img *img, char *path);
 void	ft_mlx_init(t_cub *data);
 
 // KEYS.C

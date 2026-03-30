@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:55:12 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 16:20:37 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 10:25:06 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ void	ft_textures_print(t_textures *textures)
 	ft_printf("[SOUTH = %s]\n", textures->south);
 	ft_printf("[WEST = %s]\n", textures->west);
 	ft_printf("[EAST = %s]\n", textures->east);
+	ft_printf("[RGB CEIL = %d]", textures->ceiling_rgb);
+	ft_printf("[RGB FLOOR = %d]", textures->floor_rgb);
+
 }
 
 /*
@@ -51,6 +54,9 @@ void	ft_cub_print(t_cub *data)
 	printf("[MAP SIZE = %d x %d]\n", data->map.width, data->map.height);
 	printf("[PLAYER START = [%.2f|%.2f]]\n", data->player.pos_y, data->player.pos_x);
 	ft_textures_print(&data->textures);
-	printf("[MAP]\n");
-	ft_matrix_print(data->map.map);
+	if (data->map.map)
+	{
+		printf("[MAP]\n");
+		ft_matrix_print(data->map.map);
+	}
 }

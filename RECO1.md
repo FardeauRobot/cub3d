@@ -1,764 +1,616 @@
-# RECO1 — Code Review: Parsing to Game Launch
+# RECO1 — Code Review: Parsing to Game Launch (Updated 2026-03-30)
 
 > Written as a tutor would — each section explains **what** is wrong,
 > **why** it matters, and **how** to fix it (42 norm-compliant).
+>
+> Issues marked **[FIXED]** have been resolved since the first review.
+> Issues marked **[NEW]** are regressions or newly introduced problems.
 
 ---
 
 ## Table of Contents
 
-1. [The `t_p_structs` pattern — unnecessary indirection](#1-the-t_p_structs-pattern)
-2. [`ft_texture_dispatch` — a 50-line `if` chain that should be a loop](#2-ft_texture_dispatch)
-3. [`ft_rgb` — tangled logic, norm-breaking, fragile](#3-ft_rgb)
-4. [`ft_textures_detect` — redundant with dispatch](#4-ft_textures_detect)
-5. [`ft_file_store` — double copy via linked list](#5-ft_file_store)
-6. [`ft_textures_complete` — silent about what's missing](#6-ft_textures_complete)
-7. [`ft_player_set` — cascading `if` instead of `else if`](#7-ft_player_set)
-8. [Return value inconsistency across parsing](#8-return-value-inconsistency)
-9. [`defines.h` — mixing prototypes and macros](#9-definesh-mixing-prototypes-and-macros)
-10. [Duplicate `t_minimap` in `t_cub`](#10-duplicate-t_minimap-in-t_cub)
-11. [`ft_rgb_convert` — `ft_atoi` returns 0 on bad input, not -1](#11-ft_rgb_convert-silent-bug)
-12. [Missing validations in parsing](#12-missing-validations)
+### Fixed Issues
+- [1. The `t_p_structs` pattern — FIXED](#1-the-t_p_structs-pattern--fixed)
+- [11. `ft_rgb_convert` silent bug — FIXED](#11-ft_rgb_convert-silent-bug--fixed)
+- [12b. No player on the map — FIXED](#12b-no-player-on-the-map--fixed)
+
+### Still Open Issues
+- [2. `ft_texture_dispatch` — a 50-line `if` chain that should be a loop](#2-ft_texture_dispatch)
+- [3. `ft_rgb` — tangled logic, norm-breaking, fragile](#3-ft_rgb)
+- [4. `ft_textures_detect` — redundant with dispatch](#4-ft_textures_detect)
+- [5. `ft_file_store` — double copy via linked list](#5-ft_file_store)
+- [6. `ft_textures_complete` — silent about what's missing](#6-ft_textures_complete)
+- [7. `ft_player_set` — cascading `if` instead of `else if`](#7-ft_player_set)
+- [8. Return value inconsistency across parsing](#8-return-value-inconsistency)
+- [9. `defines.h` — mixing prototypes and macros](#9-definesh-mixing-prototypes-and-macros)
+- [10. Duplicate `t_minimap` in `t_cub`](#10-duplicate-t_minimap-in-t_cub)
+- [12a. Duplicate texture identifiers — partially fixed](#12a-duplicate-texture-identifiers)
+- [12c. `ft_strncmp` with `n=1` for "F" and "C"](#12c-ft_strncmp-with-n1-for-f-and-c)
+
+### New Issues
+- [N1. Debug `printf` left in `ft_rgb_convert`](#n1-debug-printf-left-in-ft_rgb_convert)
+- [N2. `ft_atoi_safe` doesn't initialize `*nb` itself](#n2-ft_atoi_safe-doesnt-initialize-nb-itself)
+- [N3. Misplaced comment block above `ft_player_set`](#n3-misplaced-comment-block-above-ft_player_set)
+- [N4. `ft_rgb_affect` uses `if/if` instead of `if/else if`](#n4-ft_rgb_affect-uses-ifif-instead-of-ifelse-if)
+- [N5. `ft_textures_parsing` returns SUCCESS on incomplete file](#n5-ft_textures_parsing-returns-success-on-incomplete-file)
 
 ---
 
-## 1. The `t_p_structs` pattern
+## Fixed Issues
 
-**File:** `main.c:18-29`, `structures.h:63-70`
+### 1. The `t_p_structs` pattern — [FIXED]
 
-### What's happening
-
-You created a struct `t_p_structs` that holds pointers to every sub-struct
-(`p_cub`, `p_map`, `p_player`, etc.), then you embed a *pointer* to that struct
-inside `t_map`, `t_player`, and `t_minimap`. The goal: let any child struct
-reach any sibling without the caller passing the parent.
-
-### Why it's a problem
-
-- **It's circular.** `t_cub` contains `t_map`, which contains a pointer back to
-  `t_p_structs`, which lives inside `t_cub`. This creates a dependency web that
-  makes the code hard to reason about.
-- **It hides data flow.** When you read a function signature like
-  `ft_minimap_init(t_map *map)`, you'd expect it only needs map data. But
-  through `map->p_structs->p_cub`, it can secretly access *everything*. This
-  defeats the purpose of separating concerns.
-- **It's not actually used much.** Most of your functions already receive
-  `t_cub *data` directly. The `p_structs` pointers are mostly dead weight.
-
-### The professional approach
-
-Pass exactly what a function needs. If `ft_minimap_init` needs both `t_map` and
-`t_cub`, pass both:
-
-```c
-void  ft_minimap_init(t_cub *data, t_map *map);
-```
-
-This is explicit, norm-friendly, and zero overhead. Remove `t_p_structs`
-entirely, and remove the `p_structs` field from `t_map`, `t_player`, and
-`t_minimap`.
-
-**Key lesson:** Good C code makes data dependencies visible in function
-signatures. If a function needs parent data, pass the parent — don't build a
-global back-pointer system.
+**Status:** Fully removed. No traces remain in the codebase. Functions now
+receive exactly the data they need via their parameters. Well done — this
+was the biggest architectural problem and you solved it cleanly.
 
 ---
 
-## 2. `ft_texture_dispatch`
+### 11. `ft_rgb_convert` silent bug — [FIXED]
 
-**File:** `parsing_textures.c:105-152`
+**File:** `parsing_textures.c:15-28`
 
-### What's happening
+**What you did:** You replaced the raw `ft_atoi` call with a new `ft_atoi_safe`
+function that validates digits before converting. This eliminates the original
+bug where `ft_atoi("abc")` returned 0 (a valid RGB value) and passed silently.
 
-A 50-line function with 6 independent `if` blocks, each doing almost the same
-thing: compare `id`, then store a value. The wall texture blocks are copy-paste
-with only the field name changing. The color blocks duplicate each other too.
-
-### Why it's a problem
-
-- **Norm violation risk.** The function is already at ~47 lines — one small
-  addition and you'll exceed 25 statements or the line limit.
-- **Repetition.** The 4 wall-texture blocks are identical except for one field.
-  Copy-pasted logic means copy-pasted bugs.
-- **No `else if`.** Every condition is checked even after one already matched.
-  Wastes cycles and risks double-assignment if identifiers overlap (and "F" *does*
-  match inside "FA" via `ft_strncmp` with n=1).
-
-### How to fix it (norm-compliant)
-
-Use a lookup table for wall textures, and a small helper for colors:
-
-```c
-static char  **ft_get_wall_field(t_textures *tex, char *id)
-{
-    if (ft_strncmp(id, "NO", 3) == 0)
-        return (&tex->north);
-    if (ft_strncmp(id, "SO", 3) == 0)
-        return (&tex->south);
-    if (ft_strncmp(id, "WE", 3) == 0)
-        return (&tex->west);
-    if (ft_strncmp(id, "EA", 3) == 0)
-        return (&tex->east);
-    return (NULL);
-}
-```
-
-Then dispatch becomes:
-
-```c
-static int  ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
-{
-    char  **field;
-
-    field = ft_get_wall_field(&data->textures, id);
-    if (field)
-        return (ft_assign_wall(data, field, path));
-    if (ft_strncmp(id, "F", 2) == 0)
-        return (ft_assign_color(data, arr, FLOOR));
-    if (ft_strncmp(id, "C", 2) == 0)
-        return (ft_assign_color(data, arr, CEILING));
-    return (FAILURE);
-}
-```
-
-~15 lines instead of 50. Each helper is small, testable, and norm-safe.
-
-**Key lesson:** When you see 4+ blocks of near-identical code, extract the
-varying part (here: the field pointer) and write one generic block.
+Good fix. The new `ft_atoi_safe` checks `ft_is_only(str, ft_isdigit)` and
+caps string length at 5 chars — both sensible guards.
 
 ---
 
-## 3. `ft_rgb`
+### 12b. No player on the map — [FIXED]
 
-**File:** `parsing_textures.c:38-82`
+**File:** `parsing.c:133-134`
 
-### What's happening
-
-You iterate over `arr` (the split line), then *inside* that loop, you split
-again by `,`, then manually assign `rgb[0]`, `rgb[1]`, `rgb[2]` with three
-cascading `if` blocks. You also increment `j` manually inside the `while`
-loop that already increments `j`.
-
-### Why it's a problem
-
-- **Double `j++`.** The `while (split[++j])` loop increments `j`, then you
-  also do `j++` inside the body after assigning rgb[0] and rgb[1]. This means
-  you're skipping elements. It works *by accident* when each `arr[i]` has
-  exactly the right tokens, but it's extremely fragile.
-- **Norm violation.** This function has too many variables and too many nested
-  levels. You noted the TODO yourself at line 36.
-- **Over-engineering.** You split by whitespace (getting `arr`), then split
-  each element by `,`. But the line format is `F 220,100,0` — there's only
-  *one* token after the identifier. A single split by `,` on `arr[1]` is enough.
-
-### How to fix it
-
+**What you did:** Added a check after `ft_map_check`:
 ```c
-static int  ft_rgb(t_cub *data, char *color_str, t_background part)
-{
-    char  **split;
-    int   rgb[3];
-    int   i;
-
-    split = ft_split_charset_gc(color_str, ",", &data->gc_tmp);
-    if (!split || ft_arrlen(split) != 3)
-        return (ft_error(ERR_MSG_INVALID_RGB, color_str, ERRN_PARSING));
-    i = -1;
-    while (++i < 3)
-    {
-        if (!ft_is_only(split[i], ft_isdigit) || !split[i][0])
-            return (ft_error(ERR_MSG_INVALID_RGB, split[i], ERRN_PARSING));
-        rgb[i] = ft_atoi(split[i]);
-        if (rgb[i] < 0 || rgb[i] > 255)
-            return (ft_error(ERR_MSG_INVALID_RGB, split[i], ERRN_PARSING));
-    }
-    ft_rgb_affect(data, rgb, part);
-    return (SUCCESS);
-}
+if (data->player.pos_x == 0 || data->player.pos_y == 0)
+    ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_NO_PLAYER);
 ```
 
-Pass `arr[1]` directly from the caller instead of passing the whole `arr`.
-This eliminates the double loop, the manual `j++`, and `ft_rgb_convert`
-(which becomes a single line inside the loop).
-
-**Key lesson:** When parsing a known format, match your code to the format's
-structure. `R,G,B` is 3 tokens separated by commas — one split, one loop of 3.
+And defined `ERR_MSG_NO_PLAYER` in `errors.h`. This is exactly the right
+approach. The zero-player case is now caught.
 
 ---
 
-## 4. `ft_textures_detect`
+## Still Open Issues
 
-**File:** `parsing_textures.c:88-98`
+### 2. `ft_texture_dispatch`
 
-### What's happening
+**File:** `parsing_textures.c:117-165`
 
-This function checks whether a string is one of `NO SO EA WE F C`. It's called
-in `ft_textures_fill` before `ft_texture_dispatch`.
+**Status:** Unchanged since last review.
 
-### Why it's useless
+Still ~48 lines with 6 independent `if` blocks (no `else if`). The 4 wall
+texture blocks are copy-pasted with only the field name changing. Every
+condition is tested even after one already matched.
 
-`ft_texture_dispatch` already does the exact same comparisons. If the ID
-doesn't match anything, dispatch can return `FAILURE` directly. You're
-comparing every string *twice*.
+**Why it matters now more than before:** You *did* add duplicate-color checks
+(lines 146, 156), which is good — but it made the function even longer. This
+function is dangerously close to the 25-statement norm limit and will break
+the norm as soon as you add anything else.
 
-### How to fix it
-
-Delete `ft_textures_detect`. In `ft_textures_fill`, just call
-`ft_texture_dispatch` directly and handle its return value.
-
-**Key lesson:** Before writing a validation function, check if the operation
-itself already validates. "Try and report failure" is cleaner than "check then
-try."
+**The fix is the same as before:** extract `ft_get_wall_field` and use
+`else if` chains. See the original recommendation for the code.
 
 ---
 
-## 5. `ft_file_store`
+### 3. `ft_rgb`
 
-**File:** `parsing_utils.c:67-98`
+**File:** `parsing_textures.c:55-99`
 
-### What's happening
+**Status:** Unchanged. The TODO comment on line 53 is still there:
+`// TODO : A REFACTORISER POUR LA NORME, TROUVER UN MOYEN PLUN FUN`
 
-You read lines into a linked list (with GC), then allocate a `char **` array,
-then `ft_strdup_gc` every line from the list into the array. This means every
-line exists in memory *twice*: once in `gc_tmp` (from GNL) and once in
-`gc_global` (from strdup).
+Still has the double-loop pattern (outer loop on `arr`, inner loop on
+comma-split), still has manual `j++` increments inside a `while(split[++j])`
+loop, still has 3 cascading `if/else if` blocks for rgb[0], rgb[1], rgb[2].
 
-### Why it's a problem
-
-- **Wasted memory.** Every line is duplicated.
-- **Wasted CPU.** You're doing `strlen + memcpy` for every line just to move
-  it from one allocator to another.
-- **The linked list is unnecessary.** You only use it to count lines and then
-  iterate sequentially — a dynamic array (realloc pattern) does the same in
-  one pass.
-
-### How to fix it
-
-Option A (simplest): Count lines first, then read again. But GNL doesn't
-support seeking back.
-
-Option B (recommended): Use a growing array. Start with 16 slots, double when
-full. This is a standard pattern:
-
-```c
-int  ft_file_store(t_cub *data)
-{
-    char  *line;
-    int   i;
-    int   capacity;
-
-    capacity = 16;
-    data->file = ft_calloc_gc(capacity, sizeof(char *), &data->gc_global);
-    if (!data->file)
-        return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-    i = 0;
-    line = get_next_line(data->fd_map);
-    while (line)
-    {
-        if (i >= capacity - 1)
-            // reallocate with doubled capacity (you'll need a gc-aware realloc)
-        data->file[i++] = line;  // store directly, no strdup
-        line = get_next_line(data->fd_map);
-    }
-    data->file[i] = NULL;
-    return (SUCCESS);
-}
-```
-
-If you don't want to implement gc-aware realloc, at minimum stop doing
-`ft_strdup_gc` — just move the GNL pointers into the array and track them
-in `gc_global` directly.
-
-**Key lesson:** linked list -> array conversion is almost always a sign you
-should have used an array from the start.
+You know it needs refactoring — you wrote the TODO yourself. The fix from
+the original review still applies: pass `arr[1]` directly, split once by
+`,`, loop 3 times.
 
 ---
 
-## 6. `ft_textures_complete`
+### 4. `ft_textures_detect`
 
-**File:** `parsing_textures.c:176-185`
+**File:** `parsing_textures.c:105-110`
 
-### What's happening
+**Status:** Still exists, still redundant.
 
-Returns `FAILURE` if any texture is missing, but doesn't say *which* one.
+This function checks `NO SO EA WE F C` — `ft_texture_dispatch` does the
+exact same comparisons. You're comparing every identifier twice. Delete it
+and let dispatch return FAILURE directly.
 
-### Why it matters
-
-When a user forgets the `EA` line in their `.cub` file, they get:
-`"Error while loading game: Couldn't load all textures"`. They have no idea
-which one is missing.
-
-### How to fix it
-
-```c
-int  ft_textures_complete(t_textures *tex)
-{
-    if (!tex->north)
-        return (ft_error(ERR_MSG_TEXTURES, "NO", ERRN_TEXTURES));
-    if (!tex->south)
-        return (ft_error(ERR_MSG_TEXTURES, "SO", ERRN_TEXTURES));
-    if (!tex->east)
-        return (ft_error(ERR_MSG_TEXTURES, "EA", ERRN_TEXTURES));
-    if (!tex->west)
-        return (ft_error(ERR_MSG_TEXTURES, "WE", ERRN_TEXTURES));
-    if (tex->ceiling_rgb == -1)
-        return (ft_error(ERR_MSG_TEXTURES, "C", ERRN_TEXTURES));
-    if (tex->floor_rgb == -1)
-        return (ft_error(ERR_MSG_TEXTURES, "F", ERRN_TEXTURES));
-    return (SUCCESS);
-}
-```
-
-**Key lesson:** Error messages should tell the user *exactly* what to fix.
-Generic errors waste everyone's time.
+**Bonus problem:** `ft_textures_detect` also has the `ft_strncmp(id, "F", 1)`
+bug (see #12c). If you delete this function, you remove one instance of the
+bug for free.
 
 ---
 
-## 7. `ft_player_set`
+### 5. `ft_file_store`
 
-**File:** `parsing_utils.c:22-50`
+**File:** `parsing_utils.c:64-95`
 
-### What's happening
-
-Four `if` blocks that are mutually exclusive but not written as `else if`.
-
-### Why it matters
-
-- All 4 conditions are tested every time, even though only one can match.
-- It signals to a reader: "maybe multiple could match?" — which is misleading.
-
-### How to fix it
-
-```c
-void  ft_player_set(t_player *player, int x, int y, char orient)
-{
-    player->pos_y = (double)y + 0.5;
-    player->pos_x = (double)x + 0.5;
-    if (orient == 'N')
-        ft_set_dir(player, 0, -1, NORTH);
-    else if (orient == 'S')
-        ft_set_dir(player, 0, 1, SOUTH);
-    else if (orient == 'E')
-        ft_set_dir(player, 1, 0, EAST);
-    else if (orient == 'W')
-        ft_set_dir(player, -1, 0, WEST);
-}
-```
-
-Where `ft_set_dir` is a 5-line helper that assigns `dir_x`, `dir_y`, and
-`orient`. This also reduces `ft_player_set` to well under the norm limit.
-
-**Key lesson:** Use `else if` when conditions are mutually exclusive. It's
-both faster and communicates intent.
+**Status:** Unchanged. Still reads into a linked list, then copies every line
+via `ft_strdup_gc` into a `char **` array. Every line exists in memory twice.
 
 ---
 
-## 8. Return value inconsistency
+### 6. `ft_textures_complete`
 
-### What's happening
+**File:** `parsing_textures.c:188-197`
 
-Some functions return `int` error codes (`ft_parsing`, `ft_textures_parsing`),
-but the caller ignores them and calls `ft_exit` anyway. Other functions return
-`void` and call `ft_exit` internally (`ft_map_check`, `ft_map_fill`).
-
-**Example from `parsing.c`:**
-```c
-if (ft_textures_parsing(data) != SUCCESS)       // returns int
-    ft_exit(data, ERRN_PARSING, NULL, NULL);     // but exit is called here
-
-ft_map_fill(data);                                // void, exits internally
-ft_map_check(data);                               // void, exits internally
-```
-
-### Why it matters
-
-A reader can't predict the error strategy by looking at a function signature.
-Will it return an error? Will it exit? Both? Pick one pattern and stick to it.
-
-### Recommended pattern
-
-**For parsing:** have every function return `int`. The caller decides whether
-to exit. This makes functions reusable and testable:
-
-```c
-if (ft_map_fill(data) != SUCCESS)
-    ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_MALLOC);
-if (ft_map_check(data) != SUCCESS)
-    ft_exit(data, ERRN_PARSING, NULL, NULL);
-```
-
-**Key lesson:** Consistent error handling patterns are a hallmark of
-professional C code. "Return errors, let the caller decide" is the standard.
+**Status:** Unchanged. Still returns a bare `FAILURE` without saying which
+texture is missing. The user gets `"Couldn't load all textures"` and has to
+guess which of the 6 identifiers they forgot.
 
 ---
 
-## 9. `defines.h` — mixing prototypes and macros
+### 7. `ft_player_set`
+
+**File:** `parsing_utils.c:20-48`
+
+**Status:** Unchanged. Still uses 4 independent `if` blocks instead of
+`else if`. All 4 conditions are tested even though only one can ever match.
+
+---
+
+### 8. Return value inconsistency
+
+**Status:** Partially improved.
+
+`ft_file_store` and `ft_textures_parsing` now return `int` and the caller
+in `ft_parsing` checks their return values — good.
+
+But `ft_map_fill` (parsing.c:35) and `ft_map_check` (parsing.c:70) still
+return `void` and call `ft_exit` internally. The inconsistency remains: some
+parsing functions return errors, others exit directly.
+
+---
+
+### 9. `defines.h` — mixing prototypes and macros
 
 **File:** `defines.h`
 
-### What's happening
-
-This file contains `#define` macros **and** all function prototypes. It also
-`#include`s `structures.h`, and `structures.h` `#include`s `defines.h` —
-creating a circular dependency (which only works because of include guards).
-
-### Why it matters
-
-- Function prototypes belong in a header that describes the module's API
-  (e.g., `cub3d.h` or per-module headers).
-- Circular includes are a code smell — one header should depend on the other,
-  not both on each other.
-
-### How to fix it
-
-- Move all function prototypes into `cub3d.h` (or create `prototypes.h`).
-- Keep `defines.h` for macros only.
-- Have `structures.h` *not* include `defines.h`. Instead, include both from
-  `cub3d.h` in the right order.
+**Status:** Unchanged. Still contains all function prototypes mixed with
+`#define` macros. Still has the circular include: `defines.h` includes
+`structures.h` (line 16), and `structures.h` includes `defines.h` (line 16).
 
 ---
 
-## 10. Duplicate `t_minimap` in `t_cub`
+### 10. Duplicate `t_minimap` in `t_cub`
 
-**File:** `structures.h:162`
+**File:** `structures.h:147-148`
 
-### What's happening
+**Status:** Still present. `t_cub` has:
+- `t_map map` (line 147) — which contains `t_minimap minimap` (line 118)
+- `t_minimap minimap` (line 148) — a separate, duplicate minimap
 
-`t_cub` has both `t_map map` (which contains `t_minimap minimap`) and a
-separate `t_minimap minimap` field at the top level. In `error.c:44`, you
-access `data->minimap.cache.img` but also `data->map.minimap` elsewhere.
+Two minimaps in the same struct. One is likely unused or out of sync. This
+**will** cause bugs when you start rendering the minimap and accidentally
+write to one but read from the other.
 
-### Why it matters
-
-Two minimaps. One is probably unused or out of sync. This *will* cause bugs.
-
-### How to fix it
-
-Remove `t_minimap minimap` from `t_cub`. Access it only through
-`data->map.minimap`. Grep for `data->minimap` and replace with
-`data->map.minimap`.
+**Fix:** Remove line 148 (`t_minimap minimap`) from `t_cub`. Access the
+minimap only through `data->map.minimap`. Grep for `data->minimap` and
+replace with `data->map.minimap`.
 
 ---
-
-## 11. `ft_rgb_convert` — silent bug
-
-**File:** `parsing_textures.c:16-22`
-
-### What's happening
-
-```c
-*nb = ft_atoi(str);
-if (*nb == -1 || *nb > 255)
-```
-
-`ft_atoi` returns `0` for non-numeric strings, not `-1`. So:
-- `ft_atoi("abc")` returns `0` — passes your check (0 is valid RGB).
-- `ft_atoi("-1")` returns `-1` — fails, but for the wrong reason.
-
-The `ft_is_only(split[j], ft_isdigit)` check in `ft_rgb` catches non-digits
-*before* this function is called, so the bug doesn't trigger **today**. But
-it's a trap for future changes.
-
-### How to fix it
-
-Since you already validate digits upstream, `ft_rgb_convert` should only check
-the range:
-
-```c
-*nb = ft_atoi(str);
-if (*nb < 0 || *nb > 255)
-    return (ft_error(ERR_MSG_INVALID_RGB, str, ERRN_PARSING));
-```
-
-Or better: remove `ft_rgb_convert` entirely and inline the check in the
-simplified `ft_rgb` (see recommendation #3).
-
-**Key lesson:** Know exactly what your standard library functions return.
-`atoi("abc") == 0` is a classic C trap.
-
----
-
-## 12. Missing validations
 
 ### 12a. Duplicate texture identifiers
 
-If the `.cub` file contains `NO` twice, the second silently overwrites the
-first (leaking the old GC-allocated string). Add a check:
+**Status:** Partially fixed.
 
+You added duplicate checks for **colors** (F and C) in `ft_texture_dispatch`:
 ```c
-if (*field != NULL)
-    return (ft_error("Duplicate texture", id, ERRN_TEXTURES));
+if (data->textures.floor_rgb != 0)
+    return (ft_error(ERR_MSG_SET_COLOR, "FLOOR", ERRN_TEXTURES));
 ```
 
-### 12b. No player on the map
+But **wall textures** (NO, SO, EA, WE) still have no duplicate check. If the
+`.cub` file contains `NO` twice, the second silently overwrites the first.
 
-`ft_map_check` checks for *too many* players but never checks for *zero*
-players. After the loop, add:
-
+Add the same pattern for walls:
 ```c
-if (data->player.pos_x == 0 && data->player.pos_y == 0)
-    ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, "No player on the map");
+if (data->textures.north != NULL)
+    return (ft_error(ERR_MSG_SET_COLOR, "NO", ERRN_TEXTURES));
 ```
+
+---
 
 ### 12c. `ft_strncmp` with `n=1` for "F" and "C"
 
+**File:** `parsing_textures.c:144, 154` and `parsing_textures.c:107`
+
+**Status:** Still present. Still a bug.
+
 ```c
-ft_strncmp(id, "F", 1)
+ft_strncmp(id, "F", 1)  // matches "F", "FOO", "FLOOR", anything starting with F
+ft_strncmp(id, "C", 1)  // matches "C", "CEILING", "CAT", etc.
 ```
 
-This matches "F" but also "FOO", "FLOOR", etc. Use `n=2` to include the
-null terminator, or compare with `ft_strcmp` / check length.
+This appears in both `ft_texture_dispatch` (lines 144, 154) and
+`ft_textures_detect` (line 107).
+
+**Fix:** Change `n` from `1` to `2` to include the null terminator:
+```c
+ft_strncmp(id, "F", 2)  // matches exactly "F" and nothing else
+ft_strncmp(id, "C", 2)  // matches exactly "C" and nothing else
+```
 
 ---
 
-## Summary — Priority Order
+## New Issues
 
-| Priority | Issue | Impact | Effort |
-|----------|-------|--------|--------|
-| 1 | Fix `ft_rgb` (rec #3) | Bug risk + norm | Medium |
-| 2 | Fix `ft_strncmp` n=1 for F/C (rec #12c) | Actual bug | Tiny |
-| 3 | Remove duplicate minimap (rec #10) | Actual bug | Tiny |
-| 4 | Refactor `ft_texture_dispatch` (rec #2) | Norm + clarity | Medium |
-| 5 | Delete `ft_textures_detect` (rec #4) | Dead code | Tiny |
-| 6 | Add missing validations (rec #12) | Robustness | Small |
-| 7 | Consistent error returns (rec #8) | Code quality | Medium |
-| 8 | Remove `t_p_structs` (rec #1) | Architecture | Large |
-| 9 | Simplify `ft_file_store` (rec #5) | Performance | Medium |
-| 10 | Separate prototypes from defines (rec #9) | Hygiene | Small |
+### N1. Debug `printf` left in `ft_rgb_convert`
 
-Start from the top — fix bugs first, then simplify, then restructure.
-
----
----
-
-# Part 2 — Becoming a Better Developer
-
-> Based on what I observed across your entire cub3d codebase: your strengths,
-> your recurring weaknesses, and the habits that separate someone who writes
-> code from someone who writes *beautiful* code.
-
----
-
-## Your Strengths (keep doing these)
-
-### 1. You structure your project well from the start
-
-Your directory layout (`src/core/`, `src/parsing/`, `src/render/`, `src/utils/`,
-`includes/`) is clean and logical. Many 42 students dump everything into one
-folder. You didn't. This shows you *think* about organization before coding,
-and that instinct will serve you for your entire career.
-
-### 2. You use a garbage collector
-
-Building `gc_global` and `gc_tmp` with separate lifetimes is a real engineering
-decision. Most students either leak memory or spend hours chasing `free()`
-calls. You built a system. It's not perfect yet (the `gc_tmp`/`gc_global`
-boundary is sometimes blurry), but the *thinking* behind it is strong.
-
-### 3. You separate parsing from execution
-
-Your pipeline is clear: parse everything, validate, *then* launch the game.
-No mixing of file I/O with rendering. This is the correct architecture, and
-it means bugs in one phase don't contaminate the other.
-
-### 4. You write comments that explain *why*, not *what*
-
-Most of your comments describe the purpose of a function, not what each line
-does. That's the right instinct. `// CHECKS FOR EMPTY CELLS OR NO WALLS` is
-infinitely better than `// increment i` on a `i++` line.
-
----
-
-## Your Weaknesses (and how to fix them)
-
-### W1. You code before you model the data
-
-**What I observed:** `t_p_structs` exists because you hit a situation where a
-child struct needed parent data — so you built a solution *on top of* the
-existing design rather than stepping back and rethinking it.
-
-**The habit to build:** Before writing any function, ask:
-> "What data does this function need, and where does that data live?"
-
-If the answer requires navigating 3 struct levels, your data model is wrong.
-Redesign the structs *first*. The best developers spend more time thinking
-about data shapes than writing code.
-
-**Practice:** Next time you're about to add a pointer field to "link" two
-structs, stop. Draw the struct hierarchy on paper. Ask: "Can I just pass
-this as a parameter instead?" The answer is almost always yes.
-
-### W2. You copy-paste first, refactor never
-
-**What I observed:** `ft_texture_dispatch` has 4 nearly identical blocks for
-NO/SO/EA/WE. `ft_char_draw` and `ft_orient_draw` share 90% of their code.
-`ft_player_set` repeats the same assignment pattern 4 times.
-
-**Why this happens:** When you're under pressure (or excited to see it work),
-copy-paste feels fast. And it *is* fast — for the first version. But every
-copy creates a maintenance liability. Change one, forget the other, get a bug.
-
-**The habit to build:** Follow the **Rule of Three**:
-1. First time: just write it.
-2. Second time: copy it, feel a little guilty.
-3. Third time: **stop and extract a function.**
-
-After pasting something for the third time, that's your signal. The varying
-parts become parameters, the identical parts become the function body.
-
-### W3. You don't test your edge cases mentally
-
-**What I observed:**
-- `ft_strncmp(id, "F", 1)` — you didn't ask "what if the string is `FLOOR`?"
-- `ft_atoi` returning 0 for bad input — you didn't ask "what does atoi actually
-  return on failure?"
-- No check for zero players — you checked for *too many* but didn't ask "what
-  if there are none?"
-
-**The habit to build:** After writing a condition, spend 30 seconds asking:
-> "What are the 3 worst inputs someone could give this function?"
-
-For a string comparison: empty string, longer string, similar prefix.
-For a number: 0, -1, MAX_INT.
-For an array: empty, one element, NULL.
-
-This is called **boundary thinking**, and it's the single most impactful
-habit a developer can build. Bugs almost always live at boundaries.
-
-### W4. You mix languages and conventions
-
-**What I observed:**
-- Comments in French *and* English in the same file
-- `ft_` prefix used everywhere (42 convention), but comments explaining it
-  are inconsistent in style
-- Some functions have block comments (`/* */`), others have `//` one-liners,
-  others have both, others have none
-
-**The habit to build:** Pick one language, one comment style, and stick to it
-across the *entire* project. It doesn't matter which — what matters is
-consistency. A codebase that looks like one person wrote it is easier to
-read than one that looks like a committee.
-
-**Practical rule:** English for code, comments, and commit messages. French
-for conversation. Never mix them in the same file.
-
----
-
-## Habits of Developers Who Write Beautiful Code
-
-### H1. Read code more than you write it
-
-You will learn more by reading 100 lines of good code than by writing 1000
-lines of mediocre code. Find 42 students who got outstanding scores on
-cub3d or minishell and read their code. Read the source of `libft` functions
-you didn't write. When you see a pattern you like, steal it.
-
-**Concrete action:** Every week, spend 30 minutes reading someone else's
-project. Not skimming — *reading*. Understand why they made each decision.
-
-### H2. Make the compiler your ally, not your enemy
-
-You compile with `-Wall -Wextra -Werror` (good). But don't just fix warnings
-to make them go away — understand what the compiler is telling you. Every
-warning is the compiler saying: "I think you might have a bug here."
-
-Also: when your code compiles but does the wrong thing, the bug is almost
-always in a place you were *certain* was correct. Question your certainty.
-
-### H3. Name things so a stranger can read your code
-
-Your naming is generally good (`ft_textures_parsing`, `ft_map_check`), but
-some names are vague:
-
-- `arr` — array of *what*? Call it `tokens` or `parts`.
-- `ret` — return value of *what*? Call it `color` or `err`.
-- `data` — this is fine for the root struct, but when you also call local
-  variables `data`, it shadows and confuses.
-
-**The rule:** If you need a comment to explain a variable, the variable has
-the wrong name. Rename it, and delete the comment.
-
-### H4. Write small functions with one job
-
-The 42 norm forces this (25 lines max), but don't think of it as a
-constraint — it's a *gift*. Functions longer than 15 lines are almost always
-doing too many things. Beautiful code reads like a story:
+**File:** `parsing_textures.c:35`
 
 ```c
-int  ft_parsing(t_cub *data, char **argv, int argc)
+printf("INT = %d\n", *nb);
+```
+
+A debug `printf` was left in the error path of `ft_rgb_convert`. This will
+print to stdout during normal error handling, polluting the user's terminal.
+It also means you're including `<stdio.h>` somewhere, which is unnecessary
+for a project that should only use `write` / `ft_printf`.
+
+**Fix:** Delete line 35.
+
+**Key lesson:** Before committing, do a quick `grep -rn "printf" src/` to
+catch stray debug prints. Better yet, use a `DEBUG` macro so you can toggle
+all debug output at once.
+
+---
+
+### N2. `ft_atoi_safe` doesn't initialize `*nb` itself
+
+**File:** `parsing_textures.c:15-28`
+
+```c
+int ft_atoi_safe(char *str, int *nb)
 {
-    ft_validate_args(data, argv, argc);
-    ft_open_file(data, argv[1]);
-    ft_store_file(data);
-    ft_parse_textures(data);
-    ft_build_map(data);
-    ft_validate_map(data);
-    ft_gc_free_all(&data->gc_tmp);
+    int i;
+
+    i = -1;
+    if (ft_strlen(str) > 5 || !ft_is_only(str, ft_isdigit))
+    {
+        *nb = -1;
+        return (FAILURE);
+    }
+    while (str[++i])
+        *nb = *nb * 10 + str[i] - '0';   // uses *nb without initializing it
     return (SUCCESS);
 }
 ```
 
-Each line is a chapter. You can understand the whole function without reading
-any of the helpers. That's beautiful code.
+The function assumes `*nb` is already 0 before the `while` loop. It works
+**today** because `ft_rgb_convert` does `*nb = 0` on line 32 before calling.
+But `ft_atoi_safe` is a general-purpose function — if anyone else calls it
+without pre-zeroing, they'll get garbage.
 
-### H5. Delete code you don't need
-
-**What I observed:** `ft_textures_detect` duplicates logic. `vectors.c` is
-empty. `t_p_structs` was unused machinery. The commented-out FPS counter in
-`render_map.c` has been there for weeks.
-
-Dead code is noise. It makes the codebase feel heavier than it is, and it
-distracts you when searching. Delete it. If you need it later, that's what
-`git log` is for.
-
-**The rule:** If it's commented out, delete it. If it's unused, delete it. If
-it might be useful someday, delete it — and use git to bring it back *someday*.
-
-### H6. Commit often, with intention
-
-Your recent commit messages are good (`On a fini la gestion des couleurs`),
-but commit *more often* and in English. A good commit should be one logical
-change:
-
-- "Add RGB color parsing for F and C identifiers"
-- "Fix wall closure check for edge-of-map tiles"
-- "Remove unused t_p_structs indirection"
-
-Not: "On continue le parsing" (too vague — parsing of *what*?).
-
-Small, well-described commits make `git bisect` possible when you hunt bugs.
-They also force you to think in small, complete steps rather than big chaotic
-sessions.
-
-### H7. Understand your tools deeply
-
-**What I observed:** You use `ft_strncmp` but didn't fully think through
-what `n` means (it compares *at most* n characters — so `n=1` on `"F"` will
-match any string starting with F). You use `ft_atoi` but assumed it returns
-`-1` on error.
-
-For every function in your libft: know its *exact* behavior on edge cases.
-Write a tiny test:
-
+**Fix:** Add `*nb = 0;` at the start of `ft_atoi_safe`, before the while loop:
 ```c
-printf("%d\n", ft_atoi(""));      // what does this return?
-printf("%d\n", ft_atoi("abc"));   // and this?
-printf("%d\n", ft_atoi("-0"));    // and this?
+*nb = 0;
+while (str[++i])
+    *nb = *nb * 10 + str[i] - '0';
 ```
 
-Run it. Memorize the answers. This takes 5 minutes and saves hours of
-debugging.
+**Key lesson:** A function should never rely on the caller to initialize its
+output parameter. The function owns the output — it should set it up.
 
 ---
 
-## Summary: Your Growth Roadmap
+### N3. Misplaced comment block above `ft_player_set`
+
+**File:** `parsing_utils.c:16-19`
+
+```c
+/*
+** FT_FORMAT_CHECK - VALIDATES THAT THE FILE EXTENSION IS .CUB
+** RETURNS SUCCESS IF VALID, FAILURE OTHERWISE
+*/
+void ft_player_set(t_player *player, int x, int y, char orient)
+```
+
+The comment says "FT_FORMAT_CHECK" but the function is `ft_player_set`.
+Looks like a copy-paste leftover when functions were reordered.
+
+**Fix:** Either delete the comment or update it to describe `ft_player_set`.
+
+---
+
+### N4. `ft_rgb_affect` uses `if/if` instead of `if/else if`
+
+**File:** `parsing_textures.c:47-50`
+
+```c
+if (part == FLOOR)
+    data->textures.floor_rgb = ret;
+if (part == CEILING)
+    data->textures.ceiling_rgb = ret;
+```
+
+Same pattern as #7 (`ft_player_set`). FLOOR and CEILING are mutually
+exclusive — use `else if`. Minor issue, but it's the same habit repeating.
+
+---
+
+### N5. `ft_textures_parsing` returns SUCCESS on incomplete file
+
+**File:** `parsing_textures.c:203-223`
+
+```c
+while (data->file[++i])
+{
+    ret = ft_textures_fill(data, data->file[i]);
+    if (ret != SUCCESS && ret != FAILURE)
+        return (ret);
+    if (ret == FAILURE && !ft_is_only(data->file[i], ft_isspace))
+    {
+        if (ft_textures_complete(&data->textures))
+            return (ft_error(ERR_MSG_LOADING, ERR_MSG_TEXTURES, ERRN_LOAD));
+        data->map.index_map_start = i;
+        return (SUCCESS);
+    }
+}
+return (SUCCESS);   // <-- reaches here if file has only texture lines
+```
+
+If the `.cub` file contains only texture definitions and no map at all (or
+only whitespace lines after textures), the `while` loop finishes without ever
+hitting the `FAILURE` branch, and returns `SUCCESS` without setting
+`index_map_start`. Then `ft_map_fill` will try to read from index 0 of the
+file array, treating texture lines as map data.
+
+**Fix:** After the while loop, check that textures are complete and that a
+map was actually found:
+
+```c
+if (ft_textures_complete(&data->textures))
+    return (ft_error(ERR_MSG_LOADING, ERR_MSG_TEXTURES, ERRN_LOAD));
+return (ft_error(ERR_MSG_PARSING, "No map found in file", ERRN_PARSING));
+```
+
+---
+
+## Summary — Priority Order (Updated)
+
+| Priority | Issue | Status | Impact | Effort |
+|----------|-------|--------|--------|--------|
+| 1 | **N1.** Remove debug `printf` | **NEW** | Ships broken output | Tiny |
+| 2 | **12c.** Fix `ft_strncmp` n=1 for F/C | Open | Actual bug | Tiny |
+| 3 | **10.** Remove duplicate minimap | Open | Actual bug | Tiny |
+| 4 | **N2.** Initialize `*nb` in `ft_atoi_safe` | **NEW** | Latent bug | Tiny |
+| 5 | **N5.** Handle missing map in texture parsing | **NEW** | Crash risk | Small |
+| 6 | **N3.** Fix misplaced comment | **NEW** | Confusing | Tiny |
+| 7 | **3.** Refactor `ft_rgb` | Open | Norm + clarity | Medium |
+| 8 | **2.** Refactor `ft_texture_dispatch` | Open | Norm + clarity | Medium |
+| 9 | **4.** Delete `ft_textures_detect` | Open | Dead code | Tiny |
+| 10 | **12a.** Add wall texture duplicate check | Partial | Robustness | Small |
+| 11 | **6.** Make `ft_textures_complete` specific | Open | UX | Small |
+| 12 | **7.** Use `else if` in `ft_player_set` | Open | Code quality | Tiny |
+| 13 | **N4.** Use `else if` in `ft_rgb_affect` | **NEW** | Code quality | Tiny |
+| 14 | **8.** Consistent error returns | Partial | Code quality | Medium |
+| 15 | **5.** Simplify `ft_file_store` | Open | Performance | Medium |
+| 16 | **9.** Separate prototypes from defines | Open | Hygiene | Small |
+
+**3 issues fixed since last review. 5 new issues introduced. 11 issues still open.**
+
+Start from the top — the first 6 are quick wins you can knock out in 30 minutes.
+
+---
+---
+
+# Part 2 — Becoming a Better Developer (Updated)
+
+> Updated based on the changes you made between reviews — what improved,
+> what didn't, and what new patterns I see.
+
+---
+
+## Your Strengths (updated)
+
+### 1. You structure your project well from the start
+
+Still true. The directory layout remains clean and logical. You also moved
+`loading_utils.c` into `src/utils/` and kept parsing files together in
+`src/parsing/`. Good instinct.
+
+### 2. You use a garbage collector
+
+Still a solid engineering decision. The `gc_tmp`/`gc_global` separation
+works well in practice — `ft_parsing` correctly frees `gc_tmp` at the end.
+
+### 3. You separate parsing from execution
+
+Still true and well maintained. The pipeline in `ft_parsing` reads like a
+checklist: validate, open, store, parse textures, fill map, check map, free
+temps. Clean.
+
+### 4. You respond to feedback
+
+**New strength.** You read the first review and acted on the hardest item
+first (`t_p_structs`), added the missing player check, wrote `ft_atoi_safe`
+to fix the silent atoi bug, and added duplicate-color detection. That shows
+you can take criticism, prioritize, and execute. Most developers get
+defensive or fix only the easy stuff. You went for the architecture change.
+
+### 5. You write defensive error handling
+
+You consistently check return values from allocation functions and return
+meaningful error codes. The `ft_error` + `ft_exit` pattern gives you clean
+error reporting. You also added `ERR_MSG_NO_PLAYER` and `ERR_MSG_SET_COLOR`
+— specific messages for specific failures. That's the right direction.
+
+---
+
+## Your Weaknesses (updated)
+
+### W1. You leave debug artifacts in the code
+
+**What I observed:** `printf("INT = %d\n", *nb)` sitting in production code
+(parsing_textures.c:35). This is the kind of thing that slips past in
+evaluation and makes a reviewer question your attention to detail.
+
+**The habit to build:** Before every commit, run:
+```bash
+grep -rn "printf" src/
+```
+If any hit isn't a `ft_printf` or a deliberate user-facing message, delete
+it. Better: create a `DEBUG_LOG` macro that compiles to nothing in release
+mode, so you never have to hunt for stray prints again.
+
+### W2. You copy-paste first, refactor never
+
+**Still true.** `ft_texture_dispatch` still has 4 identical wall-texture
+blocks. `ft_player_set` still has 4 independent `if` blocks. You even
+repeated the `if/if` pattern in the new `ft_rgb_affect`.
+
+When you added the duplicate-color check, you copy-pasted the FLOOR block
+and changed "FLOOR" to "CEILING". That's a third repetition in the same
+function. The Rule of Three says: it's time to extract.
+
+**The habit hasn't changed — push yourself on this one.** Every time you
+paste code, set a timer: you have 10 minutes to extract it into a helper.
+
+### W3. You don't test your edge cases mentally
+
+**Partially improved.** You *did* think about "what if there's no player?"
+and "what if a color is set twice?" — both good catches.
+
+But you *didn't* think about:
+- "What if `ft_atoi_safe` is called without pre-zeroing `*nb`?"
+- "What if the file has textures but no map?"
+- "What if `ft_strncmp("FLOOR", "F", 1)` matches?" (still unfixed from v1)
+
+You're getting better at catching *missing checks* but still missing
+*function contract* edge cases. The new question to ask after writing any
+function:
+
+> "If someone calls this function without reading my implementation,
+> what wrong assumptions might they make?"
+
+### W4. You leave TODOs that never get done
+
+**New weakness.** The `// TODO : A REFACTORISER POUR LA NORME` comment on
+`ft_rgb` has been there since the first review. You knew it was a problem,
+you wrote yourself a note, and you moved on to other things.
+
+TODOs are broken promises. They feel productive when you write them — "at
+least I acknowledged it" — but they accumulate into a backlog that never
+gets addressed.
+
+**The habit to build:** If a TODO takes less than 30 minutes, do it now.
+If it takes longer, create a real task (write it down somewhere you'll see
+it daily) and set a deadline. If you can't commit to a deadline, delete the
+TODO — it's just noise.
+
+### W5. Comment-code mismatches erode trust
+
+**New weakness.** The comment block above `ft_player_set` says
+"FT_FORMAT_CHECK - VALIDATES THAT THE FILE EXTENSION IS .CUB" — that's a
+completely different function. A reader who trusts the comment will
+misunderstand the code. A reader who notices the mismatch will stop
+trusting *all* your comments.
+
+**The habit to build:** When you move or rename a function, update its
+comments in the same edit. Not later, not in a separate commit — right then.
+If a comment doesn't match its code, delete the comment. Wrong documentation
+is worse than no documentation.
+
+---
+
+## Habits of Developers Who Write Beautiful Code (updated)
+
+### H1. Read code more than you write it
+
+Still the best advice. Find 42 students who scored well on cub3d and read
+their texture parsing. See how they solved the same problems you're facing.
+
+### H2. Make the compiler your ally
+
+Still important. One addition: consider adding `-fsanitize=address` to your
+debug builds. It catches memory errors that `-Wall -Wextra` can't see.
+
+### H3. Name things so a stranger can read your code
+
+Improvement: your new error messages (`ERR_MSG_NO_PLAYER`, `ERR_MSG_SET_COLOR`)
+are specific and helpful. That's good naming applied to errors.
+
+Still room to improve: `arr`, `ret`, `nb`, `split` in `ft_rgb` could all
+be more descriptive: `tokens`, `err`, `value`, `rgb_parts`.
+
+### H4. Write small functions with one job
+
+Your `ft_atoi_safe` is a good example — it does one thing (safe string-to-int
+conversion) and does it well. Apply the same discipline to `ft_rgb` and
+`ft_texture_dispatch`, which are still doing too many things.
+
+### H5. Delete code you don't need
+
+You deleted `vectors.c` and `t_p_structs` — good. Now delete
+`ft_textures_detect` (redundant), the debug printf, the stale TODO, and
+the misplaced comment. Keep the momentum going.
+
+### H6. Commit often, with intention
+
+Your recent commits show progress: they describe what changed. Next step:
+commit in English consistently, and make each commit one logical change.
+"Remove debug printf from rgb_convert" is a better commit than bundling it
+with 5 other fixes.
+
+### H7. Finish what you start before starting something new
+
+**New habit.** You fixed `t_p_structs` (big win) and added `ft_atoi_safe`
+(good), but left `ft_rgb` untouched despite writing yourself a TODO to fix
+it. You added the player-count check but left the `ft_strncmp` n=1 bug
+from the same review unfixed.
+
+The pattern: you fix the interesting/hard problems and skip the tedious ones.
+But the tedious ones are where bugs hide. Force yourself to finish all fixes
+in a category before moving to the next. "All parsing bugs fixed" is more
+valuable than "the hardest parsing bug fixed plus three new features."
+
+### H8. Review your own diffs before committing
+
+**New habit.** The debug printf, the misplaced comment, and the uninitialized
+`*nb` would all be caught by spending 2 minutes reading your own `git diff`
+before committing. Make it a ritual:
+
+```bash
+git diff --staged
+```
+
+Read every line. Ask: "Would I be embarrassed if a reviewer saw this?"
+If yes, fix it before committing.
+
+---
+
+## Summary: Your Growth Roadmap (updated)
 
 ```
+WHERE YOU WERE (first review)
+  |
+  |  Circular struct dependencies, silent bugs,
+  |  no edge case handling
+  |
+  v
 WHERE YOU ARE NOW
   |
-  |  You build structured projects with clear separation.
-  |  You think about memory management.
-  |  You make things work.
+  |  Architecture cleaned up (t_p_structs gone)
+  |  Better error handling (atoi_safe, player check, color dupes)
+  |  But: debug artifacts, stale TODOs, copy-paste patterns remain
+  |
+  v
+NEXT LEVEL: Clean discipline
+  |
+  |  - Zero debug prints in committed code
+  |  - Every TODO resolved or deleted within 48 hours
+  |  - Review your own diff before every commit
+  |  - Fix ALL items in a review, not just the interesting ones
   |
   v
 NEXT LEVEL: Eliminate repetition (Rule of Three)
@@ -770,20 +622,15 @@ NEXT LEVEL: Eliminate repetition (Rule of Three)
   v
 NEXT LEVEL: Think at the boundaries
   |
-  |  - Test edge cases before you ship
-  |  - Know your tools' exact behavior
-  |  - Question every assumption
-  |
-  v
-NEXT LEVEL: Write code for the reader
-  |
-  |  - Name things precisely
-  |  - Delete dead code ruthlessly
-  |  - Commit small, describe well
+  |  - What happens if my function is called wrong?
+  |  - What inputs didn't I consider?
+  |  - Does every function own its own state?
   |
   v
 THE GOAL: Code that doesn't need comments because it reads like prose.
 ```
 
-You're closer than you think. The fact that you *asked* for this review puts
-you ahead of most students. Keep that curiosity — it's your best tool.
+You've moved up one level since the first review. That's real progress.
+The next level is about *discipline* more than *skill* — and discipline
+is just repeated choices. You already have the skill. Now choose to apply
+it consistently.

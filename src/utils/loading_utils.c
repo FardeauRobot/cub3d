@@ -6,14 +6,25 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 22:09:34 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 17:22:28 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 11:50:47 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// FILE IN CHARGE OF THE INITIALIZATION OF THE GAME
+int	ft_xpm_img(t_cub *game, t_img *img, char *path)
+{
+	if (!game || !img)
+		return (FAILURE);
+	img->img = mlx_xpm_file_to_image(game->mlx, path, &img->width,
+			&img->height);
+	if (!img->img)
+		return (FAILURE);
+	return (SUCCESS);
+}
 
+
+// FILE IN CHARGE OF THE INITIALIZATION OF THE GAME
 void	ft_mlx_init(t_cub *data)
 {
 	data->mlx = mlx_init();

@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/28 15:46:51 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 09:26:47 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef enum e_err
 # define ERR_MSG_WALLS		"Map isn't closed by walls"
 # define ERR_MSG_PARSING	"Error parsing"
 # define ERR_MSG_TEXTURES	"Couldn't load all textures"
+# define ERR_MSG_XPM		"Couldn't load this .xpm file: "
 # define ERR_MSG_OPEN		"Cannot open file"
 # define ERR_MSG_EMPTY	    "Empty file"
 # define ERR_MSG_LOADING	"Error while loading game"
