@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 11:19:10 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:01:54 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@
 # define	CHAR_COL 0xFF0000
 
 /* ============== CORE ============================= */
+// GAME_INIT.C
+void	ft_tiles_init(t_cub *data, t_tile *tile, t_etile content);
+void	ft_game_init(t_cub *data);
+
 // GAME.C
 void	ft_game(t_cub *data);
 
@@ -55,6 +59,7 @@ int	ft_textures_parsing(t_cub *data);
 
 /* ============== RENDER ============================= */
 // RENDER_MAP.C
+void	ft_minimap_cache_render(t_minimap *minimap, t_map *map);
 void	ft_minimap_draw(t_cub *data);
 void	ft_char_draw(t_cub *data);
 int		ft_map_render(void *cub);

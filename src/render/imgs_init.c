@@ -6,68 +6,11 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 08:49:47 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 11:31:39 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 11:59:16 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-// FUNCTION USED TO RETURN THE DISPLAY COLOR ASSOCIATED WITH A TILE TYPE
-static int	ft_tile_color_get(t_etile content)
-{
-	if (content == WALL)
-		return (WALL_TILE_COL);
-	return (EMPTY_TILE_COL);
-}
-
-// FUNCTION USED TO INITIALIZE AN MLX IMAGE AND ITS RAW PIXEL BUFFER
-void	ft_img_init(t_cub *data, t_img *img, int width, int height)
-{
-	img->height = height;
-	img->width = width;
-	img->img = mlx_new_image(data->mlx, img->width, img->height);
-	if (!img->img)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
-	img->addr = mlx_get_data_addr(img->img, &img->bpp,
-			&img->line_len, &img->endian);
-	if (!img->addr)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
-}
-
-// FUNCTION USED TO INITIALIZE ONE TILE IMAGE WITH THE RIGHT COLOR
-static void	ft_tiles_init(t_cub *data, t_tile *tile, t_etile content)
-{
-	ft_img_init(data, &tile->tile_img, TILE_SIZE, TILE_SIZE);
-	tile->tile_img.color = ft_tile_color_get(content);
-	ft_img_fill(&tile->tile_img, tile->tile_img.height,
-		tile->tile_img.width, tile->tile_img.color);
-}
-
-// FUNCTION USED TO RENDER ALL TILES INTO THE MINIMAP CACHE IMAGE
-static void	ft_minimap_cache_render(t_minimap *minimap, t_map *map)
-{
-	int		y;
-	int		x;
-	int		len;
-
-	y = -1;
-	while (++y < map->height)
-	{
-		x = -1;
-		len = ft_strlen(map->map[y]);
-		while (++x < len)
-		{
-			if (ft_ischarset(map->map[y][x], "0NSEW"))
-				ft_img_to_img(&minimap->cache,
-					&minimap->tiles[EMPTY].tile_img,
-					x * TILE_SIZE, y * TILE_SIZE);
-			else if (map->map[y][x] == '1')
-				ft_img_to_img(&minimap->cache,
-					&minimap->tiles[WALL].tile_img,
-					x * TILE_SIZE, y * TILE_SIZE);
-		}
-	}
-}
 
 // FUNCTION USED TO INITIALIZE ALL IMAGES NEEDED BY THE MINIMAP
 void	ft_minimap_init(t_cub *data)

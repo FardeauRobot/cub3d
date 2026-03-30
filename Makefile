@@ -2,7 +2,7 @@
 #                      PROJECT CONFIG
 # ============================================================
 # Change NAME to your binary name
-NAME		= cub3d
+NAME		= cub3D
 
 # ============== COLORS ====================================
 RESET		= \033[0m
@@ -33,7 +33,7 @@ UTILS_PATH		= $(SRCS_PATH)/utils
 SKELETON_FILES	= main.c
 
 # Core module
-CORE_FILES		= game.c
+CORE_FILES		= game.c game_init.c
 
 # Parsing module
 PARSING_FILES	= parsing.c parsing_textures.c parsing_utils.c

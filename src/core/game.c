@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/28 17:22:28 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:01:07 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,6 @@ int	ft_game_loop(void *cub)
 	return (SUCCESS);
 }
 
-void	ft_game_init(t_cub *data)
-{
-	ft_mlx_init(data);
-	ft_minimap_init(data);
-	ft_char_init(data);
-}
 
 int	ft_game_end(void *data)
 {

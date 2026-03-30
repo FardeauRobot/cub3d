@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 22:44:44 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/27 15:10:12 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:00:30 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,32 @@ double ft_get_time()
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec + tv.tv_usec / 1000000.0);
+}
+
+// FUNCTION USED TO RENDER ALL TILES INTO THE MINIMAP CACHE IMAGE
+void	ft_minimap_cache_render(t_minimap *minimap, t_map *map)
+{
+	int		y;
+	int		x;
+	int		len;
+
+	y = -1;
+	while (++y < map->height)
+	{
+		x = -1;
+		len = ft_strlen(map->map[y]);
+		while (++x < len)
+		{
+			if (ft_ischarset(map->map[y][x], "0NSEW"))
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[EMPTY].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+			else if (map->map[y][x] == '1')
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[WALL].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+		}
+	}
 }
 
 void ft_map_raycasting(t_cub *data)
