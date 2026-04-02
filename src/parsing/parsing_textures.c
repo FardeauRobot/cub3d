@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/02 18:10:15 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/02 19:11:46 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,27 +86,6 @@ int	ft_rgb(t_cub *data, char **arr, t_elements part)
 	return (SUCCESS);
 }
 
-/*
-** FT_TEXTURES_DETECT - CHECKS IF ID IS A VALID TEXTURE/COLOR IDENTIFIER
-** RETURNS SUCCESS IF ID IS NO, SO, EA, WE, F OR C, FAILURE OTHERWISE
-*/
-// static int	ft_textures_detect(char *id)
-// {
-// 	if (ft_strncmp(id, "NO", 2) == 0)
-// 		return (NORTH);
-// 	else if (ft_strncmp(id, "SO", 2) == 0)
-// 		return (SOUTH);
-// 	else if (ft_strncmp(id, "EA", 2) == 0)
-// 		return (EAST);
-// 	else if (ft_strncmp(id, "WE", 2) == 0)
-// 		return (WEST);
-// 	else if (ft_strncmp(id, "F", 1) == 0)
-// 		return (FLOOR);
-// 	else if (ft_strncmp(id, "C", 1) == 0)
-// 		return (CEILING);
-// 	return (-1);
-// }
-
 static int	ft_textures_detect(char *id)
 {
 	if (ft_strncmp(id, "NO", 2) != 0 && ft_strncmp(id, "SO", 2) != 0
@@ -123,25 +102,25 @@ static int	ft_textures_detect(char *id)
 
 static int	ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 {
-	if (ft_strncmp(id, "NO", 2) == 0)
+	if (ft_strncmp(id, "NO", 3) == 0)
 	{
 		data->textures.north = ft_strdup_gc(path, &data->gc_global);
 		if (!data->textures.north)
 			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
 	}
-	if (ft_strncmp(id, "SO", 2) == 0)
+	if (ft_strncmp(id, "SO", 3) == 0)
 	{
 		data->textures.south = ft_strdup_gc(path, &data->gc_global);
 		if (!data->textures.south)
 			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
 	}
-	if (ft_strncmp(id, "WE", 2) == 0)
+	if (ft_strncmp(id, "WE", 3) == 0)
 	{
 		data->textures.west = ft_strdup_gc(path, &data->gc_global);
 		if (!data->textures.west)
 			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
 	}
-	if (ft_strncmp(id, "EA", 2) == 0)
+	if (ft_strncmp(id, "EA", 3) == 0)
 	{
 		data->textures.east = ft_strdup_gc(path, &data->gc_global);
 		if (!data->textures.east)
