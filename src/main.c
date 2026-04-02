@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/15 16:37:16 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/04/02 15:03:08 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_p_structs_init(t_cub *data)
 	data->p_structs.p_minimap = &data->map.minimap;
 	data->p_structs.p_player = &data->player;
 	data->p_structs.p_textures = &data->textures;
-
 	data->map.p_structs = &data->p_structs;
 	data->map.minimap.p_structs = &data->p_structs;
 	data->player.p_structs = &data->p_structs;
