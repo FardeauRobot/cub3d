@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 09:32:39 by salman           ###   ########.fr       */
+/*   Updated: 2026/04/02 12:48:40 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,14 @@
 
 /* ============== GAME MACROS ============================= */
 
-# define DISP_SCALE 0.75
+# define DISP_SCALE 0.75 
 # define WIN_NAME "cub3d"
 
 # define TILE_SIZE 16
 # define CHAR_SIZE 4
 
 # define	CHAR_SPEED 0.05
-# define	ROT_SPEED 0.01
+# define	ROT_SPEED 0.05
 
 // BITFLAGS 
 # define UP 0b0001
