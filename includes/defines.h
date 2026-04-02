@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/02 17:19:16 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:12:44 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void	ft_minimap_draw(t_cub *data);
 void	ft_char_draw(t_cub *data);
 int		ft_map_render(void *cub);
 
+// RENDER_RAYCASTING.C
+void ft_map_raycasting(t_cub *data);
+
 // RENDER_UTILS.C
 void	ft_img_pixel_put(t_img *img, int x, int y, int color);
 int		ft_img_pixel_get(t_img *img, int x, int y);
@@ -96,5 +99,15 @@ int		ft_move(t_player *player, char **map);
 void	ft_rotate(t_player *player);
 int		ft_release_keys(int keycode, void *cub);
 int		ft_press_keys(int keycode, void *cub);
+
+// RAYCASTING.C
+void ft_draw_ray(t_cub *data, t_ray *ray, int x);
+
+// RAYCASTING_UTILS.C
+void ft_draw_floor(t_cub *data, t_ray *ray, int x);
+void ft_draw_wall(t_cub *data, t_ray *ray, t_draw *dw, int x);
+void ft_draw_ceiling(t_cub *data, t_ray *ray, int x);
+void ft_get_y_tex(t_cub *data, t_ray *ray, t_draw *dw);
+void ft_get_x_tex(t_ray *ray, t_draw *dw);
 
 #endif

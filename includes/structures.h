@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structures.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 12:15:23 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/02 19:08:29 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,46 @@ typedef struct s_cub		t_cub;
 typedef struct s_player		t_player;
 typedef struct s_textures	t_textures;
 typedef struct s_minimap	t_minimap;
+typedef struct s_img t_img;
+typedef struct s_ray t_ray;
+typedef struct s_draw t_draw;
+
+typedef struct s_draw
+{
+	int				pitch;
+	t_img			*tex;
+	int				tex_width;
+	int				tex_x;
+	int				tex_height;
+	double			step;
+	double			tex_pos;
+	int				y;
+	int				tex_y;
+	char			*pixel;
+	unsigned int	color;
+} t_draw;
+
+typedef struct s_ray
+{
+	double	camera_x;
+	double	ray_dir_x;
+	double	ray_dir_y;
+	int		map_x;
+	int		map_y;
+	double	side_dist_x;
+	double	side_dist_y;
+	double	delta_dist_x;
+	double	delta_dist_y;
+	double	perp_wall_dist;
+	double	wall_x;
+	int		step_x;
+	int		step_y;
+	int		hit;
+	int		side;
+	int		line_height;
+	int		draw_start;
+	int		draw_end;
+}			t_ray;
 
 /* STRUCTURE USED TO STORE THE DIFFERENT INFOS ABOUT AN IMG */
 typedef struct s_img
