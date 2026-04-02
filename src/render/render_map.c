@@ -155,6 +155,32 @@ void ft_map_raycasting(t_cub *data)
 	}
 }
 
+// FUNCTION USED TO PRE-RENDER THE WHOLE MAP INTO THE MINIMAP CACHE IMAGE
+void	ft_minimap_cache_render(t_minimap *minimap, t_map *map)
+{
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < map->height)
+	{
+		x = -1;
+		while (++x < map->width)
+		{
+			if (map->map[y][x] == '1')
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[WALL].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+			else if (map->map[y][x] == '0' || map->map[y][x] == 'N'
+				|| map->map[y][x] == 'S' || map->map[y][x] == 'E'
+				|| map->map[y][x] == 'W')
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[EMPTY].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+		}
+	}
+}
+
 // FUNCTION USED TO STAMP THE PRE-RENDERED MINIMAP CACHE INTO THE DISPLAY
 void	ft_minimap_draw(t_cub *data)
 {
