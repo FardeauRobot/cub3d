@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 12:31:35 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/02 18:10:15 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	ft_rgb_convert(char *str, int *nb)
 }
 
 // AIDE A CREER RGB VALUE
-static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
+static void	ft_rgb_affect(t_cub *data, int *rgb, t_elements part)
 {
 	int	ret;
 
@@ -42,7 +42,7 @@ static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 
 // TODO : A REFACTORISER POUR LA NORME, TROUVER UN MOYEN PLUN FUN
 // POUR CONVERTIR EN COULEUR
-int	ft_rgb(t_cub *data, char **arr, t_background part)
+int	ft_rgb(t_cub *data, char **arr, t_elements part)
 {
 	int		rgb[3];
 	int		ret;
@@ -90,6 +90,23 @@ int	ft_rgb(t_cub *data, char **arr, t_background part)
 ** FT_TEXTURES_DETECT - CHECKS IF ID IS A VALID TEXTURE/COLOR IDENTIFIER
 ** RETURNS SUCCESS IF ID IS NO, SO, EA, WE, F OR C, FAILURE OTHERWISE
 */
+// static int	ft_textures_detect(char *id)
+// {
+// 	if (ft_strncmp(id, "NO", 2) == 0)
+// 		return (NORTH);
+// 	else if (ft_strncmp(id, "SO", 2) == 0)
+// 		return (SOUTH);
+// 	else if (ft_strncmp(id, "EA", 2) == 0)
+// 		return (EAST);
+// 	else if (ft_strncmp(id, "WE", 2) == 0)
+// 		return (WEST);
+// 	else if (ft_strncmp(id, "F", 1) == 0)
+// 		return (FLOOR);
+// 	else if (ft_strncmp(id, "C", 1) == 0)
+// 		return (CEILING);
+// 	return (-1);
+// }
+
 static int	ft_textures_detect(char *id)
 {
 	if (ft_strncmp(id, "NO", 2) != 0 && ft_strncmp(id, "SO", 2) != 0

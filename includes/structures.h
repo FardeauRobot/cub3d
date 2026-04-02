@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 12:15:23 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/02 18:06:21 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,15 @@
 
 /* ============== ENUM =============================== */
 
-typedef enum e_background
+typedef enum e_elements
 {
+	NORTH,
+	SOUTH,
+	WEST,
+	EAST,
 	FLOOR,
 	CEILING
-}	t_background;
+}	t_elements;
 
 typedef enum e_etile
 {

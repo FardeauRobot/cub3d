@@ -6,12 +6,12 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 11:55:56 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 12:26:54 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/02 18:04:00 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// FILE IN CHARGE OF THE INITIALIZATION OF THE GAME
 #include "cub3d.h"
+// FILE IN CHARGE OF THE INITIALIZATION OF THE GAME
 
 // INITIALIZES THE WALL SPRITES
 void	ft_sprites_init(t_cub *data)
