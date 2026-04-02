@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 17:47:49 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/02 19:08:56 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:19:41 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,16 +47,16 @@ static void	ft_define_tex(t_cub *data, t_ray *ray, t_draw *dw)
 	if (ray->side == 0)
 	{
 		if (ray->ray_dir_x > 0)
-			dw->tex = &data->textures.wall_e;
-		else
 			dw->tex = &data->textures.wall_w;
+		else
+			dw->tex = &data->textures.wall_e;
 	}
 	else
 	{
 		if (ray->ray_dir_y > 0)
-			dw->tex = &data->textures.wall_s;
-		else
 			dw->tex = &data->textures.wall_n;
+		else
+			dw->tex = &data->textures.wall_s;
 	}
 }
 
