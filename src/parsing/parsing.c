@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 09:16:19 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/02 19:15:25 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static int	ft_cell_check(char **map, int y, int x)
 	return (SUCCESS);
 }
 
-// GOES THROUGH ALL THE MAPS AND CHECK FOR INVALID CHARS / MAP NOT CLOSED BY WALLS
+// GOES THROUGH ALL THE MAPS AND CHECK FOR INVALID CHARS
+	// / MAP NOT CLOSED BY WALLS
 // ALSO INITALIZES INFOS ABOUT PLAYER (POS AND ORIENTATION)
 void	ft_map_check(t_cub *data)
 {
@@ -85,7 +86,8 @@ void	ft_map_check(t_cub *data)
 				if (ft_ischarset(map[y][x], "NSEW"))
 				{
 					if (data->player.pos_y != 0 || data->player.pos_x != 0)
-						ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_PLAYER_COUNT);
+						ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING,
+							ERR_MSG_PLAYER_COUNT);
 					ft_player_set(&data->player, x, y, map[y][x]);
 				}
 				if (map[y][x] != '1' && ft_cell_check(map, y, x) != SUCCESS)
@@ -107,32 +109,25 @@ int	ft_parsing(t_cub *data, char **argv, int argc)
 {
 	if (argc != 2)
 		ft_exit(data, ERRN_PARSING, ERR_MSG_ARGS, ERR_MSG_ARGC);
-
 	// CHECK FORMAT
 	if (ft_format_check(argv[1]) != SUCCESS)
 		ft_exit(data, ERRN_PARSING, ERR_MSG_OPEN, ERR_MSG_FORMAT);
-
 	// CHECK OPEN
 	data->fd_map = open(argv[1], O_RDONLY);
 	if (data->fd_map == -1)
 		ft_exit(data, ERRN_OPEN, ERR_MSG_OPEN, argv[1]);
-
 	// STORE THE FILE
 	if (ft_file_store(data) != SUCCESS)
 		ft_exit(data, ERRN_PARSING, NULL, NULL);
-
 	// CHECK TEXTURES
 	if (ft_textures_parsing(data) != SUCCESS)
 		ft_exit(data, ERRN_PARSING, NULL, NULL);
-
 	// FILL MAP
 	ft_map_fill(data);
-
 	// CHECK MAP
 	ft_map_check(data);
 	if (data->player.pos_x == 0 || data->player.pos_y == 0)
 		ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_NO_PLAYER);
-
 	// RELEASE TMP MALLOCS (SPLITS / GNL / FILE)
 	ft_gc_free_all(&data->gc_tmp);
 	return (SUCCESS);

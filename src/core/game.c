@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: salman <salman@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 09:38:33 by salman           ###   ########.fr       */
+/*   Updated: 2026/04/02 19:14:45 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-#include "defines.h"
-#include "mlx.h"
-#include <stdio.h>
 
 void	ft_move_update(void *cub)
 {
@@ -28,8 +25,8 @@ void	ft_move_update(void *cub)
 
 void	ft_camera_update(void *cub)
 {
-	t_cub	*data;
-	t_player *player;
+	t_cub		*data;
+	t_player	*player;
 
 	data = (t_cub *)cub;
 	player = &data->player;
@@ -55,12 +52,12 @@ int	ft_game_end(void *data)
 	return (SUCCESS);
 }
 
-int	ft_mouse( int x, int y, void *cub)
+int	ft_mouse(int x, int y, void *cub)
 {
-	t_cub *data;
-	int mid;
-	(void)y;
+	t_cub	*data;
+	int		mid;
 
+	(void)y;
 	data = (t_cub *)cub;
 	mid = data->screen_width / 2;
 	if (x < mid - 150)
@@ -77,7 +74,7 @@ void	ft_game(t_cub *data)
 {
 	ft_game_init(data);
 	mlx_loop_hook(data->mlx, ft_game_loop, data);
-	mlx_hook(data->win,6, 1L << 6, ft_mouse, data);
+	mlx_hook(data->win, 6, 1L << 6, ft_mouse, data);
 	mlx_hook(data->win, 2, 1L << 0, ft_press_keys, data);
 	mlx_hook(data->win, 3, 1L << 1, ft_release_keys, data);
 	mlx_hook(data->win, 17, 1L << 17, ft_game_end, data);
