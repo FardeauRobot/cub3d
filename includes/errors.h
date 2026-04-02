@@ -6,15 +6,16 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/17 15:29:25 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 09:26:47 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_ERRORS_H
-# define CUB3D_ERRORS_H
+#ifndef ERRORS_H
+# define ERRORS_H
 
 typedef enum e_err
 {
+	ERRN_NEGATIVE_FAIL = -1,
 	ERRN_NONE,
 	ERRN_EMPTY_FILE,
 	ERRN_MALLOC,
@@ -31,24 +32,26 @@ typedef enum e_err
 
 # define ERR_MSG_MALLOC	"memory allocation failed"
 
-// ========= ERRORS_PARSING ============ //
+/* ========= ERRORS_PARSING ============ */
 
 # define ERR_MSG_ARGS	    "wrong number of arguments"
 # define ERR_MSG_ARGC	    "takes only : ./cub3d ./path_to_map"
 # define ERR_MSG_FORMAT		"file must end in .cub"
-# define ERR_MSG_INVALID_ID		"file must end in .cub"
+# define ERR_MSG_INVALID_ID		"Identifier not declared right"
 # define ERR_MSG_INVALID_CHAR	"Invalid char found on the map"
+# define ERR_MSG_INVALID_RGB	"Invalid RGB value"
 # define ERR_MSG_PLAYER_COUNT	"Too much player located on the map"
+# define ERR_MSG_NO_PLAYER	"No player located on the map"
+# define ERR_MSG_SET_COLOR	"Color is already set"
 # define ERR_MSG_WALLS		"Map isn't closed by walls"
-# define ERR_MSG_PARSING	"error parsing"
-# define ERR_MSG_TEXTURES	"couldn't load all textures"
-# define ERR_MSG_OPEN		"cannot open file"
-# define ERR_MSG_EMPTY	    "empty file"
+# define ERR_MSG_PARSING	"Error parsing"
+# define ERR_MSG_TEXTURES	"Couldn't load all textures"
+# define ERR_MSG_XPM		"Couldn't load this .xpm file: "
+# define ERR_MSG_OPEN		"Cannot open file"
+# define ERR_MSG_EMPTY	    "Empty file"
 # define ERR_MSG_LOADING	"Error while loading game"
 # define ERR_MSG_MLX		"Mlx didn't initiate properly"
 # define ERR_FAIL_MLX		"Something went wrong with MLX"
-
-// ========= ERRORS_PARSING ============ //
 
 /* ============== ERROR FUNCTIONS ========================== */
 /* src/utils/error.c */

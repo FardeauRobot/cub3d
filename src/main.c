@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/04/02 15:03:08 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/03/26 12:32:23 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,10 @@ void	ft_p_structs_init(t_cub *data)
 // FUNCTION USED TO INITIALIZE THE MAIN STRUCTURE AND START THE PROGRAM
 int	main(int argc, char **argv)
 {
-	t_cub data;
+	t_cub	data;
 
 	ft_bzero(&data, sizeof(t_cub));
-	ft_p_structs_init(&data);
 	ft_parsing(&data, argv, argc);
-	ft_cub_print(&data);
 	ft_game(&data);
 	return (EXIT_SUCCESS);
 }
