@@ -15,16 +15,15 @@
 #include "mlx.h"
 #include <stdio.h>
 
-// FUNCTION USED TO INITIALIZE MLX, THE MINIMAP AND THE PLAYER MARKER
 void	ft_move_update(void *cub)
 {
 	t_cub	*data;
 
 	data = (t_cub *)cub;
-	if (data->player.rotating != NONE )
+	if (data->player.rotating != NONE)
 		ft_rotate(&data->player);
-	if (data->player.moving != NONE )
-		ft_move(&data->player);
+	if (data->player.moving != NONE)
+		ft_move(&data->player, data->map.map);
 }
 
 void	ft_camera_update(void *cub)
@@ -46,16 +45,10 @@ int	ft_game_loop(void *cub)
 	return (SUCCESS);
 }
 
-void	ft_game_init(t_cub *data)
-{
-	ft_mlx_init(data);
-	ft_minimap_init(&data->map);
-	ft_char_init(data);
-}
-
 int	ft_game_end(void *data)
 {
-	t_cub *cub;
+	t_cub	*cub;
+
 	cub = (t_cub *)data;
 	if (cub->mlx)
 		mlx_loop_end(cub->mlx);

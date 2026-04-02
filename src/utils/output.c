@@ -3,28 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   output.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:55:12 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/11 18:53:44 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:20:05 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // TODO : A DELETE A LA FIN
-//  FOR THE TEST
-
 /*
 ** FT_MATRIX_PRINT - PRINTS ALL STRINGS OF A NULL-TERMINATED CHAR ** TO STDOUT
 */
 void	ft_matrix_print(char **matrix)
 {
-	int i;
+	int	i;
 
 	i = -1;
 	while (matrix[++i])
+	{
 		ft_putstr_fd(matrix[i], STDOUT_FILENO);
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	}
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
@@ -37,8 +38,8 @@ void	ft_textures_print(t_textures *textures)
 	ft_printf("[SOUTH = %s]\n", textures->south);
 	ft_printf("[WEST = %s]\n", textures->west);
 	ft_printf("[EAST = %s]\n", textures->east);
-	ft_printf("[FLOOR = %s]\n", textures->floor);
-	ft_printf("[CEILING = %s]\n", textures->ceiling);
+	ft_printf("[RGB CEIL = %d]", textures->ceiling_rgb);
+	ft_printf("[RGB FLOOR = %d]", textures->floor_rgb);
 }
 
 /*
@@ -50,8 +51,12 @@ void	ft_cub_print(t_cub *data)
 	printf("[FD_MAP = %d]\n", data->fd_map);
 	printf("[INDEX START = %d]\n", data->map.index_map_start);
 	printf("[MAP SIZE = %d x %d]\n", data->map.width, data->map.height);
-	printf("[PLAYER START = [%.2f|%.2f]]\n", data->player.pos_y, data->player.pos_x);
+	printf("[PLAYER START = [%.2f|%.2f]]\n", data->player.pos_y,
+		data->player.pos_x);
 	ft_textures_print(&data->textures);
-	printf("[MAP]\n");
-	ft_matrix_print(data->map.map);
+	if (data->map.map)
+	{
+		printf("[MAP]\n");
+		ft_matrix_print(data->map.map);
+	}
 }

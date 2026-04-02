@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 18:47:32 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/24 15:03:48 by tibras           ###   ########.fr       */
+/*   Updated: 2026/03/30 12:20:42 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_rotate(t_player *player)
 	double	rot;
 
 	if (player->rotating == NONE)
-		return;
+		return ;
 	if (player->rotating == LEFT)
 		rot = -ROT_SPEED;
 	if (player->rotating == RIGHT)
@@ -28,15 +28,13 @@ void	ft_rotate(t_player *player)
 	player->dir_y = old_dir_x * sin(rot) + player->dir_y * cos(rot);
 }
 
-int	ft_move(t_player *player)
+int	ft_move(t_player *player, char **map)
 {
-	t_map *map;
 	double	move_x;
 	double	move_y;
 
 	move_x = 0;
 	move_y = 0;
-	map = player->p_structs->p_map;
 	if (player->moving & UP)
 	{
 		move_y += player->dir_y;
@@ -57,8 +55,8 @@ int	ft_move(t_player *player)
 		move_y += player->dir_x;
 		move_x -= player->dir_y;
 	}
-	if (!ft_ischarset(map->map[(int)(player->pos_y + move_y * CHAR_SPEED)]
-			[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
+	if (!ft_ischarset(map[(int)(player->pos_y + move_y * CHAR_SPEED)]
+		[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
 		return (ERRN_WALL);
 	player->pos_x += move_x * CHAR_SPEED;
 	player->pos_y += move_y * CHAR_SPEED;
@@ -67,7 +65,7 @@ int	ft_move(t_player *player)
 
 int	ft_press_keys(int keycode, void *cub)
 {
-	t_cub *data;
+	t_cub	*data;
 
 	data = (t_cub *)cub;
 	if (keycode == KEY_LEFT)
@@ -87,7 +85,7 @@ int	ft_press_keys(int keycode, void *cub)
 
 int	ft_release_keys(int keycode, void *cub)
 {
-	t_cub *data;
+	t_cub	*data;
 
 	data = (t_cub *)cub;
 	if (keycode == KEY_ESC)
@@ -105,12 +103,9 @@ int	ft_release_keys(int keycode, void *cub)
 		data->player.moving &= ~RIGHT;
 	if (keycode == KEY_RIGHT || keycode == KEY_LEFT)
 		data->player.rotating = NONE;
-	if (keycode == KEY_TAB)
-	{
-		if (data->map.minimap.display_map == ON)
+	if (keycode == KEY_TAB && data->map.minimap.display_map == ON)
 			data->map.minimap.display_map = OFF;
-		else if (data->map.minimap.display_map == OFF)
+	else if (keycode == KEY_TAB && data->map.minimap.display_map == OFF)
 			data->map.minimap.display_map = ON;
-	}
 	return (SUCCESS);
 }

@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/15 16:41:27 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/30 09:16:19 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
 // FILE IN CHARGE OF THE PARSING BEFORE EXECUTION OF THE GAME
-
 static int	ft_map_width(char **map)
 {
 	int	i;
@@ -93,7 +92,7 @@ void	ft_map_check(t_cub *data)
 					ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_WALLS);
 			}
 			else if (!ft_isspace(map[y][x]))
-				ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_INVALID_CHAR);
+				ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_CHAR, map[y]);
 		}
 	}
 }
@@ -124,13 +123,15 @@ int	ft_parsing(t_cub *data, char **argv, int argc)
 
 	// CHECK TEXTURES
 	if (ft_textures_parsing(data) != SUCCESS)
-		ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_TEXTURES);
+		ft_exit(data, ERRN_PARSING, NULL, NULL);
 
 	// FILL MAP
 	ft_map_fill(data);
 
 	// CHECK MAP
 	ft_map_check(data);
+	if (data->player.pos_x == 0 || data->player.pos_y == 0)
+		ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_NO_PLAYER);
 
 	// RELEASE TMP MALLOCS (SPLITS / GNL / FILE)
 	ft_gc_free_all(&data->gc_tmp);

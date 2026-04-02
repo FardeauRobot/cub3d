@@ -36,7 +36,7 @@ typedef struct s_ray
 
 double ft_get_time()
 {
-	struct timeval tv;
+	struct timeval	tv;
 
 	gettimeofday(&tv, NULL);
 	return (tv.tv_sec + tv.tv_usec / 1000000.0);
@@ -155,42 +155,68 @@ void ft_map_raycasting(t_cub *data)
 	}
 }
 
-// FUNCTION USED TO STAMP THE PRE-RENDERED MINIMAP CACHE INTO THE DISPLAY
-void	ft_minimap_draw(t_minimap *minimap)
+// FUNCTION USED TO PRE-RENDER THE WHOLE MAP INTO THE MINIMAP CACHE IMAGE
+void	ft_minimap_cache_render(t_minimap *minimap, t_map *map)
 {
-	ft_img_to_img(&minimap->p_structs->p_cub->display, &minimap->cache,
-		minimap->offset_x, minimap->offset_y);
+	int	x;
+	int	y;
+
+	y = -1;
+	while (++y < map->height)
+	{
+		x = -1;
+		while (++x < map->width)
+		{
+			if (map->map[y][x] == '1')
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[WALL].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+			else if (map->map[y][x] == '0' || map->map[y][x] == 'N'
+				|| map->map[y][x] == 'S' || map->map[y][x] == 'E'
+				|| map->map[y][x] == 'W')
+				ft_img_to_img(&minimap->cache,
+					&minimap->tiles[EMPTY].tile_img,
+					x * TILE_SIZE, y * TILE_SIZE);
+		}
+	}
+}
+
+// FUNCTION USED TO STAMP THE PRE-RENDERED MINIMAP CACHE INTO THE DISPLAY
+void	ft_minimap_draw(t_cub *data)
+{
+	ft_img_to_img(&data->display, &data->map.minimap.cache,
+		data->map.minimap.offset_x, data->map.minimap.offset_y);
 }
 
 // FUNCTION USED TO DRAW THE PLAYER MARKER INTO THE DISPLAY IMAGE
-void	ft_char_draw(t_player *player)
+void	ft_char_draw(t_cub *data)
 {
 	int	screen_x;
 	int	screen_y;
 
-	screen_x = player->p_structs->p_minimap->offset_x
-		+ (int)(player->pos_x * TILE_SIZE)
-		- (player->char_img.width / 2);
-	screen_y = player->p_structs->p_minimap->offset_y
-		+ (int)(player->pos_y * TILE_SIZE)
-		- (player->char_img.width / 2);
-	ft_img_to_img(&player->p_structs->p_cub->display,
-		&player->char_img, screen_x, screen_y);
+	screen_x = data->map.minimap.offset_x
+		+ (int)(data->player.pos_x * TILE_SIZE)
+		- (data->player.char_img.width / 2);
+	screen_y = data->map.minimap.offset_y
+		+ (int)(data->player.pos_y * TILE_SIZE)
+		- (data->player.char_img.width / 2);
+	ft_img_to_img(&data->display,
+		&data->player.char_img, screen_x, screen_y);
 }
 
-void	ft_orient_draw(t_player *player)
+void	ft_orient_draw(t_cub *data)
 {
 	int	screen_x;
 	int	screen_y;
 
-	screen_x = player->p_structs->p_minimap->offset_x
-		+ (int)((player->pos_x + player->dir_x) * TILE_SIZE)
-		- (player->test_view.width / 2);
-	screen_y = player->p_structs->p_minimap->offset_y
-		+ (int)((player->pos_y + player->dir_y) * TILE_SIZE)
-		- (player->test_view.height / 2);
-	ft_img_to_img(&player->p_structs->p_cub->display,
-		&player->test_view, screen_x, screen_y);
+	screen_x = data->map.minimap.offset_x
+		+ (int)((data->player.pos_x + data->player.dir_x) * TILE_SIZE)
+		- (data->player.test_view.width / 2);
+	screen_y = data->map.minimap.offset_y
+		+ (int)((data->player.pos_y + data->player.dir_y) * TILE_SIZE)
+		- (data->player.test_view.height / 2);
+	ft_img_to_img(&data->display,
+		&data->player.test_view, screen_x, screen_y);
 }
 
 // FUNCTION USED TO RENDER EVERYTHING INTO DISPLAY AND PUSH TO WINDOW ONCE
@@ -199,14 +225,16 @@ int	ft_map_render(void *cub)
 	t_cub	*data;
 
 	data = (t_cub *)cub;
-	ft_img_fill(&data->display,data->display.height, data->display.width, 0xFFB700);
-	ft_img_fill(&data->display, data->display.height / 2, data->display.width, 0x57C4E5);
+	ft_img_fill(&data->display, data->display.height,
+		data->display.width, data->textures.floor_rgb);
+	ft_img_fill(&data->display, data->display.height / 2,
+		data->display.width, data->textures.ceiling_rgb);
 	ft_map_raycasting(data);
 	if (data->map.minimap.display_map == ON)
 	{
-		ft_minimap_draw(&data->map.minimap);
-		ft_char_draw(&data->player);
-		ft_orient_draw(&data->player);
+		ft_minimap_draw(data);
+		ft_char_draw(data);
+		ft_orient_draw(data);
 	}
 	mlx_put_image_to_window(data->mlx, data->win,
 		data->display.img, 0, 0);
