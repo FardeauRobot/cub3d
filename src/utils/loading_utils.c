@@ -20,5 +20,9 @@ int	ft_xpm_img(t_cub *game, t_img *img, char *path)
 			&img->height);
 	if (!img->img)
 		return (FAILURE);
+	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->line_len,
+			&img->endian);
+	if (!img->addr)
+		return (FAILURE);
 	return (SUCCESS);
 }

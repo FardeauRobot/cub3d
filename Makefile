@@ -113,7 +113,7 @@ re: fclean all
 
 # ============== DEBUG & ANALYSIS ==========================
 
-TEST= ./$(NAME) ./maps/working/basic.cub
+TEST= ./$(NAME) ./maps/working/basic2.cub
 
 test: $(NAME)
 	$(TEST)
