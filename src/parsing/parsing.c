@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/03 12:22:43 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 14:52:54 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,26 @@ static int	ft_cell_check(char **map, int y, int x)
 // GOES THROUGH ALL THE MAPS AND CHECK FOR INVALID CHARS
 	// / MAP NOT CLOSED BY WALLS
 // ALSO INITALIZES INFOS ABOUT PLAYER (POS AND ORIENTATION)
+
+void ft_map_check_helper(t_cub *data, int x, int y, char **map)
+{
+	if (ft_ischarset(map[y][x], "01NSEW"))
+	{
+		if (ft_ischarset(map[y][x], "NSEW"))
+		{
+			if (data->player.pos_y != 0 || data->player.pos_x != 0)
+				ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING,
+			ERR_MSG_PLAYER_COUNT);
+			ft_player_set(&data->player, x, y, map[y][x]);
+		}
+		if (map[y][x] != '1' && ft_cell_check(map, y, x) != SUCCESS)
+			ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_WALLS);
+	}
+	else if (!ft_isspace(map[y][x]))
+		ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_CHAR, map[y]);
+}
+
+
 void	ft_map_check(t_cub *data)
 {
 	int		x;
@@ -80,22 +100,7 @@ void	ft_map_check(t_cub *data)
 	{
 		x = -1;
 		while (map[y][++x] && map[y][x] != '\n')
-		{
-			if (ft_ischarset(map[y][x], "01NSEW"))
-			{
-				if (ft_ischarset(map[y][x], "NSEW"))
-				{
-					if (data->player.pos_y != 0 || data->player.pos_x != 0)
-						ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING,
-							ERR_MSG_PLAYER_COUNT);
-					ft_player_set(&data->player, x, y, map[y][x]);
-				}
-				if (map[y][x] != '1' && ft_cell_check(map, y, x) != SUCCESS)
-					ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING, ERR_MSG_WALLS);
-			}
-			else if (!ft_isspace(map[y][x]))
-				ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_CHAR, map[y]);
-		}
+			ft_map_check_helper(data, x, y, map);
 	}
 }
 

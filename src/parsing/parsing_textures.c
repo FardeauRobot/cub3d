@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_textures.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/03 13:24:58 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 14:56:11 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,53 +93,43 @@ static int	ft_textures_detect(char *id)
 ** MATCHES ID (NO, SO, WE, EA, F, C) AND STORES PATH IN DATA->TEXTURES
 */
 
+static int ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
+{
+	if (arr[2])
+		return (ft_error("Invalide tex", arr[2], ERRN_PARSING));
+	*dst = ft_strdup_gc(path, &data->gc_global);
+	if (!dst)
+		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+	return (SUCCESS);
+}
+
+static int ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part)
+{
+	if (*dst != 0)
+		return (ft_error(ERR_MSG_SET_COLOR, (char *)part, ERRN_TEXTURES));
+	if (ft_rgb(data, arr, part) != SUCCESS)
+	{
+		*dst = -1;
+		return (FAILURE);
+	}
+	return (SUCCESS);
+}
+
 static int	ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 {
 	if (ft_strncmp(id, "NO", 2) == 0)
-	{
-		data->textures.north = ft_strdup_gc(path, &data->gc_global);
-		if (!data->textures.north)
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-	}
+		return (ft_assign_wall(data, &data->textures.north, path, arr));
 	if (ft_strncmp(id, "SO", 2) == 0)
-	{
-		data->textures.south = ft_strdup_gc(path, &data->gc_global);
-		if (!data->textures.south)
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-	}
+		return (ft_assign_wall(data, &data->textures.south, path, arr));
 	if (ft_strncmp(id, "WE", 2) == 0)
-	{
-		data->textures.west = ft_strdup_gc(path, &data->gc_global);
-		if (!data->textures.west)
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-	}
+		return (ft_assign_wall(data, &data->textures.west, path, arr));
 	if (ft_strncmp(id, "EA", 2) == 0)
-	{
-		data->textures.east = ft_strdup_gc(path, &data->gc_global);
-		if (!data->textures.east)
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-	}
+		return (ft_assign_wall(data, &data->textures.east, path, arr));
 	if (ft_strncmp(id, "F", 1) == 0)
-	{
-		if (data->textures.floor_rgb != 0)
-			return (ft_error(ERR_MSG_SET_COLOR, "FLOOR", ERRN_TEXTURES));
-		if (ft_rgb(data, arr, FLOOR) != SUCCESS)
-		{
-			data->textures.floor_rgb = -1;
-			return (FAILURE);
-		}
-	}
+		return (ft_assign_f_c(data, &data->textures.floor_rgb, arr, FLOOR));
 	if (ft_strncmp(id, "C", 1) == 0)
-	{
-		if (data->textures.ceiling_rgb != 0)
-			return (ft_error(ERR_MSG_SET_COLOR, "CEILING", ERRN_TEXTURES));
-		if (ft_rgb(data, arr, CEILING) != SUCCESS)
-		{
-			data->textures.ceiling_rgb = -1;
-			return (FAILURE);
-		}
-	}
-	return (SUCCESS);
+		return (ft_assign_f_c(data, &data->textures.ceiling_rgb, arr, CEILING));
+	return (FAILURE);
 }
 
 /*
@@ -153,7 +143,7 @@ static int	ft_textures_fill(t_cub *data, char *line)
 	arr = ft_split_charset_gc((const char *)line, ", \t\n", &data->gc_tmp);
 	if (!arr)
 		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-	if (!arr[0] || ft_textures_detect(arr[0]))
+	if (!arr[0] || ft_textures_detect(arr[0]) == FAILURE)
 		return (FAILURE);
 	if (ft_texture_dispatch(data, arr, arr[0], arr[1]) != SUCCESS)
 		return (ERRN_TEXTURES);
@@ -167,13 +157,13 @@ int	ft_textures_complete(t_textures *textures)
 		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_CEILING, ERRN_PARSING));
 	if (textures->floor_rgb == -1)
 		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_FLOOR, ERRN_PARSING));
-	if (textures->north == NULL) 
+	if (textures->north == NULL)
 		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_NORTH, ERRN_PARSING));
 	if (textures->south == NULL)
 		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_SOUTH, ERRN_PARSING));
 	if (textures->east == NULL)
 		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_EAST, ERRN_PARSING));
-	if ( textures->west == NULL)
+	if (textures->west == NULL)
 		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_WEST, ERRN_PARSING));
 	return (SUCCESS);
 }
@@ -191,9 +181,9 @@ int	ft_textures_parsing(t_cub *data)
 	while (data->file[++i])
 	{
 		ret = ft_textures_fill(data, data->file[i]);
-		if (ret != SUCCESS && ret != FAILURE)
-			return (ret);
-		if (ret == FAILURE && !ft_is_only(data->file[i], ft_isspace))
+		// if (ret != SUCCESS && ret != FAILURE)
+		// 	break ;
+		if ((ret == FAILURE  || ret == ERRN_TEXTURES) && !ft_is_only(data->file[i], ft_isspace))
 		{
 			ft_cub_print(data);
 			if (ft_textures_complete(&data->textures) != SUCCESS)

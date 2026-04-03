@@ -53,6 +53,18 @@ int	ft_format_check(char *filepath)
 	return (SUCCESS);
 }
 
+static void ft_file_dup(t_cub *data, t_list *lst)
+{
+	int i;
+
+	i = 0;
+	while (lst)
+	{
+		data->file[i++] = ft_strdup_gc(lst->content, &data->gc_global);
+		lst = lst->next;
+	}
+}
+
 /*
 ** FT_FILE_STORE - READS THE .CUB FILE AND STORES EACH LINE IN DATA->FILE
 ** USES GET_NEXT_LINE TO READ, THEN COPIES INTO A GC-MANAGED CHAR **
@@ -81,11 +93,6 @@ int	ft_file_store(t_cub *data)
 	data->file = ft_calloc_gc(i + 1, sizeof(char *), &data->gc_global);
 	if (!data->file)
 		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-	i = 0;
-	while (lst)
-	{
-		data->file[i++] = ft_strdup_gc(lst->content, &data->gc_global);
-		lst = lst->next;
-	}
+	ft_file_dup(data, lst);
 	return (SUCCESS);
 }
