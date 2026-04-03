@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/15 18:47:32 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 12:20:42 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 19:10:28 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,31 @@ void	ft_rotate(t_player *player)
 	player->dir_y = old_dir_x * sin(rot) + player->dir_y * cos(rot);
 }
 
+void	ft_move_helper(double *move_x, double *move_y, t_player *player,
+		int mod)
+{
+	if (mod == 0)
+	{
+		*move_y += player->dir_y;
+		*move_x += player->dir_x;
+	}
+	else if (mod == 1)
+	{
+		*move_y -= player->dir_y;
+		*move_x -= player->dir_x;
+	}
+	else if (mod == 2)
+	{
+		*move_y -= player->dir_x;
+		*move_x += player->dir_y;
+	}
+	else if (mod == 3)
+	{
+		*move_y += player->dir_x;
+		*move_x -= player->dir_y;
+	}
+}
+
 int	ft_move(t_player *player, char **map)
 {
 	double	move_x;
@@ -36,27 +61,16 @@ int	ft_move(t_player *player, char **map)
 	move_x = 0;
 	move_y = 0;
 	if (player->moving & UP)
-	{
-		move_y += player->dir_y;
-		move_x += player->dir_x;
-	}
+		ft_move_helper(&move_x, &move_y, player, 0);
 	if (player->moving & DOWN)
-	{
-		move_y -= player->dir_y;
-		move_x -= player->dir_x;
-	}
+		ft_move_helper(&move_x, &move_y, player, 1);
 	if (player->moving & LEFT)
-	{
-		move_y -= player->dir_x;
-		move_x += player->dir_y;
-	}
+		ft_move_helper(&move_x, &move_y, player, 2);
 	if (player->moving & RIGHT)
-	{
-		move_y += player->dir_x;
-		move_x -= player->dir_y;
-	}
-	if (!ft_ischarset(map[(int)(player->pos_y + move_y * CHAR_SPEED)]
-		[(int)(player->pos_x + move_x * CHAR_SPEED)], "0NSEW"))
+		ft_move_helper(&move_x, &move_y, player, 3);
+	if (!ft_ischarset(map[(int)(player->pos_y + move_y
+				* CHAR_SPEED)][(int)(player->pos_x + move_x * CHAR_SPEED)],
+			"0NSEW"))
 		return (ERRN_WALL);
 	player->pos_x += move_x * CHAR_SPEED;
 	player->pos_y += move_y * CHAR_SPEED;
@@ -104,8 +118,8 @@ int	ft_release_keys(int keycode, void *cub)
 	if (keycode == KEY_RIGHT || keycode == KEY_LEFT)
 		data->player.rotating = NONE;
 	if (keycode == KEY_TAB && data->map.minimap.display_map == ON)
-			data->map.minimap.display_map = OFF;
+		data->map.minimap.display_map = OFF;
 	else if (keycode == KEY_TAB && data->map.minimap.display_map == OFF)
-			data->map.minimap.display_map = ON;
+		data->map.minimap.display_map = ON;
 	return (SUCCESS);
 }

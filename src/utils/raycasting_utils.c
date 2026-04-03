@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 17:47:49 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/02 19:08:50 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:10:08 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	ft_draw_wall(t_cub *data, t_ray *ray, t_draw *dw, int x)
 
 void	ft_draw_floor(t_cub *data, t_ray *ray, int x)
 {
-	int y;
+	int	y;
 
 	y = ray->draw_end;
 	while (y < data->screen_height)

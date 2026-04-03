@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/15 16:56:57 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/04/03 19:12:37 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 # define CUB3D_H
 
 /* ============== STANDARD LIBRARIES ======================= */
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include <fcntl.h>
 # include <errno.h>
-# include <string.h>
+# include <fcntl.h>
 # include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <unistd.h>
 
 /* ============== PROJECT LIBRARIES ======================== */
 # include "libft.h"
@@ -28,9 +28,9 @@
 
 /* ============== PROJECT HEADERS ========================== */
 # include "defines.h"
-# include "structures.h"
 # include "errors.h"
 # include "keys.h"
+# include "structures.h"
 
 /* ============== CORE ===================================== */
 /* src/core/ — add prototypes here */

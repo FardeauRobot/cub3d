@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 17:47:49 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/02 19:19:41 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:09:59 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	ft_define_tex(t_cub *data, t_ray *ray, t_draw *dw)
 
 void	ft_draw_ray(t_cub *data, t_ray *ray, int x)
 {
-	t_draw dw;
+	t_draw	dw;
 
 	ft_compute_dist(data, ray, &dw);
 	ft_limit_draw(data, ray, &dw);

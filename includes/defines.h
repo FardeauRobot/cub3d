@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/03 12:21:33 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 19:12:45 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@
 # define TILE_SIZE 16
 # define CHAR_SIZE 4
 
-# define	CHAR_SPEED 0.05
-# define	ROT_SPEED 0.03
+# define CHAR_SPEED 0.05
+# define ROT_SPEED 0.03
 
 // BITFLAGS
 # define UP 0b0001
@@ -43,7 +43,7 @@
 
 /* ============== CORE ============================= */
 // GAME_INIT.C
-int	ft_tile_color_get(t_etile content);
+int		ft_tile_color_get(t_etile content);
 void	ft_tiles_init(t_cub *data, t_tile *tile, t_etile content);
 void	ft_game_init(t_cub *data);
 
@@ -70,7 +70,7 @@ void	ft_char_draw(t_cub *data);
 int		ft_map_render(void *cub);
 
 // RENDER_RAYCASTING.C
-void ft_map_raycasting(t_cub *data);
+void	ft_map_raycasting(t_cub *data);
 
 // RENDER_UTILS.C
 void	ft_img_pixel_put(t_img *img, int x, int y, int color);
@@ -108,13 +108,13 @@ int		ft_release_keys(int keycode, void *cub);
 int		ft_press_keys(int keycode, void *cub);
 
 // RAYCASTING.C
-void ft_draw_ray(t_cub *data, t_ray *ray, int x);
+void	ft_draw_ray(t_cub *data, t_ray *ray, int x);
 
 // RAYCASTING_UTILS.C
-void ft_draw_floor(t_cub *data, t_ray *ray, int x);
-void ft_draw_wall(t_cub *data, t_ray *ray, t_draw *dw, int x);
-void ft_draw_ceiling(t_cub *data, t_ray *ray, int x);
-void ft_get_y_tex(t_cub *data, t_ray *ray, t_draw *dw);
-void ft_get_x_tex(t_ray *ray, t_draw *dw);
+void	ft_draw_floor(t_cub *data, t_ray *ray, int x);
+void	ft_draw_wall(t_cub *data, t_ray *ray, t_draw *dw, int x);
+void	ft_draw_ceiling(t_cub *data, t_ray *ray, int x);
+void	ft_get_y_tex(t_cub *data, t_ray *ray, t_draw *dw);
+void	ft_get_x_tex(t_ray *ray, t_draw *dw);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/03 14:52:54 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:11:28 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,9 @@ static int	ft_cell_check(char **map, int y, int x)
 }
 
 // GOES THROUGH ALL THE MAPS AND CHECK FOR INVALID CHARS
-	// / MAP NOT CLOSED BY WALLS
+// / MAP NOT CLOSED BY WALLS
 // ALSO INITALIZES INFOS ABOUT PLAYER (POS AND ORIENTATION)
-
-void ft_map_check_helper(t_cub *data, int x, int y, char **map)
+void	ft_map_check_helper(t_cub *data, int x, int y, char **map)
 {
 	if (ft_ischarset(map[y][x], "01NSEW"))
 	{
@@ -77,7 +76,7 @@ void ft_map_check_helper(t_cub *data, int x, int y, char **map)
 		{
 			if (data->player.pos_y != 0 || data->player.pos_x != 0)
 				ft_exit(data, ERRN_PARSING, ERR_MSG_PARSING,
-			ERR_MSG_PLAYER_COUNT);
+					ERR_MSG_PLAYER_COUNT);
 			ft_player_set(&data->player, x, y, map[y][x]);
 		}
 		if (map[y][x] != '1' && ft_cell_check(map, y, x) != SUCCESS)
@@ -86,7 +85,6 @@ void ft_map_check_helper(t_cub *data, int x, int y, char **map)
 	else if (!ft_isspace(map[y][x]))
 		ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_CHAR, map[y]);
 }
-
 
 void	ft_map_check(t_cub *data)
 {
@@ -105,7 +103,6 @@ void	ft_map_check(t_cub *data)
 }
 
 // TODO : HOW DO WE HANDLE THE CASE WHERE A TEXTURE INFO IS AFTER THE MAP
-
 /*
 ** FT_PARSING - MAIN PARSING ENTRY POINT
 ** VALIDATES ARGS, FILE FORMAT, STORES FILE, PARSES TEXTURES AND MAP

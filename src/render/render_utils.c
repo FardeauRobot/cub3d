@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 08:37:28 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/24 15:40:51 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 19:15:08 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ void	ft_img_pixel_put(t_img *img, int x, int y, int color)
 	char	*dst;
 
 	if (!img || !img->addr)
-		return;
+		return ;
 	if (x < 0 || y < 0)
-		return;
+		return ;
 	if (x >= img->width || y >= img->height)
-		return;
+		return ;
 	if (color == 0x000000)
-		return;
+		return ;
 	dst = img->addr + (y * img->line_len + x * (img->bpp / 8));
 	*(unsigned int *)dst = color;
 }
@@ -44,7 +44,8 @@ int	ft_img_pixel_get(t_img *img, int x, int y)
 	return (*(unsigned int *)src);
 }
 
-// FUNCTION USED TO COPY A SOURCE IMAGE ONTO A DESTINATION IMAGE AT (dst_x, dst_y)
+// FUNCTION USED TO COPY A SOURCE IMAGE ONTO A DESTINATION IMAGE AT (dst_x,
+//	dst_y)
 void	ft_img_to_img(t_img *dst, t_img *src, int dst_x, int dst_y)
 {
 	int	x;
@@ -55,8 +56,8 @@ void	ft_img_to_img(t_img *dst, t_img *src, int dst_x, int dst_y)
 	{
 		x = -1;
 		while (++x < src->width)
-			ft_img_pixel_put(dst, dst_x + x, dst_y + y,
-				ft_img_pixel_get(src, x, y));
+			ft_img_pixel_put(dst, dst_x + x, dst_y + y, ft_img_pixel_get(src, x,
+					y));
 	}
 }
 

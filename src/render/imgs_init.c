@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   imgs_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 08:49:47 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/03 12:21:10 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 19:11:20 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,12 @@ void	ft_minimap_init(t_cub *data)
 
 	map = &data->map;
 	map->minimap.display_map = OFF;
-	map->minimap.offset_x = data->screen_width
-		- map->width * TILE_SIZE - 10;
+	map->minimap.offset_x = data->screen_width - map->width * TILE_SIZE - 10;
 	map->minimap.offset_y = 10;
 	ft_tiles_init(data, &map->minimap.tiles[EMPTY], EMPTY);
 	ft_tiles_init(data, &map->minimap.tiles[WALL], WALL);
-	ft_img_init(data, &map->minimap.cache,
-		map->width * TILE_SIZE, map->height * TILE_SIZE);
+	ft_img_init(data, &map->minimap.cache, map->width * TILE_SIZE, map->height
+		* TILE_SIZE);
 	ft_minimap_cache_render(&map->minimap, map);
 }
 
@@ -65,7 +64,6 @@ void	ft_img_init(t_cub *data, t_img *img, int width, int height)
 		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
 }
 
-
 // FUNCTION USED TO INITIALIZE THE PLAYER MARKER IMAGE FOR THE MINIMAP
 void	ft_char_init(t_cub *data)
 {
@@ -77,6 +75,8 @@ void	ft_char_init(t_cub *data)
 	character->char_img.color = CHAR_COL;
 	ft_img_init(data, &character->char_img, CHAR_SIZE, CHAR_SIZE);
 	ft_img_init(data, &character->test_view, CHAR_SIZE / 2, CHAR_SIZE / 2);
-	ft_img_fill(&character->char_img, character->char_img.height, character->char_img.width, character->char_img.color);
-	ft_img_fill(&character->test_view, character->test_view.height, character->test_view.width, character->char_img.color);
+	ft_img_fill(&character->char_img, character->char_img.height,
+		character->char_img.width, character->char_img.color);
+	ft_img_fill(&character->test_view, character->test_view.height,
+		character->test_view.width, character->char_img.color);
 }

@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:59:48 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/02 19:15:08 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:11:34 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	ft_format_check(char *filepath)
 	return (SUCCESS);
 }
 
-static void ft_file_dup(t_cub *data, t_list *lst)
+static void	ft_file_dup(t_cub *data, t_list *lst)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (lst)

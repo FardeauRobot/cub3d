@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/03 14:56:11 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:11:49 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 // POUR CONVERTIR EN COULEUR
 int	ft_rgb(t_cub *data, char **arr, t_background part)
 {
-	int		rgb[3];
-	int 	index;
-	int		i;
+	int	rgb[3];
+	int	index;
+	int	i;
 
 	i = -1;
 	index = 0;
@@ -65,7 +65,7 @@ int	ft_rgb(t_cub *data, char **arr, t_background part)
 		if (i == 0)
 			arr[i] = ft_strtrim_gc(arr[i], "FC", &data->gc_global);
 		if (!arr[i][0])
-			continue;
+			continue ;
 		if (index >= 3)
 			return (ft_error(ERR_MSG_INVALID_RGB, arr[i], ERRN_PARSING));
 		if (ft_rgb_convert(arr[i], &rgb[index++]) != SUCCESS)
@@ -93,7 +93,7 @@ static int	ft_textures_detect(char *id)
 ** MATCHES ID (NO, SO, WE, EA, F, C) AND STORES PATH IN DATA->TEXTURES
 */
 
-static int ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
+static int	ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 {
 	if (arr[2])
 		return (ft_error("Invalide tex", arr[2], ERRN_PARSING));
@@ -103,7 +103,7 @@ static int ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 	return (SUCCESS);
 }
 
-static int ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part)
+static int	ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part)
 {
 	if (*dst != 0)
 		return (ft_error(ERR_MSG_SET_COLOR, (char *)part, ERRN_TEXTURES));
@@ -183,7 +183,8 @@ int	ft_textures_parsing(t_cub *data)
 		ret = ft_textures_fill(data, data->file[i]);
 		// if (ret != SUCCESS && ret != FAILURE)
 		// 	break ;
-		if ((ret == FAILURE  || ret == ERRN_TEXTURES) && !ft_is_only(data->file[i], ft_isspace))
+		if ((ret == FAILURE || ret == ERRN_TEXTURES)
+			&& !ft_is_only(data->file[i], ft_isspace))
 		{
 			ft_cub_print(data);
 			if (ft_textures_complete(&data->textures) != SUCCESS)

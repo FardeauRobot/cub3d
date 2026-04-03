@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/02 19:10:43 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/02 19:12:09 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 19:07:48 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static void	ft_perf_dda(t_cub *data, t_ray *ray)
 			ray->hit = 1;
 	}
 }
+
 void	ft_map_raycasting(t_cub *data)
 {
 	t_ray	ray;
