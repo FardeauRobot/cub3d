@@ -3,28 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   game_init.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 11:55:56 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/02 19:14:36 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 12:21:50 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // FILE IN CHARGE OF THE INITIALIZATION OF THE GAME
 #include "cub3d.h"
-
-// INITIALIZES THE WALL SPRITES
-void	ft_sprites_init(t_cub *data)
-{
-	if (ft_xpm_img(data, &data->textures.wall_n, data->textures.north) != 0)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, data->textures.north);
-	if (ft_xpm_img(data, &data->textures.wall_s, data->textures.south) != 0)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, data->textures.south);
-	if (ft_xpm_img(data, &data->textures.wall_e, data->textures.east) != 0)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, data->textures.east);
-	if (ft_xpm_img(data, &data->textures.wall_w, data->textures.west) != 0)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, data->textures.west);
-}
 
 // FUNCTION USED TO RETURN THE DISPLAY COLOR ASSOCIATED WITH A TILE TYPE
 int	ft_tile_color_get(t_etile content)
@@ -32,29 +19,6 @@ int	ft_tile_color_get(t_etile content)
 	if (content == WALL)
 		return (WALL_TILE_COL);
 	return (EMPTY_TILE_COL);
-}
-
-// FUNCTION USED TO INITIALIZE ONE TILE IMAGE WITH THE RIGHT COLOR
-void	ft_tiles_init(t_cub *data, t_tile *tile, t_etile content)
-{
-	ft_img_init(data, &tile->tile_img, TILE_SIZE, TILE_SIZE);
-	tile->tile_img.color = ft_tile_color_get(content);
-	ft_img_fill(&tile->tile_img, tile->tile_img.height, tile->tile_img.width,
-		tile->tile_img.color);
-}
-
-// FUNCTION USED TO INITIALIZE AN MLX IMAGE AND ITS RAW PIXEL BUFFER
-void	ft_img_init(t_cub *data, t_img *img, int width, int height)
-{
-	img->height = height;
-	img->width = width;
-	img->img = mlx_new_image(data->mlx, img->width, img->height);
-	if (!img->img)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
-	img->addr = mlx_get_data_addr(img->img, &img->bpp, &img->line_len,
-			&img->endian);
-	if (!img->addr)
-		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
 }
 
 // INITALIZES ALL THE NECESSARY TOOLS FOR MLX TO WORK PROPERLY

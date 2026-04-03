@@ -3,44 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   game.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/02 19:14:45 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 12:55:58 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ft_move_update(void *cub)
-{
-	t_cub	*data;
-
-	data = (t_cub *)cub;
-	if (data->player.rotating != NONE)
-		ft_rotate(&data->player);
-	if (data->player.moving != NONE)
-		ft_move(&data->player, data->map.map);
-}
-
-void	ft_camera_update(void *cub)
-{
-	t_cub		*data;
-	t_player	*player;
-
-	data = (t_cub *)cub;
-	player = &data->player;
-	player->camera_plane_x = -player->dir_y * 0.66;
-	player->camera_plane_y = player->dir_x * 0.66;
-}
-
-int	ft_game_loop(void *cub)
-{
-	ft_move_update(cub);
-	ft_camera_update(cub);
-	ft_map_render(cub);
-	return (SUCCESS);
-}
 
 int	ft_game_end(void *data)
 {
@@ -66,6 +36,14 @@ int	ft_mouse(int x, int y, void *cub)
 		data->player.rotating = RIGHT;
 	else
 		data->player.rotating = NONE;
+	return (SUCCESS);
+}
+
+int	ft_game_loop(void *cub)
+{
+	ft_move_update(cub);
+	ft_camera_update(cub);
+	ft_map_render(cub);
 	return (SUCCESS);
 }
 

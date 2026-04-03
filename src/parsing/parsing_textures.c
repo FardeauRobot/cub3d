@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 12:31:35 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 13:23:11 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ int	ft_rgb_convert(char *str, int *nb)
 	}
 	while (str[++i])
 		*nb = *nb * 10 + str[i] - '0';
+	if (*nb > 255)
+	{
+		*nb = -1;
+		return (ft_error(ERR_MSG_INVALID_RGB, str, ERRN_PARSING));
+	}
 	return (SUCCESS);
 }
 
@@ -33,7 +38,10 @@ static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 {
 	int	ret;
 
-	ret = 255 << 24 | rgb[0] << 16 | rgb[1] << 8 | rgb[2];
+	if (rgb[0] == -1 || rgb[1] == -1 || rgb[2] == -1)
+		ret = -1;
+	else
+		ret = 255 << 24 | rgb[0] << 16 | rgb[1] << 8 | rgb[2];
 	if (part == FLOOR)
 		data->textures.floor_rgb = ret;
 	if (part == CEILING)
@@ -45,42 +53,22 @@ static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 int	ft_rgb(t_cub *data, char **arr, t_background part)
 {
 	int		rgb[3];
-	int		ret;
+	int 	index;
 	int		i;
-	int		j;
-	char	**split;
 
 	i = -1;
-	ret = 0;
-	rgb[0] = -1;
-	rgb[1] = -1;
-	rgb[2] = -1;
+	index = 0;
+	ft_matrix_print(arr);
 	while (arr[++i])
 	{
-		j = -1;
-		split = ft_split_charset_gc(arr[i], ", \t", &data->gc_tmp);
-		if (!split)
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
-		while (split[++j])
-		{
-			if (i == 0 && j == 0)
-				split[j] = ft_strtrim_gc(split[j], "FC", &data->gc_tmp);
-			if (!ft_is_only(split[j], ft_isdigit))
-				return (ft_error(ERR_MSG_INVALID_RGB, split[j], ERRN_PARSING));
-			if (split[j][0] && rgb[0] == -1)
-			{
-				if (ft_rgb_convert(split[j], &rgb[0]) != SUCCESS)
-					return (FAILURE);
-			}
-			else if (split[j][0] && rgb[1] == -1)
-			{
-				if (ft_rgb_convert(split[j], &rgb[1]) != SUCCESS)
-					return (FAILURE);
-			}
-			else if (split[j][0] && rgb[2] == -1)
-				if (ft_rgb_convert(split[j], &rgb[2]) != SUCCESS)
-					return (FAILURE);
-		}
+		if (i == 0)
+			arr[i] = ft_strtrim_gc(arr[i], "FC", &data->gc_global);
+		if (!arr[i][0])
+			continue;
+		if (index >= 3)
+			return (ft_error(ERR_MSG_INVALID_RGB, arr[i], ERRN_PARSING));
+		if (ft_rgb_convert(arr[i], &rgb[index++]) != SUCCESS)
+			return (FAILURE);
 	}
 	ft_rgb_affect(data, rgb, part);
 	return (SUCCESS);
@@ -161,7 +149,7 @@ static int	ft_textures_fill(t_cub *data, char *line)
 {
 	char	**arr;
 
-	arr = ft_split_charset_gc((const char *)line, " \t\n", &data->gc_tmp);
+	arr = ft_split_charset_gc((const char *)line, ", \t\n", &data->gc_tmp);
 	if (!arr)
 		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
 	if (!arr[0] || ft_textures_detect(arr[0]))
@@ -173,12 +161,18 @@ static int	ft_textures_fill(t_cub *data, char *line)
 
 int	ft_textures_complete(t_textures *textures)
 {
-	if (textures->ceiling_rgb == -1 || textures->floor_rgb == -1)
-		return (FAILURE);
-	if (textures->north == NULL || textures->south == NULL)
-		return (FAILURE);
-	if (textures->east == NULL || textures->west == NULL)
-		return (FAILURE);
+	if (textures->ceiling_rgb == -1)
+		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_CEILING, ERRN_PARSING));
+	if (textures->floor_rgb == -1)
+		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_FLOOR, ERRN_PARSING));
+	if (textures->north == NULL) 
+		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_NORTH, ERRN_PARSING));
+	if (textures->south == NULL)
+		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_SOUTH, ERRN_PARSING));
+	if (textures->east == NULL)
+		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_EAST, ERRN_PARSING));
+	if ( textures->west == NULL)
+		return (ft_error(ERR_MSG_TEXTURES, ERR_MSG_MISS_WEST, ERRN_PARSING));
 	return (SUCCESS);
 }
 
@@ -199,6 +193,7 @@ int	ft_textures_parsing(t_cub *data)
 			return (ret);
 		if (ret == FAILURE && !ft_is_only(data->file[i], ft_isspace))
 		{
+			ft_cub_print(data);
 			if (ft_textures_complete(&data->textures) != SUCCESS)
 				return (ft_error(ERR_MSG_LOADING, ERR_MSG_TEXTURES, ERRN_LOAD));
 			data->map.index_map_start = i;

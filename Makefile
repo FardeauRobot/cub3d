@@ -33,7 +33,7 @@ UTILS_PATH		= $(SRCS_PATH)/utils
 SKELETON_FILES	= main.c
 
 # Core module
-CORE_FILES		= game.c game_init.c
+CORE_FILES		= game.c game_init.c game_update.c
 
 # Parsing module
 PARSING_FILES	= parsing.c parsing_textures.c parsing_utils.c
@@ -113,7 +113,7 @@ re: fclean all
 
 # ============== DEBUG & ANALYSIS ==========================
 
-TEST= ./$(NAME) ./maps/working/basic2.cub
+TEST= ./$(NAME) ./maps/working/basic.cub
 
 test: $(NAME)
 	$(TEST)

@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/03/30 09:26:47 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 12:59:23 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,14 @@ typedef enum e_err
 # define ERR_MSG_INVALID_ID		"Identifier not declared right"
 # define ERR_MSG_INVALID_CHAR	"Invalid char found on the map"
 # define ERR_MSG_INVALID_RGB	"Invalid RGB value"
+# define ERR_MSG_MISS_CEILING	"Missing CEILING informations or wrong declaration"
+# define ERR_MSG_MISS_FLOOR	"Missing FLOOR informations or wrong declaration"
+# define ERR_MSG_MISS_NORTH	"Missing NORTH WALL informations or wrong declaration"
+# define ERR_MSG_MISS_SOUTH	"Missing SOUTH WALL informations or wrong declaration"
+# define ERR_MSG_MISS_WEST	"Missing WEST WALL informations or wrong declaration"
+# define ERR_MSG_MISS_EAST	"Missing EAST WALL informations or wrong declaration"
+
+# define ERR_MSG_MAX_RGB	"Too many values for RGB"
 # define ERR_MSG_PLAYER_COUNT	"Too much player located on the map"
 # define ERR_MSG_NO_PLAYER	"No player located on the map"
 # define ERR_MSG_SET_COLOR	"Color is already set"

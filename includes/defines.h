@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   defines.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/02 19:12:44 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/03 12:21:33 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,11 +43,16 @@
 
 /* ============== CORE ============================= */
 // GAME_INIT.C
+int	ft_tile_color_get(t_etile content);
 void	ft_tiles_init(t_cub *data, t_tile *tile, t_etile content);
 void	ft_game_init(t_cub *data);
 
 // GAME.C
 void	ft_game(t_cub *data);
+
+// GAME_UPDATE.C
+void	ft_move_update(void *cub);
+void	ft_camera_update(void *cub);
 
 /* ============== PARSING ============================= */
 // PARSING.C
@@ -74,6 +79,8 @@ void	ft_img_to_img(t_img *dst, t_img *src, int dst_x, int dst_y);
 void	ft_img_fill(t_img *img, int height, int width, int color);
 
 // IMGS_INIT.C
+void	ft_img_init(t_cub *data, t_img *img, int width, int height);
+void	ft_sprites_init(t_cub *data);
 void	ft_img_init(t_cub *data, t_img *img, int width, int height);
 void	ft_minimap_init(t_cub *data);
 void	ft_char_init(t_cub *data);

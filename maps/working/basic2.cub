@@ -3,8 +3,8 @@ SO ./imgs/door_slide.xpm
 WE ./imgs/ironbrick.xpm
 EA ./imgs/train3.xpm
 
-C222, 160,2
-F210,163,209
+C 222,160,2
+F 210,163,209
 
         1111111111111111111111111
         1000000000110000000000001
