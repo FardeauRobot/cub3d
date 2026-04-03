@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/03 13:23:11 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 13:24:58 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	ft_rgb_convert(char *str, int *nb)
 
 	*nb = 0;
 	i = -1;
+	printf("str = %s\n", str);
 	if (ft_strlen(str) > 3 || !ft_is_only(str, ft_isdigit))
 	{
 		*nb = -1;
@@ -159,6 +160,7 @@ static int	ft_textures_fill(t_cub *data, char *line)
 	return (SUCCESS);
 }
 
+// TODO : COMPRENDRE POURQUOI PAS D'INTERRUPTION SI MAUVAIS CHAR
 int	ft_textures_complete(t_textures *textures)
 {
 	if (textures->ceiling_rgb == -1)
