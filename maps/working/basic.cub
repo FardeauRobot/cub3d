@@ -1,9 +1,9 @@
 NO ./imgs/NORTH.xpm
 SO ./imgs/SOUTH.xpm
-WE ./imgs/WEST.xpm
 EA ./imgs/EAST.xpm
+WE ./imgs/WEST.xpm
 
-D222, 160,2
+C 222, 160,2
 F 210,163,209
 
         1111111111111111111111111

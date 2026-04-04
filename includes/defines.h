@@ -6,7 +6,7 @@
 /*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/03 19:12:45 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:00:09 by alamjada         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,16 @@ int		ft_parsing(t_cub *data, char **argv, int argc);
 // PARSING_TESTURES.C
 int		ft_file_store(t_cub *data);
 int		ft_textures_parsing(t_cub *data);
+
+// PARSING_MAP.C
+void	ft_map_check(t_cub *data);
+void	ft_map_fill(t_cub *data);
+
+// PARSING_RGB.C
+int		ft_rgb(t_cub *data, char **arr, t_background part);
+int		ft_rgb_convert(char *str, int *nb);
+int		ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part);
+int		ft_assign_wall(t_cub *data, char **dst, char *path, char **arr);
 
 /* ============== RENDER ============================= */
 // RENDER_MAP.C

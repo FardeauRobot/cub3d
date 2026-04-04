@@ -36,7 +36,7 @@ SKELETON_FILES	= main.c
 CORE_FILES		= game.c game_init.c game_update.c
 
 # Parsing module
-PARSING_FILES	= parsing.c parsing_textures.c parsing_utils.c
+PARSING_FILES	= parsing.c parsing_textures.c parsing_utils.c parsing_map.c parsing_rgb.c
 
 # Render module
 RENDER_FILES	= render_map.c render_raycasting.c render_utils.c imgs_init.c
