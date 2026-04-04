@@ -135,6 +135,23 @@ leaks_supp: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes \
 		--suppressions=readline.supp --track-origins=yes $(TEST)
 
+test_broken: $(NAME)
+	@printf "\n$(WHITE)=====================================\n$(RESET)"
+	@printf "	$(BOLD)$(CYAN)BROKEN MAPS LEAK TEST$(RESET)\n"
+	@printf "$(WHITE)=====================================$(RESET)\n\n"
+	@for map in maps/broken/*.cub maps/broken/*.ber; do \
+		if [ -f "$$map" ]; then \
+			printf "$(YELLOW)>> Testing: $(RESET)$$map\n"; \
+			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes \
+				--track-origins=yes --error-exitcode=42 \
+				./$(NAME) $$map 2>&1 | tail -1; \
+			printf "\n"; \
+		fi; \
+	done
+	@printf "$(WHITE)=====================================\n$(RESET)"
+	@printf "	$(BOLD)$(GREEN)LEAK TEST COMPLETE$(RESET)\n"
+	@printf "$(WHITE)=====================================$(RESET)\n\n"
+
 sanitize: fclean
 	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -fno-omit-frame-pointer" all
 
@@ -177,4 +194,4 @@ todo:
 	@grep -rn --color=always 'TODO\|FIXME\|HACK\|XXX' $(SRCS_PATH) $(INC_PATH) || \
 		printf "$(GREEN)  None found!$(RESET)\n"
 
-.PHONY: all clean fclean re leaks leaks_supp sanitize thread checknorm count todo
+.PHONY: all clean fclean re leaks leaks_supp test_broken sanitize thread checknorm count todo

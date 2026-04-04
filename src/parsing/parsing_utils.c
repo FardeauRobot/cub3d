@@ -77,17 +77,17 @@ int	ft_file_store(t_cub *data)
 	while (line)
 	{
 		if (ft_gc_add_node(&data->gc_tmp, line))
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+			ft_exit(data, ERRN_MALLOC, ERR_MSG_PARSING, ERR_MSG_MALLOC);
 		node = ft_lstnew_gc(line, &data->gc_tmp);
 		if (!node)
-			return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+			ft_exit(data, ERRN_MALLOC, ERR_MSG_PARSING, ERR_MSG_MALLOC);
 		ft_lstadd_back(&lst, node);
 		i++;
 		line = get_next_line(data->fd_map);
 	}
 	data->file = ft_calloc_gc(i + 1, sizeof(char *), &data->gc_global);
 	if (!data->file)
-		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+		ft_exit(data, ERRN_MALLOC, ERR_MSG_PARSING, ERR_MSG_MALLOC);
 	ft_file_dup(data, lst);
 	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/30 11:55:56 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/03 12:21:50 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 14:27:55 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ void	ft_mlx_init(t_cub *data)
 void	ft_game_init(t_cub *data)
 {
 	ft_mlx_init(data);
+	ft_sprites_init(data);
 	ft_minimap_init(data);
 	ft_char_init(data);
-	ft_sprites_init(data);
 }

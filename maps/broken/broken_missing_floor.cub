@@ -1,10 +1,9 @@
-NO ./imgs/door_big3.xpm
-SO ./imgs/door_slide.xpm
-WE ./imgs/ironbrick.xpm
-EA./imgs/train3.xpm
+NO ./imgs/NORTH.xpm
+SO ./imgs/SOUTH.xpm
+EA ./imgs/EAST.xpm
+WE ./imgs/WEST.xpm
 
-C 141, 143, 145
-F 210,163,209
+C 222, 160,2
 
         1111111111111111111111111
         1000000000110000000000001

@@ -3,19 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:03:04 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/04 12:54:30 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/04 14:13:07 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// TODO : HOW DO WE HANDLE THE CASE WHERE A TEXTURE INFO IS AFTER THE MAP
 // FT_PARSING - MAIN PARSING ENTRY POINT, VALIDATES ARGS AND PARSES FILE
 int	ft_parsing(t_cub *data, char **argv, int argc)
 {
+	data->textures.ceiling_rgb = -1;
+	data->textures.floor_rgb = -1;
 	if (argc != 2)
 		ft_exit(data, ERRN_PARSING, ERR_MSG_ARGS, ERR_MSG_ARGC);
 	if (ft_format_check(argv[1]) != SUCCESS)

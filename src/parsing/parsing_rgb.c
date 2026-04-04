@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:57:35 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/04 13:51:29 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 14:23:29 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,21 @@ int	ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 {
 	if (arr[2])
 		ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_TEXT, arr[2]);
+	if (!arr[1])
+		ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_TEXT, arr[0]);
 	*dst = ft_strdup_gc(path, &data->gc_global);
 	if (!dst)
-		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
+		ft_exit(data, ERRN_MALLOC, ERR_MSG_PARSING, ERR_MSG_MALLOC);
 	return (SUCCESS);
 }
 
 // FT_ASSIGN_F_C - ASSIGNS A FLOOR OR CEILING RGB COLOR VALUE
 int	ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part)
 {
-	if (*dst != 0)
-		return (ft_error(ERR_MSG_SET_COLOR, (char *)part, ERRN_TEXTURES));
+	if (*dst != -1 && part == FLOOR)
+		ft_exit(data, ERRN_TEXTURES, ERR_MSG_SET_COLOR, "FLOOR" );
+	if (*dst != -1 && part == CEILING)
+		ft_exit(data, ERRN_TEXTURES, ERR_MSG_SET_COLOR, "CEILING" );
 	if (ft_rgb(data, arr, part) != SUCCESS)
 	{
 		*dst = -1;
@@ -89,7 +93,7 @@ int	ft_rgb(t_cub *data, char **arr, t_background part)
 		if (!arr[i][0])
 			continue ;
 		if (index >= 3)
-			return (ft_error(ERR_MSG_INVALID_RGB, arr[i], ERRN_PARSING));
+			ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_RGB, arr[i]);
 		if (ft_rgb_convert(arr[i], &rgb[index++]) != SUCCESS)
 			return (FAILURE);
 	}
