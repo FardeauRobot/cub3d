@@ -17,13 +17,13 @@ In case of an invalid map, the game should not begin
 ## Resources
 
 - Guide : 
-https://lodev.org/cgtutor/raycasting.html : LODEV - Raycasting : The most valuable guide to understand properly how to raycast.
+	- https://lodev.org/cgtutor/raycasting.html : LODEV - Raycasting : The most valuable guide to understand properly how to raycast.
 
 
 - Videos : 
-https://www.youtube.com/watch?v=NbSee-XM7WA&t=1s : Javidx9 : Explanations about raycasting
+	- https://www.youtube.com/watch?v=NbSee-XM7WA&t=1s : Javidx9 : Explanations about raycasting
 
-https://www.youtube.com/watch?v=gYRrGTC7GtA&t=492s : 3DSage : Create your own raycast (Part 1 - 2)
+	- https://www.youtube.com/watch?v=gYRrGTC7GtA&t=492s : 3DSage : Create your own raycast (Part 1 - 2)
 
 ### USE OF AI :
 	- During this project we used AI for :

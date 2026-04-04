@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/04 14:33:27 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 14:36:36 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@ static int	ft_textures_fill(t_cub *data, char *line)
 }
 
 // FT_TEXTURES_COMPLETE - CHECKS THAT ALL REQUIRED TEXTURES HAVE BEEN SET
-// TODO : COMPRENDRE POURQUOI PAS D'INTERRUPTION SI MAUVAIS CHAR
 int	ft_textures_complete(t_textures *textures)
 {
 	if (textures->north == NULL)
