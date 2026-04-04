@@ -56,6 +56,7 @@ void	ft_char_draw(t_cub *data)
 	ft_img_to_img(&data->display, &data->player.char_img, screen_x, screen_y);
 }
 
+// FT_ORIENT_DRAW - DRAWS THE PLAYER ORIENTATION MARKER ON THE MINIMAP
 void	ft_orient_draw(t_cub *data)
 {
 	int	screen_x;

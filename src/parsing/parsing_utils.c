@@ -12,11 +12,7 @@
 
 #include "cub3d.h"
 
-// UTILITARY FILE IN CHARGE OF PARSING
-/*
-** FT_FORMAT_CHECK - VALIDATES THAT THE FILE EXTENSION IS .CUB
-** RETURNS SUCCESS IF VALID, FAILURE OTHERWISE
-*/
+// FT_PLAYER_SET - SETS THE PLAYER POSITION AND DIRECTION FROM ORIENTATION
 void	ft_player_set(t_player *player, int x, int y, char orient)
 {
 	player->pos_y = (double)y + 0.5;
@@ -43,6 +39,7 @@ void	ft_player_set(t_player *player, int x, int y, char orient)
 	}
 }
 
+// FT_FORMAT_CHECK - VALIDATES THAT THE FILE EXTENSION IS .CUB
 int	ft_format_check(char *filepath)
 {
 	int	len_path;
@@ -53,6 +50,7 @@ int	ft_format_check(char *filepath)
 	return (SUCCESS);
 }
 
+// FT_FILE_DUP - DUPLICATES THE LINKED LIST OF LINES INTO DATA->FILE ARRAY
 static void	ft_file_dup(t_cub *data, t_list *lst)
 {
 	int	i;
@@ -65,10 +63,7 @@ static void	ft_file_dup(t_cub *data, t_list *lst)
 	}
 }
 
-/*
-** FT_FILE_STORE - READS THE .CUB FILE AND STORES EACH LINE IN DATA->FILE
-** USES GET_NEXT_LINE TO READ, THEN COPIES INTO A GC-MANAGED CHAR **
-*/
+// FT_FILE_STORE - READS THE .CUB FILE AND STORES EACH LINE IN DATA->FILE
 int	ft_file_store(t_cub *data)
 {
 	char	*line;

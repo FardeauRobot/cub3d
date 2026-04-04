@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_XPM_IMG - LOADS AN XPM FILE INTO AN MLX IMAGE AND GETS ITS DATA
 int	ft_xpm_img(t_cub *game, t_img *img, char *path)
 {
 	if (!game || !img)

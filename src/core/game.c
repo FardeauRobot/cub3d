@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_GAME_END - ENDS THE GAME LOOP AND CLEANS UP MLX
 int	ft_game_end(void *data)
 {
 	t_cub	*cub;
@@ -22,6 +23,7 @@ int	ft_game_end(void *data)
 	return (SUCCESS);
 }
 
+// FT_MOUSE - HANDLES MOUSE MOVEMENT TO ROTATE THE PLAYER VIEW
 int	ft_mouse(int x, int y, void *cub)
 {
 	t_cub	*data;
@@ -39,6 +41,7 @@ int	ft_mouse(int x, int y, void *cub)
 	return (SUCCESS);
 }
 
+// FT_GAME_LOOP - MAIN LOOP CALLBACK THAT UPDATES AND RENDERS EACH FRAME
 int	ft_game_loop(void *cub)
 {
 	ft_move_update(cub);
@@ -47,7 +50,7 @@ int	ft_game_loop(void *cub)
 	return (SUCCESS);
 }
 
-// FUNCTION USED TO START THE GAME LOOP AFTER PARSING IS DONE
+// FT_GAME - STARTS THE GAME LOOP AND REGISTERS ALL MLX HOOKS
 void	ft_game(t_cub *data)
 {
 	ft_game_init(data);

@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_ROTATE - ROTATES THE PLAYER DIRECTION VECTOR BY THE ROTATION SPEED
 void	ft_rotate(t_player *player)
 {
 	double	old_dir_x;
@@ -28,6 +29,7 @@ void	ft_rotate(t_player *player)
 	player->dir_y = old_dir_x * sin(rot) + player->dir_y * cos(rot);
 }
 
+// FT_MOVE_HELPER - COMPUTES MOVEMENT OFFSET BASED ON DIRECTION MODIFIER
 void	ft_move_helper(double *move_x, double *move_y, t_player *player,
 		int mod)
 {
@@ -53,6 +55,7 @@ void	ft_move_helper(double *move_x, double *move_y, t_player *player,
 	}
 }
 
+// FT_MOVE - APPLIES MOVEMENT TO THE PLAYER IF NO WALL COLLISION
 int	ft_move(t_player *player, char **map)
 {
 	double	move_x;
@@ -77,6 +80,7 @@ int	ft_move(t_player *player, char **map)
 	return (SUCCESS);
 }
 
+// FT_PRESS_KEYS - HANDLES KEY PRESS EVENTS TO SET MOVEMENT AND ROTATION
 int	ft_press_keys(int keycode, void *cub)
 {
 	t_cub	*data;
@@ -97,6 +101,7 @@ int	ft_press_keys(int keycode, void *cub)
 	return (SUCCESS);
 }
 
+// FT_RELEASE_KEYS - HANDLES KEY RELEASE EVENTS TO CLEAR MOVEMENT AND ROTATION
 int	ft_release_keys(int keycode, void *cub)
 {
 	t_cub	*data;

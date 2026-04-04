@@ -48,6 +48,7 @@ void	ft_mlx_init(t_cub *data)
 		ft_exit(data, ERRN_LOAD, ERR_MSG_LOADING, ERR_FAIL_MLX);
 }
 
+// FT_GAME_INIT - INITIALIZES ALL GAME COMPONENTS BEFORE THE GAME LOOP
 void	ft_game_init(t_cub *data)
 {
 	ft_mlx_init(data);

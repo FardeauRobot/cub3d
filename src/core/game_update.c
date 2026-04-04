@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_MOVE_UPDATE - UPDATES PLAYER POSITION BASED ON CURRENT MOVEMENT STATE
 void	ft_move_update(void *cub)
 {
 	t_cub	*data;
@@ -23,6 +24,7 @@ void	ft_move_update(void *cub)
 		ft_move(&data->player, data->map.map);
 }
 
+// FT_CAMERA_UPDATE - UPDATES THE CAMERA PLANE BASED ON PLAYER DIRECTION
 void	ft_camera_update(void *cub)
 {
 	t_cub		*data;

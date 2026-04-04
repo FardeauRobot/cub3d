@@ -6,16 +6,13 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 11:55:12 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/30 12:20:05 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 13:35:32 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// TODO : A DELETE A LA FIN
-/*
-** FT_MATRIX_PRINT - PRINTS ALL STRINGS OF A NULL-TERMINATED CHAR ** TO STDOUT
-*/
+// FT_MATRIX_PRINT - PRINTS ALL STRINGS OF A NULL-TERMINATED CHAR ** TO STDOUT
 void	ft_matrix_print(char **matrix)
 {
 	int	i;
@@ -29,9 +26,7 @@ void	ft_matrix_print(char **matrix)
 	ft_putchar_fd('\n', STDOUT_FILENO);
 }
 
-/*
-** FT_TEXTURES_PRINT - PRINTS ALL TEXTURE AND COLOR PATHS FOR DEBUG
-*/
+// FT_TEXTURES_PRINT - PRINTS ALL TEXTURE AND COLOR PATHS FOR DEBUG
 void	ft_textures_print(t_textures *textures)
 {
 	ft_printf("[NORTH = %s]\n", textures->north);
@@ -42,9 +37,7 @@ void	ft_textures_print(t_textures *textures)
 	ft_printf("[RGB FLOOR = %d]", textures->floor_rgb);
 }
 
-/*
-** FT_CUB_PRINT - PRINTS THE MAIN CUB3D STRUCT FIELDS FOR DEBUG
-*/
+// FT_CUB_PRINT - PRINTS THE MAIN CUB3D STRUCT FIELDS FOR DEBUG
 void	ft_cub_print(t_cub *data)
 {
 	printf("[CUB3D MAIN STRUCT]\n");

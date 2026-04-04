@@ -12,12 +12,7 @@
 
 #include "cub3d.h"
 
-// FILE IN CHARGE OF ERRORS
-
-/*
-** FT_ERROR - PRINTS A FORMATTED ERROR MESSAGE TO STDERR
-** FORMAT: "ERROR\n<CONTEXT>: <DETAIL>\n"
-*/
+// FT_ERROR - PRINTS A FORMATTED ERROR MESSAGE TO STDERR
 int	ft_error(char *context, char *detail, int error)
 {
 	if (context && detail)
@@ -33,6 +28,7 @@ int	ft_error(char *context, char *detail, int error)
 	return (error);
 }
 
+// FT_DESTROY_IMGS - DESTROYS ALL MLX IMAGES TO FREE RESOURCES
 // TODO : REMETTRE LA FONCTION DESTROY IMGS A JOUR AVEC LES NOUVELLES IMAGES
 void	ft_destroy_imgs(t_cub *data)
 {
@@ -63,9 +59,7 @@ void	ft_destroy_imgs(t_cub *data)
 	}
 }
 
-/*
-** FT_DATA_CLEAN - FREES ALL RESOURCES (GNL BUFFER, FD, GARBAGE COLLECTORS)
-*/
+// FT_DATA_CLEAN - FREES ALL RESOURCES INCLUDING FD, GC, AND MLX
 void	ft_data_clean(t_cub *data)
 {
 	close(data->fd_map);
@@ -82,9 +76,7 @@ void	ft_data_clean(t_cub *data)
 	}
 }
 
-/*
-** FT_EXIT - PRINTS ERROR, FREES RESOURCES, AND EXITS WITH ERROR CODE
-*/
+// FT_EXIT - PRINTS ERROR, FREES RESOURCES, AND EXITS WITH ERROR CODE
 void	ft_exit(t_cub *data, int error, char *context, char *detail)
 {
 	ft_error(context, detail, error);

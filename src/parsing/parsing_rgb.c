@@ -6,16 +6,13 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:57:35 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/04 13:32:07 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 13:33:49 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-/*
-** FT_TEXTURE_DISPATCH - ASSIGNS A TEXTURE PATH TO THE MATCHING FIELD
-** MATCHES ID (NO, SO, WE, EA, F, C) AND STORES PATH IN DATA->TEXTURES
-*/
+// FT_ASSIGN_WALL - ASSIGNS A TEXTURE PATH TO THE MATCHING WALL FIELD
 int	ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 {
 	if (arr[2])
@@ -26,6 +23,7 @@ int	ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 	return (SUCCESS);
 }
 
+// FT_ASSIGN_F_C - ASSIGNS A FLOOR OR CEILING RGB COLOR VALUE
 int	ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part)
 {
 	if (*dst != 0)
@@ -38,6 +36,7 @@ int	ft_assign_f_c(t_cub *data, int *dst, char **arr, t_background part)
 	return (SUCCESS);
 }
 
+// FT_RGB_CONVERT - CONVERTS AN RGB STRING COMPONENT TO AN INTEGER VALUE
 int	ft_rgb_convert(char *str, int *nb)
 {
 	int	i;
@@ -74,8 +73,7 @@ static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 		data->textures.ceiling_rgb = ret;
 }
 
-// TODO : A REFACTORISER POUR LA NORME, TROUVER UN MOYEN PLUN FUN
-// POUR CONVERTIR EN COULEUR
+// FT_RGB - PARSES AN RGB COLOR LINE AND STORES IT IN DATA
 int	ft_rgb(t_cub *data, char **arr, t_background part)
 {
 	int	rgb[3];

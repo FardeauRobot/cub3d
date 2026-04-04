@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_GET_X_TEX - COMPUTES THE X COORDINATE ON THE WALL TEXTURE
 void	ft_get_x_tex(t_ray *ray, t_draw *dw)
 {
 	dw->tex_width = dw->tex->width;
@@ -26,6 +27,7 @@ void	ft_get_x_tex(t_ray *ray, t_draw *dw)
 		dw->tex_x = dw->tex_width - 1;
 }
 
+// FT_GET_Y_TEX - COMPUTES THE Y COORDINATE AND STEP FOR THE WALL TEXTURE
 void	ft_get_y_tex(t_cub *data, t_ray *ray, t_draw *dw)
 {
 	dw->tex_height = dw->tex->height;
@@ -34,6 +36,7 @@ void	ft_get_y_tex(t_cub *data, t_ray *ray, t_draw *dw)
 			+ ray->line_height / 2) * dw->step;
 }
 
+// FT_DRAW_CEILING - DRAWS THE CEILING PIXELS ABOVE THE WALL STRIPE
 void	ft_draw_ceiling(t_cub *data, t_ray *ray, int x)
 {
 	int	y;
@@ -46,6 +49,7 @@ void	ft_draw_ceiling(t_cub *data, t_ray *ray, int x)
 	}
 }
 
+// FT_DRAW_WALL - DRAWS THE TEXTURED WALL PIXELS FOR A SCREEN COLUMN
 void	ft_draw_wall(t_cub *data, t_ray *ray, t_draw *dw, int x)
 {
 	int	y;
@@ -72,6 +76,7 @@ void	ft_draw_wall(t_cub *data, t_ray *ray, t_draw *dw, int x)
 	}
 }
 
+// FT_DRAW_FLOOR - DRAWS THE FLOOR PIXELS BELOW THE WALL STRIPE
 void	ft_draw_floor(t_cub *data, t_ray *ray, int x)
 {
 	int	y;

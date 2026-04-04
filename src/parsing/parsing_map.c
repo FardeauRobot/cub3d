@@ -12,7 +12,7 @@
 
 #include "cub3d.h"
 
-// FILE IN CHARGE OF THE PARSING BEFORE EXECUTION OF THE GAME
+// FT_MAP_WIDTH - RETURNS THE WIDTH OF THE LONGEST LINE IN THE MAP
 static int	ft_map_width(char **map)
 {
 	int	i;
@@ -86,6 +86,7 @@ void	ft_map_check_helper(t_cub *data, int x, int y, char **map)
 		ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_CHAR, map[y]);
 }
 
+// FT_MAP_CHECK - ITERATES THROUGH THE MAP AND VALIDATES EACH CELL
 void	ft_map_check(t_cub *data)
 {
 	int		x;

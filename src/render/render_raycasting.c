@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_INIT_RAY - INITIALIZES RAY DIRECTION AND MAP POSITION FOR A COLUMN
 static void	ft_init_ray(t_cub *data, t_ray *ray, int x)
 {
 	ray->camera_x = 2 * x / (double)data->screen_width - 1;
@@ -27,6 +28,7 @@ static void	ft_init_ray(t_cub *data, t_ray *ray, int x)
 	ray->wall_x = 0;
 }
 
+// FT_COMPUTE_STEP - COMPUTES STEP DIRECTION AND INITIAL SIDE DISTANCES
 static void	ft_compute_step(t_cub *data, t_ray *ray)
 {
 	if (ray->ray_dir_x < 0)
@@ -55,6 +57,7 @@ static void	ft_compute_step(t_cub *data, t_ray *ray)
 	}
 }
 
+// FT_PERF_DDA - PERFORMS THE DDA ALGORITHM TO FIND THE NEXT WALL HIT
 static void	ft_perf_dda(t_cub *data, t_ray *ray)
 {
 	while (ray->hit == 0)
@@ -82,6 +85,7 @@ static void	ft_perf_dda(t_cub *data, t_ray *ray)
 	}
 }
 
+// FT_MAP_RAYCASTING - CASTS A RAY FOR EACH SCREEN COLUMN AND DRAWS WALLS
 void	ft_map_raycasting(t_cub *data)
 {
 	t_ray	ray;

@@ -12,10 +12,7 @@
 
 #include "cub3d.h"
 
-/*
-** FT_TEXTURES_DETECT - CHECKS IF ID IS A VALID TEXTURE/COLOR IDENTIFIER
-** RETURNS SUCCESS IF ID IS NO, SO, EA, WE, F OR C, FAILURE OTHERWISE
-*/
+// FT_TEXTURES_DETECT - CHECKS IF ID IS A VALID TEXTURE OR COLOR IDENTIFIER
 static int	ft_textures_detect(char *id)
 {
 	if (ft_strncmp(id, "NO", 2) != 0 && ft_strncmp(id, "SO", 2) != 0
@@ -25,6 +22,7 @@ static int	ft_textures_detect(char *id)
 	return (SUCCESS);
 }
 
+// FT_TEXTURE_DISPATCH - DISPATCHES A TEXTURE LINE TO THE MATCHING FIELD
 static int	ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 {
 	if (ft_strncmp(id, "NO", 2) == 0)
@@ -42,10 +40,7 @@ static int	ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 	return (FAILURE);
 }
 
-/*
-** FT_TEXTURES_FILL - SPLITS A LINE AND FILLS TEXTURE DATA
-** RETURNS SUCCESS IF LINE IS A VALID TEXTURE, FAILURE IF NOT
-*/
+// FT_TEXTURES_FILL - SPLITS A LINE AND FILLS THE CORRESPONDING TEXTURE DATA
 static int	ft_textures_fill(t_cub *data, char *line)
 {
 	char	**arr;
@@ -60,6 +55,7 @@ static int	ft_textures_fill(t_cub *data, char *line)
 	return (SUCCESS);
 }
 
+// FT_TEXTURES_COMPLETE - CHECKS THAT ALL REQUIRED TEXTURES HAVE BEEN SET
 // TODO : COMPRENDRE POURQUOI PAS D'INTERRUPTION SI MAUVAIS CHAR
 int	ft_textures_complete(t_textures *textures)
 {
@@ -78,10 +74,7 @@ int	ft_textures_complete(t_textures *textures)
 	return (SUCCESS);
 }
 
-/*
-** FT_TEXTURES_PARSING - ITERATES FILE LINES TO PARSE TEXTURES AND COLORS
-** STOPS WHEN IT HITS THE FIRST MAP LINE AND SETS DATA->INDEX_MAP_START
-*/
+// FT_TEXTURES_PARSING - ITERATES FILE LINES TO PARSE TEXTURES AND COLORS
 int	ft_textures_parsing(t_cub *data)
 {
 	int	i;

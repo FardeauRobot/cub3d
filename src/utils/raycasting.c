@@ -12,6 +12,7 @@
 
 #include "cub3d.h"
 
+// FT_LIMIT_DRAW - CLAMPS THE DRAW START AND END TO SCREEN BOUNDARIES
 static void	ft_limit_draw(t_cub *data, t_ray *ray, t_draw *dw)
 {
 	ray->draw_start = -ray->line_height / 2 + data->screen_height / 2
@@ -23,6 +24,7 @@ static void	ft_limit_draw(t_cub *data, t_ray *ray, t_draw *dw)
 		ray->draw_end = data->screen_height - 1;
 }
 
+// FT_COMPUTE_COLLISION - COMPUTES THE EXACT WALL HIT POSITION FOR TEXTURING
 static void	ft_compute_collision(t_cub *data, t_ray *ray)
 {
 	if (ray->side == 0)
@@ -32,6 +34,7 @@ static void	ft_compute_collision(t_cub *data, t_ray *ray)
 	ray->wall_x -= floor(ray->wall_x);
 }
 
+// FT_COMPUTE_DIST - COMPUTES PERPENDICULAR WALL DISTANCE AND LINE HEIGHT
 static void	ft_compute_dist(t_cub *data, t_ray *ray, t_draw *dw)
 {
 	if (ray->side == 0)
@@ -42,6 +45,7 @@ static void	ft_compute_dist(t_cub *data, t_ray *ray, t_draw *dw)
 	dw->pitch = 100;
 }
 
+// FT_DEFINE_TEX - SELECTS THE WALL TEXTURE BASED ON RAY SIDE AND DIRECTION
 static void	ft_define_tex(t_cub *data, t_ray *ray, t_draw *dw)
 {
 	if (ray->side == 0)
@@ -60,6 +64,7 @@ static void	ft_define_tex(t_cub *data, t_ray *ray, t_draw *dw)
 	}
 }
 
+// FT_DRAW_RAY - DRAWS A FULL VERTICAL STRIPE FOR ONE RAY COLUMN
 void	ft_draw_ray(t_cub *data, t_ray *ray, int x)
 {
 	t_draw	dw;
