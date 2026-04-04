@@ -2,7 +2,7 @@
 #                      PROJECT CONFIG
 # ============================================================
 # Change NAME to your binary name
-NAME		= cub3d
+NAME		= cub3D
 
 # ============== COLORS ====================================
 RESET		= \033[0m
@@ -33,16 +33,16 @@ UTILS_PATH		= $(SRCS_PATH)/utils
 SKELETON_FILES	= main.c
 
 # Core module
-CORE_FILES		= game.c
+CORE_FILES		= game.c game_init.c game_update.c
 
 # Parsing module
-PARSING_FILES	= parsing.c parsing_textures.c parsing_utils.c
+PARSING_FILES	= parsing.c parsing_textures.c parsing_utils.c parsing_map.c parsing_rgb.c
 
 # Render module
-RENDER_FILES	= render_map.c render_utils.c imgs_init.c
+RENDER_FILES	= render_map.c render_raycasting.c render_utils.c imgs_init.c
 
 # Utility module
-UTILS_FILES		= error.c output.c loading_utils.c vectors.c keys.c
+UTILS_FILES		= error.c output.c loading_utils.c keys.c raycasting.c raycasting_utils.c
 
 # Assemble all sources
 SRCS =	$(addprefix $(SRCS_PATH)/, $(SKELETON_FILES)) \
@@ -56,9 +56,14 @@ OBJS	= $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 # ============== COMPILATION ===============================
 CC		= cc
-CFLAGS	= -Wall -Wextra -Werror -g3
+CFLAGS	= -Wall -Wextra -Werror -g3 -std=gnu11
 INCS	= -I. -I$(INC_PATH) -I$(LIBFT_DIR) -I$(LIBFT_DIR)/includes -I$(MLX_DIR)
+UNAME	= $(shell uname)
 LFLAGS	= -L$(LIBFT_DIR) -lft -L$(MLX_DIR) -lm -lmlx -lXext -lX11
+
+ifeq ($(UNAME), Linux)
+	LFLAGS += -lbsd
+endif
 
 # ============================================================
 #                        RULES
@@ -108,7 +113,7 @@ re: fclean all
 
 # ============== DEBUG & ANALYSIS ==========================
 
-TEST= ./$(NAME) ./maps/working/basic.cub
+TEST= ./$(NAME) ./maps/working/basic2.cub
 
 test: $(NAME)
 	$(TEST)
@@ -129,6 +134,23 @@ leaks: $(NAME)
 leaks_supp: $(NAME)
 	valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes \
 		--suppressions=readline.supp --track-origins=yes $(TEST)
+
+test_broken: $(NAME)
+	@printf "\n$(WHITE)=====================================\n$(RESET)"
+	@printf "	$(BOLD)$(CYAN)BROKEN MAPS LEAK TEST$(RESET)\n"
+	@printf "$(WHITE)=====================================$(RESET)\n\n"
+	@for map in maps/broken/*.cub maps/broken/*.ber; do \
+		if [ -f "$$map" ]; then \
+			printf "$(YELLOW)>> Testing: $(RESET)$$map\n"; \
+			valgrind --leak-check=full --show-leak-kinds=all --track-fds=yes \
+				--track-origins=yes --error-exitcode=42 \
+				./$(NAME) $$map 2>&1 | tail -1; \
+			printf "\n"; \
+		fi; \
+	done
+	@printf "$(WHITE)=====================================\n$(RESET)"
+	@printf "	$(BOLD)$(GREEN)LEAK TEST COMPLETE$(RESET)\n"
+	@printf "$(WHITE)=====================================$(RESET)\n\n"
 
 sanitize: fclean
 	$(MAKE) CFLAGS="$(CFLAGS) -fsanitize=address -fno-omit-frame-pointer" all
@@ -172,4 +194,4 @@ todo:
 	@grep -rn --color=always 'TODO\|FIXME\|HACK\|XXX' $(SRCS_PATH) $(INC_PATH) || \
 		printf "$(GREEN)  None found!$(RESET)\n"
 
-.PHONY: all clean fclean re leaks leaks_supp sanitize thread checknorm count todo
+.PHONY: all clean fclean re leaks leaks_supp test_broken sanitize thread checknorm count todo

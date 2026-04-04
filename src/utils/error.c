@@ -3,24 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fardeau <fardeau@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/01 00:00:00 by author            #+#    #+#             */
-/*   Updated: 2026/03/18 20:31:30 by fardeau          ###   ########.fr       */
+/*   Updated: 2026/03/30 12:21:17 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// FILE IN CHARGE OF ERRORS
-
-/*
-** FT_ERROR - PRINTS A FORMATTED ERROR MESSAGE TO STDERR
-** FORMAT: "ERROR\n<CONTEXT>: <DETAIL>\n"
-*/
+// FT_ERROR - PRINTS A FORMATTED ERROR MESSAGE TO STDERR
 int	ft_error(char *context, char *detail, int error)
 {
-	ft_putstr_fd("Error\n", 2);
+	if (context && detail)
+		ft_putstr_fd("Error\n", 2);
 	if (context)
 	{
 		ft_putstr_fd(context, 2);
@@ -32,28 +28,38 @@ int	ft_error(char *context, char *detail, int error)
 	return (error);
 }
 
+// FT_DESTROY_IMGS - DESTROYS ALL MLX IMAGES TO FREE RESOURCES
+// TODO : REMETTRE LA FONCTION DESTROY IMGS A JOUR AVEC LES NOUVELLES IMAGES
 void	ft_destroy_imgs(t_cub *data)
 {
 	if (data->mlx)
 	{
 		if (data->display.img)
 			mlx_destroy_image(data->mlx, data->display.img);
-		if (data->minimap.cache.img)
+		if (data->map.minimap.cache.img)
 			mlx_destroy_image(data->mlx, data->map.minimap.cache.img);
 		if (data->map.minimap.tiles[0].tile_img.img)
-			mlx_destroy_image(data->mlx, data->map.minimap.tiles[0].tile_img.img);
+			mlx_destroy_image(data->mlx,
+				data->map.minimap.tiles[0].tile_img.img);
 		if (data->map.minimap.tiles[1].tile_img.img)
-			mlx_destroy_image(data->mlx, data->map.minimap.tiles[1].tile_img.img);
+			mlx_destroy_image(data->mlx,
+				data->map.minimap.tiles[1].tile_img.img);
 		if (data->player.char_img.img)
 			mlx_destroy_image(data->mlx, data->player.char_img.img);
 		if (data->player.test_view.img)
 			mlx_destroy_image(data->mlx, data->player.test_view.img);
+		if (data->textures.wall_n.img)
+			mlx_destroy_image(data->mlx, data->textures.wall_n.img);
+		if (data->textures.wall_s.img)
+			mlx_destroy_image(data->mlx, data->textures.wall_s.img);
+		if (data->textures.wall_e.img)
+			mlx_destroy_image(data->mlx, data->textures.wall_e.img);
+		if (data->textures.wall_w.img)
+			mlx_destroy_image(data->mlx, data->textures.wall_w.img);
 	}
 }
 
-/*
-** FT_DATA_CLEAN - FREES ALL RESOURCES (GNL BUFFER, FD, GARBAGE COLLECTORS)
-*/
+// FT_DATA_CLEAN - FREES ALL RESOURCES INCLUDING FD, GC, AND MLX
 void	ft_data_clean(t_cub *data)
 {
 	close(data->fd_map);
@@ -70,9 +76,7 @@ void	ft_data_clean(t_cub *data)
 	}
 }
 
-/*
-** FT_EXIT - PRINTS ERROR, FREES RESOURCES, AND EXITS WITH ERROR CODE
-*/
+// FT_EXIT - PRINTS ERROR, FREES RESOURCES, AND EXITS WITH ERROR CODE
 void	ft_exit(t_cub *data, int error, char *context, char *detail)
 {
 	ft_error(context, detail, error);

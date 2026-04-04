@@ -6,35 +6,42 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/10 21:54:39 by fardeau           #+#    #+#             */
-/*   Updated: 2026/03/18 12:12:05 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/03 12:55:58 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-// FUNCTION USED TO INITIALIZE MLX, THE MINIMAP AND THE PLAYER MARKER
-void	ft_move_update(void *cub)
-{
-	t_cub	*data;
 
-	data = (t_cub *)cub;
-	if (data->player.rotating != NONE )
-		ft_rotate(&data->player);
-	if (data->player.moving != NONE )
-		ft_move(&data->player);
+// FT_GAME_END - ENDS THE GAME LOOP AND CLEANS UP MLX
+int	ft_game_end(void *data)
+{
+	t_cub	*cub;
+
+	cub = (t_cub *)data;
+	if (cub->mlx)
+		mlx_loop_end(cub->mlx);
+	return (SUCCESS);
 }
 
-void	ft_camera_update(void *cub)
+// FT_MOUSE - HANDLES MOUSE MOVEMENT TO ROTATE THE PLAYER VIEW
+int	ft_mouse(int x, int y, void *cub)
 {
 	t_cub	*data;
-	t_player *player;
+	int		mid;
 
-
+	(void)y;
 	data = (t_cub *)cub;
-	player = &data->player;
-	player->camera_plane_x = player->dir_y * 0.66;
-	player->camera_plane_y = player->dir_x * 0.66;
+	mid = data->screen_width / 2;
+	if (x < mid - 150)
+		data->player.rotating = LEFT;
+	else if (x > mid + 150)
+		data->player.rotating = RIGHT;
+	else
+		data->player.rotating = NONE;
+	return (SUCCESS);
 }
 
+// FT_GAME_LOOP - MAIN LOOP CALLBACK THAT UPDATES AND RENDERS EACH FRAME
 int	ft_game_loop(void *cub)
 {
 	ft_move_update(cub);
@@ -43,28 +50,12 @@ int	ft_game_loop(void *cub)
 	return (SUCCESS);
 }
 
-void	ft_game_init(t_cub *data)
-{
-	ft_mlx_init(data);
-	ft_minimap_init(&data->map);
-	ft_char_init(data);
-}
-
-int	ft_game_end(void *data)
-{
-	t_cub *cub;
-	cub = (t_cub *)data;
-	if (cub->mlx)
-		mlx_loop_end(cub->mlx);
-	return (SUCCESS);
-}
-
-// FUNCTION USED TO START THE GAME LOOP AFTER PARSING IS DONE
+// FT_GAME - STARTS THE GAME LOOP AND REGISTERS ALL MLX HOOKS
 void	ft_game(t_cub *data)
 {
 	ft_game_init(data);
-	// mlx_key_hook(data->win, ft_keys_handle, data);
 	mlx_loop_hook(data->mlx, ft_game_loop, data);
+	mlx_hook(data->win, 6, 1L << 6, ft_mouse, data);
 	mlx_hook(data->win, 2, 1L << 0, ft_press_keys, data);
 	mlx_hook(data->win, 3, 1L << 1, ft_release_keys, data);
 	mlx_hook(data->win, 17, 1L << 17, ft_game_end, data);
