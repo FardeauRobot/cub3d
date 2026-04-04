@@ -1,9 +1,9 @@
-NO ./imgs/door_big3.xpm
+NO ./imgs/door_big3.xpm coucou
 SO ./imgs/door_slide.xpm
 WE ./imgs/ironbrick.xpm
 EA ./imgs/train3.xpm
 
-C 222,160,2
+C 141, 143, 145
 F 210,163,209
 
         1111111111111111111111111

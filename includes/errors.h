@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   errors.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/03 19:14:02 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:49:45 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ typedef enum e_err
 # define ERR_MSG_FORMAT "file must end in .cub"
 # define ERR_MSG_INVALID_ID "Identifier not declared right"
 # define ERR_MSG_INVALID_CHAR "Invalid char found on the map"
+# define ERR_MSG_INVALID_TEXT "Invalid texture declaration: "
 # define ERR_MSG_INVALID_RGB "Invalid RGB value"
 # define ERR_MSG_MISS_CEILING "Missing CEILING informations"
 # define ERR_MSG_MISS_FLOOR "Missing FLOOR informations"

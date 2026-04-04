@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:57:35 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/04 13:33:49 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 13:51:29 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 int	ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 {
 	if (arr[2])
-		return (ft_error("Invalid texture", arr[2], ERRN_PARSING));
+		ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_TEXT, arr[2]);
 	*dst = ft_strdup_gc(path, &data->gc_global);
 	if (!dst)
 		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
