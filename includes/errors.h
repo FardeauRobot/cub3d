@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/02 00:00:00 by tibras            #+#    #+#             */
-/*   Updated: 2026/04/04 13:49:45 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 13:54:11 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef enum e_err
 # define ERR_MSG_MISS_SOUTH "Missing SOUTH WALL informations"
 # define ERR_MSG_MISS_WEST "Missing WEST WALL informations or wrong declaration"
 # define ERR_MSG_MISS_EAST "Missing EAST WALL informations or wrong declaration"
-
 # define ERR_MSG_MAX_RGB "Too many values for RGB"
 # define ERR_MSG_PLAYER_COUNT "Too much player located on the map"
 # define ERR_MSG_NO_PLAYER "No player located on the map"
