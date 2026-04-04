@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:57:35 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/04 14:23:29 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 16:45:26 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,22 +80,27 @@ static void	ft_rgb_affect(t_cub *data, int *rgb, t_background part)
 // FT_RGB - PARSES AN RGB COLOR LINE AND STORES IT IN DATA
 int	ft_rgb(t_cub *data, char **arr, t_background part)
 {
-	int	rgb[3];
-	int	index;
-	int	i;
+	int		rgb[3];
+	int		index;
+	int		i;
+	int		j;
+	char	**split;
 
 	i = -1;
 	index = 0;
 	while (arr[++i])
 	{
+		j = 0;
 		if (i == 0)
 			arr[i] = ft_strtrim_gc(arr[i], "FC", &data->gc_global);
 		if (!arr[i][0])
 			continue ;
+		split = ft_split_charset_gc(arr[i], ",", &data->gc_global);
 		if (index >= 3)
 			ft_exit(data, ERRN_PARSING, ERR_MSG_INVALID_RGB, arr[i]);
-		if (ft_rgb_convert(arr[i], &rgb[index++]) != SUCCESS)
+		if (ft_rgb_convert(split[j++], &rgb[index++]) != SUCCESS)
 			return (FAILURE);
+		split = NULL;
 	}
 	ft_rgb_affect(data, rgb, part);
 	return (SUCCESS);

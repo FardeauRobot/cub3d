@@ -6,7 +6,7 @@
 /*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/04 14:36:36 by tibras           ###   ########.fr       */
+/*   Updated: 2026/04/04 16:44:54 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 // FT_TEXTURES_DETECT - CHECKS IF ID IS A VALID TEXTURE OR COLOR IDENTIFIER
 static int	ft_textures_detect(char *id)
 {
-	if (ft_strncmp(id, "NO", 3) != 0 && ft_strncmp(id, "SO", 3) != 0
-		&& ft_strncmp(id, "EA", 3) != 0 && ft_strncmp(id, "WE", 3) != 0
-		&& ft_strncmp(id, "F", 2) != 0 && ft_strncmp(id, "C", 2) != 0)
-		return (FAILURE);
-	return (SUCCESS);
+	if (ft_strncmp(id, "NO", 2) == 0 || ft_strncmp(id, "SO", 2) == 0
+		|| ft_strncmp(id, "EA", 2) == 0 || ft_strncmp(id, "WE", 2) == 0)
+		return (2);
+	else if (ft_strncmp(id, "F", 1) == 0 || ft_strncmp(id, "C", 1) == 0)
+		return (3);
+	return (FAILURE);
 }
 
 // FT_TEXTURE_DISPATCH - DISPATCHES A TEXTURE LINE TO THE MATCHING FIELD
@@ -44,8 +45,23 @@ static int	ft_texture_dispatch(t_cub *data, char **arr, char *id, char *path)
 static int	ft_textures_fill(t_cub *data, char *line)
 {
 	char	**arr;
+	int		i;
+	int		nb;
 
-	arr = ft_split_charset_gc((const char *)line, ", \t\n", &data->gc_tmp);
+	nb = 0;
+	i = -1;
+	arr = NULL;
+	if (ft_textures_detect(line) == FAILURE)
+		return (FAILURE);
+	else if (ft_textures_detect(line) == 2)
+		arr = ft_split_charset_gc((const char *)line, " \t\n", &data->gc_tmp);
+	else if (ft_textures_detect(line) == 3)
+	{
+		while (line[++i])
+			if (line[i] == ',' && ++nb > 2)
+				return (FAILURE);
+		arr = ft_split_charset_gc((const char *)line, ", \t\n", &data->gc_tmp);
+	}
 	if (!arr)
 		ft_exit(data, ERRN_MALLOC, ERR_MSG_PARSING, ERR_MSG_MALLOC);
 	if (!arr[0] || ft_textures_detect(arr[0]) == FAILURE)
