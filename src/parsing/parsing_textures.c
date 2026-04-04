@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_textures.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/08 19:19:24 by fardeau           #+#    #+#             */
-/*   Updated: 2026/04/04 13:00:28 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:32:39 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,6 @@ int	ft_textures_parsing(t_cub *data)
 		if ((ret == FAILURE || ret == ERRN_TEXTURES)
 			&& !ft_is_only(data->file[i], ft_isspace))
 		{
-			ft_cub_print(data);
 			if (ft_textures_complete(&data->textures) != SUCCESS)
 				return (ft_error(ERR_MSG_LOADING, ERR_MSG_TEXTURES, ERRN_LOAD));
 			data->map.index_map_start = i;

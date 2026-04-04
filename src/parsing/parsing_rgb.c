@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_rgb.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alamjada <alamjada@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tibras <tibras@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 12:57:35 by alamjada          #+#    #+#             */
-/*   Updated: 2026/04/04 13:04:12 by alamjada         ###   ########.fr       */
+/*   Updated: 2026/04/04 13:32:07 by tibras           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 int	ft_assign_wall(t_cub *data, char **dst, char *path, char **arr)
 {
 	if (arr[2])
-		return (ft_error("Invalide tex", arr[2], ERRN_PARSING));
+		return (ft_error("Invalid texture", arr[2], ERRN_PARSING));
 	*dst = ft_strdup_gc(path, &data->gc_global);
 	if (!dst)
 		return (ft_error(ERR_MSG_PARSING, ERR_MSG_MALLOC, ERRN_MALLOC));
@@ -44,7 +44,6 @@ int	ft_rgb_convert(char *str, int *nb)
 
 	*nb = 0;
 	i = -1;
-	printf("str = %s\n", str);
 	if (ft_strlen(str) > 3 || !ft_is_only(str, ft_isdigit))
 	{
 		*nb = -1;
@@ -85,7 +84,6 @@ int	ft_rgb(t_cub *data, char **arr, t_background part)
 
 	i = -1;
 	index = 0;
-	ft_matrix_print(arr);
 	while (arr[++i])
 	{
 		if (i == 0)
